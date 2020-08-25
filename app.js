@@ -14,7 +14,8 @@ const express		 = require("express"),
 
 var userRoutes		 = require("./routes/users"),
 	messageRoutes	 = require("./routes/messages"),
-	apartementRoutes = require("./routes/apartements");
+	apartementRoutes = require("./routes/apartements"),
+	indexRoutes		 = require("./routes/index");
 
 var port = process.env.PORT || 3000,
 	db_url = process.env.DATABASEURL || "mongodb://localhost/airbnb";
@@ -54,18 +55,14 @@ app.use(function(req, res, next){
 	// If there's anything in the flash, we'll have access to it in any template under var message
 	res.locals.error = req.flash("error");
 	res.locals.success = req.flash("success");
+	res.locals.warning = req.flash("warning");
 	next();
 });
 
 app.use("/users", userRoutes);
 app.use("/users/:id/messages", messageRoutes);
 app.use("/apartements", apartementRoutes);
-
-
-
-app.get("/", function(req, res){
-	res.render("landing");
-});
+app.use("/", indexRoutes);
 
 
 
