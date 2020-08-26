@@ -38,7 +38,7 @@ router.post("/register", function(req, res){
 				if(user.app_role.includes("host")){
 					req.flash("warning",
 							  "The approval of your registration in Airbnb as a host is pending");
-					return res.redirect("/users/host");
+					return res.redirect("/users/" + req.user._id + "/host");
 				}
 				res.redirect("/");
 			})
@@ -55,11 +55,12 @@ router.get("/login", function(req, res){
 // handle login logic
 router.post("/login", passport.authenticate("local",
 	{
-		failureRedirect: "/login"
+		failureRedirect: "/login",
+		failureFlash: true
 	}), function(req, res){
 	req.flash("success", "Welcome back " + req.user.username);
 	if(req.user.app_role.includes("host")){
-		res.redirect("/users/host");
+		res.redirect("/users/" + req.user._id + "/host");
 	}else{
 		res.redirect("/");
 	}

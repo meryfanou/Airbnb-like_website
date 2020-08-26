@@ -11,13 +11,13 @@ var userSchema = mongoose.Schema({
 	phone_number: String,
 	app_role: [ String ],			// anonymous guest, tenant, host, admin
 	picture: String,
-	Messages: [
+	messages: [
 		{
 			type: mongoose.Schema.Types.ObjectId,
 			ref: "Message"
 		}
 	],
-	Apartements: [
+	apartements: [
 		{
 			type: mongoose.Schema.Types.ObjectId,
 			ref: "Apartement"

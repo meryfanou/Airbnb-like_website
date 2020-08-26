@@ -4,8 +4,9 @@ const express	 = require("express"),
 	  middleware = require("../middleware");
 
 // ROUTES
-router.get("/host", function(req,res){
-	res.render("users/host");
+router.get("/:id/host", function(req,res){
+	req.user.populate("apartements","messages");
+	res.render("users/host", {apartements: req.user.apartements, messages: req.user.messages});
 });
 
 
