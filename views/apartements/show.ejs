@@ -1,0 +1,31 @@
+<%- include("../partials/header") %>
+
+<h1>
+	Show page working!
+</h1>
+
+<%= console.log(apartement.host)%>
+
+<%= console.log(apartement.place.beds)%>
+
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="thumbnail">
+				<img class="img-responsive" src="<%= apartement.main_image %>">
+				<div class="caption-full">
+					<h4 class="pull-right"> $<%= apartement.price_min %>/night </h4>
+					<h4> <a> <%= apartement.name %> </a> </h4>
+					<p>	<%= apartement.description %>	</p>
+					<p>
+						<em> Submitted By <%= apartement.host.username %> </em>
+					</p>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+</div>
+
+<%- include("../partials/footer") %>

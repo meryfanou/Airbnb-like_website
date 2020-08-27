@@ -115,4 +115,22 @@ router.post("/", upload.single("image"), function(req,res){
 	});
 });
 
+// SHOW Route - show more info about one specific appartement
+
+router.get("/:id",function(req,res){
+	
+	Apartement.findById(req.params.id).populate("reviews").populate("host").exec(function(err, foundApartement){
+		if(err){
+			
+			req.flash("error", err.message);
+			res.redirect("back");
+		}else{
+			
+			
+			res.render("apartements/show", {apartement: foundApartement});
+		}
+	});
+
+});
+
 module.exports = router;
