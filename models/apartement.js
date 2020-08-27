@@ -32,8 +32,7 @@ var apartementSchema = mongoose.Schema({
 		neighbourhood: String,
 		transportation: String
 	},
-	main_image: { type: String,
-				default: 'https://icon-library.com/images/no-profile-pic-icon/no-profile-pic-icon-12.jpg'},
+	main_image: String,
 	images: [ String ],
 	price_min: Number,
 	extra_charge_per_guest: Number,
