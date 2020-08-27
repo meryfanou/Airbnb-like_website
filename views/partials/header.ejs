@@ -4,6 +4,8 @@
 		<title>Airbnb</title>
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 		<link rel="stylesheet" href="/stylesheets/main.css">
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
 	</head>
 	<body>
 	<!-- navbar=> bar above the header -->
@@ -22,6 +24,9 @@
 					<% }else{ %>
 						<li> <a href="#"> Signed In As <%= currentUser.username %> </a> </li>
 						<li> <a href="/logout">Logout</a> </li>
+					
+						<li> <a href="/users/<%= currentUser._id %>/edit"> Edit Profile <i class="fa fa-user" aria-hidden="true"></i> </a> </li>
+						
 					<% } %>
 				</ul>
 			</div>
