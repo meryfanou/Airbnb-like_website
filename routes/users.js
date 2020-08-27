@@ -5,8 +5,17 @@ const express	 = require("express"),
 
 // ROUTES
 router.get("/:id/host", function(req,res){
-	req.user.populate("apartements","messages");
-	res.render("users/host", {apartements: req.user.apartements, messages: req.user.messages});
+	User.findById(req.params.id,).populate("apartements").exec(function(err, foundUser){
+	 	if(err){
+	 		req.flash("error", err.message);
+	 		res.redirect("back");
+	 	}else if(!foundUser){
+	 		req.flash("error", "User not found");
+			res.redirect("back");
+	 	}else{
+	 		res.render("users/host", {apartements: foundUser.apartements});
+	 	}
+	 });
 });
 
 

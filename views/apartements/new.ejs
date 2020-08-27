@@ -4,49 +4,143 @@
 	<div class="row">
 		<h1 style="text-align: center;">Create New Place</h1>
 		<div style="width: 30%; margin: 25px auto;">
-			<form action="/apartements" method="POST">
+			<form action="/apartements/" method="POST" enctype="multipart/form-data">
 				<div class="form-group">
-					<input class="form-control" type="text" placeholder="Name" name="name">
+					<input class="form-control" type="text" placeholder="Name" name="apartement[name]"
+						   required><br>
 				</div>
 				<div class="form-group">
-					<input class="form-control" type="text" placeholder="Number of bedrooms"
-						   name="place.bedrooms">
+					<input class="form-control" type="number" placeholder="Number of bedrooms"
+						   name="apartement[place[bedrooms]]" min="0" step="1" required><br>
 				</div>
 				<div class="form-group">
-					<input class="form-control" type="text" placeholder="Number of beds"
-						   name="place.beds">
+					<input class="form-control" type="number" placeholder="Number of beds"
+						   name="apartement[place[beds]]" min="0" step="1" required><br>
 				</div>
 				<div class="form-group">
-					<input class="form-control" type="text" placeholder="Number of bathrooms"
-						   name="place.bathrooms">
+					<input class="form-control" type="number" placeholder="Number of bathrooms"
+						   name="apartement[place[bathrooms]]" min="1" step="1" required><br>
 				</div>
 				<div class="form-group">
-					<input class="form-control" type="radio" value="Private Room" name="place.type">
-					<label for="place.type">Private Room</label><br>
-					<input class="form-control" type="radio" value="Shared Room" name="place.type">
-					<label for="place.type">Shared Room</label><br>
-					<input class="form-control" type="radio" value="Apartement" name="place.type">
-					<label for="place.type">Apartement</label><br>
+					<input class="form-control" type="radio" value="Private Room"
+						   id="room_type" name="apartement[place[room_type]]">
+					<label for="room_type">Private Room</label><br>
+					<input class="form-control" type="radio" value="Shared Room"
+						   id="room_type" name="apartement[place[room_type]]">
+					<label for="room_type">Shared Room</label><br>
+					<input class="form-control" type="radio" value="Apartement"
+						   id="room_type" name="apartement[place[room_type]]">
+					<label for="room_type">Apartement</label><br>
 				</div>
 				<div class="form-group">
-					<input class="form-control" type="text" placeholder="Is there a living room?"
-						   name="place.linving_room">
+					<input class="form-control" type="radio" value="True"
+						   id="linving_room" name="apartement[place[linving_room]]">
+					<label for="linving_room">Living Room</label><br>
 				</div>
 				<div class="form-group">
-					<input class="form-control" type="number" placeholder="price" name="price" min="0.01"
-						   step="0.01">
+					<input class="form-control" type="number" placeholder="Area"
+						   name="apartement[place[area]]" min="0.01" step="0.01" required><br>
 				</div>
 				<div class="form-group">
-					<input class="form-control" type="text" placeholder="image url" name="image">
+					<input class="form-control" type="text" placeholder="Description"
+						   name="apartement[description]" required><br>
 				</div>
 				<div class="form-group">
-					<input class="form-control" type="text" placeholder="description" name="description">
+					<input class="form-control" type="radio" value="True"
+						   id="smoking" name="apartement[renting_rules[smoking]]">
+					<label for="smoking">Smoking</label><br>
+				</div>
+				<div class="form-group">
+					<input class="form-control" type="radio" value="True"
+						   id="pets" name="apartement[renting_rules[pets]]">
+					<label for="pets">Pets</label><br>
+				</div>
+				<div class="form-group">
+					<input class="form-control" type="radio" value="True"
+						   id="events" name="apartement[renting_rules[events]]">
+					<label for="events">Events</label><br>
+				</div>
+				<div class="form-group">
+					<input class="form-control" type="number" placeholder="Minimum number of days to rent"
+						   name="apartement[renting_rules[rent_days_min]]" min="1" step="1" required><br>
+				</div>
+				<div class="form-group">
+					<input class="form-control" type="radio" value="True"
+						   id="wifi" name="apartement[facilities[wifi]]">
+					<label for="wifi">Wifi</label><br>
+				</div>
+				<div class="form-group">
+					<input class="form-control" type="radio" value="True"
+						   id="air_conditioning" name="apartement[facilities[air_conditioning]]">
+					<label for="air_conditioning">Air Condition</label><br>
+				</div>
+				<div class="form-group">
+					<input class="form-control" type="radio" value="True"
+						   id="kitchen" name="apartement[facilities[kitchen]]">
+					<label for="kitchen">Kitchen</label><br>
+				</div>
+				<div class="form-group">
+					<input class="form-control" type="radio" value="True"
+						   id="tv" name="apartement[facilities[tv]]">
+					<label for="tv">TV</label><br>
+				</div>
+				<div class="form-group">
+					<input class="form-control" type="radio" value="True"
+						   id="parking" name="apartement[facilities[parking]]">
+					<label for="parking">Parking</label><br>
+				</div>
+				<div class="form-group">
+					<input class="form-control" type="radio" value="True"
+						   id="elevator" name="apartement[facilities[elevator]]">
+					<label for="elevator">Elevator</label><br>
+				</div>
+				<div class="form-group">
+					<input class="form-control" type="text" placeholder="Address"
+						   name="apartement[location[address]]" required><br>
+				</div>
+				<div class="form-group">
+					<input class="form-control" type="text" placeholder="Neighbourhood"
+						   name="apartement[location[neighbourhood]]" required><br>
+				</div>
+				<div class="form-group">
+					<input class="form-control" type="text" placeholder="Means of transportation"
+						   name="apartement[location[transportation]]" required><br>
+				</div>
+				<div>
+					<label for="main_image">Select main photo:</label>
+					<input type="file" id="main_image" name="image" accept="image/*"
+						   required><br>
+					<!-- <input type="text" name="apartement[main_image]" placeholder="Profile Image"> -->
+				</div>
+				<div>
+					<label for="images">More photos:</label>
+					<input type="file" id="images" name="apartement[images]" accept="image/*">
+					<p>To select multiple files, hold down the CTRL or SHIFT key while selecting.</p><br>
+				</div>
+				<div class="form-group">
+					<input class="form-control" type="number" placeholder="Minimum price per night"
+						   name="apartement[price_min]" min="0.01" step="0.01" required><br>
+				</div>
+				<div class="form-group">
+					<input class="form-control" type="number" placeholder="Extra charge per guest"
+						   name="apartement[extra_charge_per_guest]" min="0.00" step="0.01" required><br>
+				</div>
+				<div class="form-group">
+					<label>Add availability dates:</label>
+					<input class="form-control" type="date" name="apartement[availability_from]"
+						   required><br>
+					<input class="form-control" type="date" name="apartement[availability_to]"
+						   required><br>
+				</div>
+				<div class="form-group">
+					<input class="form-control" type="number" placeholder="Maximum number of guests"
+						   name="apartement[capacity]" min="1" step="1" required><br>
 				</div>
 				<div class="form-group">
 					<button class="btn btn-lg btn-primary btn-block">Submit</button>
 				</div>
 			</form>
-			<a href="/campgrounds">Go Back</a>
+			<a href="/<%= currentUser._id %>/host">Go Back</a>
 		</div>
 	</div>
 </div>

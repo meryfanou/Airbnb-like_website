@@ -10,7 +10,8 @@ var userSchema = mongoose.Schema({
 	email: String,
 	phone_number: String,
 	app_role: [ String ],			// anonymous guest, tenant, host, admin
-	picture: String,
+	picture: { type: String,
+			  default: "https://icon-library.com/images/no-profile-pic-icon/no-profile-pic-icon-12.jpg"},
 	messages: [
 		{
 			type: mongoose.Schema.Types.ObjectId,
