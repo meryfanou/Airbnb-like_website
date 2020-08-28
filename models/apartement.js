@@ -50,7 +50,6 @@ var apartementSchema = mongoose.Schema({
 	availability_to: String,			// dates availble to rent
 	capacity: Number,					// maximum number of persons
 	host: {
-	
 		type: mongoose.Schema.Types.ObjectId,
 		ref: "User"
 	},
