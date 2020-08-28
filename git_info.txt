@@ -17,6 +17,8 @@ GIT SUMMARY
 	git merge branch_name
 	=> press   :wq
 
+/---------------------------------------------------------------------------------------------------------/
+
 GIT BASICS
 
 1. Inside the folder we want git to have access to:	git init
