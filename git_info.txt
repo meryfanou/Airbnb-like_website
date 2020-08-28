@@ -1,0 +1,92 @@
+GIT BASICS
+
+1. Inside the folder we want git to have access to:	git init
+	=> tells git that we are gonna use it
+
+2. git status
+	=> asks git for a status
+	=> untracked files: just by typing git init doesn't mean git will keep track of any file
+
+3. git add <file>
+	=> if we want git to track a file
+	=> git add .
+		=> this will add all the changes and stage them for commit
+	=> git add *.<file type> 	(e.g. git add *.html)
+		=> this will add all files of the specified type
+	=> git add -A
+		=> this will add all the files in the directory, including the hidden files
+
+4. git reset HEAD <filename>
+	=> this will remove a file from the staging area, meaning we want to undo the git add <filename> we did
+	   because we don't want to commit this file for some reason
+
+5. git commit -m "<message>"
+	=> make a checkpoint in time that we can go back to with the changes that we've added
+	=> -m allows to add a message to the commit => each commit needs to have a description message
+	=> if we don't type -m a text editor opens up to fill in the message
+	=> if we modify a previously commited file, we will have to add & commit it all over again
+
+6. git log
+	=> gives us a history of all the commits we have made so far (bottom: earliest, top: oldest)
+	=> opens it in a new terminal interface => exit: q
+	=> shows author, date, commit message and the commit identifier (commit <identifier>)
+		=> if we want to find the checkpoint created by a specific commit, we need its identifier
+
+7. git checkout <commit identifier>
+	=> if I have uncommited changes a warning message will appear, because if I go back to the checkpoint
+		these changes will be lost
+	=> otherwise, we will be moved ("through time") to the checkpoint => we are no longer in master
+		=> master is still on our last commit, but we have moved to a previous one
+		=> we can just checkout some old code, maybe copy something and then go back to master (present):
+			git checkout master
+		=> we can also revert to an older commit (move master to it) and forget all about the last one(s):
+			// after we have come back to master (git checkout master)
+			git revert --no-commit <commit identifier>..HEAD
+			git commit -m "<message>"
+		=> we can always "undo" reverting to an older commit by reverting to the commit before we reverted!
+
+8. If we want git to ignore a file all together:
+	a. create .gitignore file
+	b. open it up (choose 'show hidden files' option)
+	c. add the name of the file(s) we want to be ignored in the .gitignore file
+	=> the only untracked file will be the .gitignore => we add & commit it and still our files will be
+	   hidden from git
+
+/---------------------------------------------------------------------------------------------------------/
+
+GIT BRANCHES
+
+1. git branch
+	=> this will list all the branches in the git repository
+	=> an * will appear left to the currently running branch
+
+2. git checkout -b <branch_name>
+	=> this will create a new branch and switch to it
+
+3. git checkout <branch_name>
+	=> this will switch to another (existing) branch
+
+4. If we have 2 (or more) branches, each with its own, different commits and we want to merge them
+   we do it with one "bridge" commit that ties in the commits for both the branches together:
+   	git merge <branch_name>
+		=> while we are in the one branch, we type the branch_name of the one we want to merge with
+		   (usually from master we merge other branches to it)
+		=> the message of the merging commit will automatically be "Merge branch '<branch_name>'"
+
+5. git branch -d <branch_name>
+	=> this will delete a branch
+
+/---------------------------------------------------------------------------------------------------------/
+
+GITHUB
+
+1. To connect GoormIDE with Github via ssh key:
+		https://medium.com/@devsprout/how-to-connect-goormide-to-github-with-ssh-67a293bf3cb0
+
+2. Create github repository and follow 'push an existing repository from the command line':
+		git remote add origin <url>
+		git remote -v		// Shows URLs of remote repositories
+		git push -u origin master
+
+3. Pull
+	git pull origin master
