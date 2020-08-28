@@ -12,11 +12,11 @@ const express		 = require("express"),
 	  https			 = require("https"),
 	  User			 = require("./models/user"),
 	  Message		 = require("./models/message"),
-	  Apartement	 = require("./models/apartement");
+	  Apartment	 = require("./models/apartment");
 
 var userRoutes		 = require("./routes/users"),
 	messageRoutes	 = require("./routes/messages"),
-	apartementRoutes = require("./routes/apartements"),
+	apartmentRoutes = require("./routes/apartments"),
 	indexRoutes		 = require("./routes/index");
 
 var port = process.env.PORT || 3000,
@@ -63,7 +63,7 @@ app.use(function(req, res, next){
 
 app.use("/users", userRoutes);
 app.use("/users/:id/messages", messageRoutes);
-app.use("/apartements", apartementRoutes);
+app.use("/apartments", apartmentRoutes);
 app.use("/", indexRoutes);
 
 

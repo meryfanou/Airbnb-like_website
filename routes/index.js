@@ -52,7 +52,7 @@ router.post("/register", upload.single("image"), function(req, res){
 
 			req.body.user.username = req.body.username;
 			req.body.user["messages"] = [];
-			req.body.user["apartements"] = [];
+			req.body.user["apartments"] = [];
 
 			if(req.body.password != req.body.confirm_password){
 				req.flash("error", "Password confirmation failed. Please try again.");
@@ -82,7 +82,7 @@ router.post("/register", upload.single("image"), function(req, res){
 
 		req.body.user.username = req.body.username;
 		req.body.user["messages"] = [];
-		req.body.user["apartements"] = [];
+		req.body.user["apartments"] = [];
 
 		if(req.body.password != req.body.confirm_password){
 			req.flash("error", "Password confirmation failed. Please try again.");

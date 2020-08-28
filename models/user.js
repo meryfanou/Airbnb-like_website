@@ -18,10 +18,10 @@ var userSchema = mongoose.Schema({
 			ref: "Message"
 		}
 	],
-	apartements: [
+	apartments: [
 		{
 			type: mongoose.Schema.Types.ObjectId,
-			ref: "Apartement"
+			ref: "Apartment"
 		}
 	]
 });

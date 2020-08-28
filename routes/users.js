@@ -5,7 +5,7 @@ const express	 = require("express"),
 
 // ROUTES
 router.get("/:id/host", function(req,res){
-	User.findById(req.params.id,).populate("apartements").exec(function(err, foundUser){
+	User.findById(req.params.id,).populate("apartments").exec(function(err, foundUser){
 	 	if(err){
 	 		req.flash("error", err.message);
 	 		res.redirect("back");
@@ -13,7 +13,7 @@ router.get("/:id/host", function(req,res){
 	 		req.flash("error", "User not found");
 			res.redirect("back");
 	 	}else{
-	 		res.render("users/host", {apartements: foundUser.apartements});
+	 		res.render("users/host", {apartments: foundUser.apartments});
 	 	}
 	 });
 });

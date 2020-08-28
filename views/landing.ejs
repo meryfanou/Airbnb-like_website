@@ -8,7 +8,7 @@
 	<div class="row">
 		<h3 style="position:relative; left:40px"> Find your place to stay </h3>
 		<div style="width: 30%; margin: 25px auto;">
-			<form action="/apartements" method="GET" style="position:relative; left:-420px">
+			<form action="/apartments" method="GET" style="position:relative; left:-420px">
 				<div class="form-group">
 					<input class="form-control" type="text" placeholder="City/Country" name="location">
 				</div>
@@ -31,7 +31,7 @@
 			<div>
 				<form action="/users/<%= currentUser._id %>/host" method="GET"
 					  style="width: 20%; margin: 25px auto;">
-					<button class="btn btn-lg btn-primary btn-block">My Apartements</button>
+					<button class="btn btn-lg btn-primary btn-block">My Apartments</button>
 				</form>
 			</div>
 		<% } %>

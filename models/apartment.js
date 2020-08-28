@@ -1,12 +1,12 @@
 const mongoose = require("mongoose");
 
-var apartementSchema = mongoose.Schema({
+var apartmentSchema = mongoose.Schema({
 	name: String,
 	place: {
 		bedrooms: Number,
 		beds: Number,
 		bathrooms: Number,
-		room_type: String,				// private room, shared room, apartement
+		room_type: String,				// private room, shared room, apartment
 		living_room: { type: String, default: 'False'},
 		area: Number
 	},
@@ -76,4 +76,4 @@ var apartementSchema = mongoose.Schema({
 });
 
 
-module.exports = mongoose.model("Apartement", apartementSchema);
+module.exports = mongoose.model("Apartment", apartmentSchema);

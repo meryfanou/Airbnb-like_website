@@ -7,21 +7,21 @@
 		<div class="container">
 			<h2 style="text-align: center;">This is <%= currentUser.username %>'s host page</h2>
 			<p>
-				<a class ="btn btn-primary btn-lg" href="/apartements/new">Add a new Place</a>
+				<a class ="btn btn-primary btn-lg" href="/apartments/new">Add a new Place</a>
 			</p>
 		</div>
 	</header>
 
 	<div class="row text-center" style="display: flex; flex-wrap: wrap;">
-		<% apartements.forEach(function(apartement){ %>
+		<% apartments.forEach(function(apartment){ %>
 			<div class="col-md-3 col-sm-6">
 				<div class="thumbnail">
-					<img src="<%= apartement.main_image.url %>">
+					<img src="<%= apartment.main_image.url %>">
 					<div class="caption">
-						<h4> <%= apartement.name %> </h4>
+						<h4> <%= apartment.name %> </h4>
 					</div>
 					<p>
-						<a href="/apartements/<%= apartement._id %>" class="btn btn-primary">More Info</a>
+						<a href="/apartments/<%= apartment._id %>" class="btn btn-primary">More Info</a>
 					</p>
 				</div>
 			</div>

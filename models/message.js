@@ -11,9 +11,9 @@ var messageSchema = mongoose.Schema({
 		type: mongoose.Schema.Types.ObjectId,
 		ref: "User"
 	},
-	apartement: {								// a host will receive messages about an apartement
+	apartment: {								// a host will receive messages about an apartment
 		type: mongoose.Schema.Types.ObjectId,
-		ref: "Apartement"
+		ref: "Apartment"
 	}
 });
 
