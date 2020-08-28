@@ -29,11 +29,21 @@ var apartementSchema = mongoose.Schema({
 	location: {
 		// Openstreetmap
 		address: String,
+		lat: Number,
+		lng: Number,
 		neighbourhood: String,
 		transportation: String
 	},
-	main_image: String,
-	images: [ String ],
+	main_image: {
+		url: String,
+		public_id: String
+	},
+	images: [
+		{
+			url: String,
+			public_id: String
+		}
+	],
 	price_min: Number,
 	extra_charge_per_guest: Number,
 	availability_from: String,			// dates availble to rent

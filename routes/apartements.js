@@ -5,6 +5,18 @@ const express	 = require("express"),
 	  User		 = require("../models/user"),
 	  Apartement = require("../models/apartement");
 
+var NodeGeocoder = require('node-geocoder');
+ 
+var options = {
+  provider: 'google',
+  httpAdapter: 'https',
+  apiKey: process.env.GEOCODER_API_KEY,
+  formatter: null
+};
+ 
+var geocoder = NodeGeocoder(options);
+
+
 // MULTER CONFIGURATION
 // Whenever a file gets uploaded we create a custom name for that file
 // The name we are giving is gonna have the current time stamp + the original name of the file
@@ -37,6 +49,8 @@ router.get("/new", function(req,res){
 	res.render("apartements/new");
 });
 
+//CREATE - add new campground to DB
+
 //router.post("/", function(req,res){
 // Add upload image middleware => inside single: name attribute of input form from apartements/new.ejs
 router.post("/", upload.single("image"), function(req,res){
@@ -55,6 +69,7 @@ router.post("/", upload.single("image"), function(req,res){
 		req.body.apartement["reviews"] = [];
 
 		var	tempApartement = new Apartement({});
+			
 		if(!req.body.apartement.place.living_room){
 			req.body.apartement.place.living_room = tempApartement.place.living_room;
 		}
@@ -89,6 +104,7 @@ router.post("/", upload.single("image"), function(req,res){
 			req.body.apartement.facilities.elevator = tempApartement.facilities.elevator;
 		}
 
+		
 		User.findById(req.user._id, function(err, user){
 			if(err){
 				req.flash("error", err.message);

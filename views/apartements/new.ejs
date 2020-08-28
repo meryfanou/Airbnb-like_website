@@ -33,7 +33,7 @@
 					<label for="room_type">Apartement</label><br>
 				</div>
 				<div class="form-group">
-					<input class="form-control" type="radio" value="True"
+					<input class="form-control" type="checkbox" value="True"
 						   id="linving_room" name="place[linving_room]">
 					<label for="linving_room">Living Room</label><br>
 				</div>
@@ -46,17 +46,17 @@
 						   name="apartement[description]" required><br>
 				</div>
 				<div class="form-group">
-					<input class="form-control" type="radio" value="True"
+					<input class="form-control" type="checkbox" value="True"
 						   id="smoking" name="renting_rules[smoking]">
 					<label for="smoking">Smoking</label><br>
 				</div>
 				<div class="form-group">
-					<input class="form-control" type="radio" value="True"
+					<input class="form-control" type="checkbox" value="True"
 						   id="pets" name="renting_rules[pets]">
 					<label for="pets">Pets</label><br>
 				</div>
 				<div class="form-group">
-					<input class="form-control" type="radio" value="True"
+					<input class="form-control" type="checkbox" value="True"
 						   id="events" name="renting_rules[events]">
 					<label for="events">Events</label><br>
 				</div>
@@ -65,32 +65,32 @@
 						   name="renting_rules[rent_days_min]" min="1" step="1" required><br>
 				</div>
 				<div class="form-group">
-					<input class="form-control" type="radio" value="True"
+					<input class="form-control" type="checkbox" value="True"
 						   id="wifi" name="facilities[wifi]">
 					<label for="wifi">Wifi</label><br>
 				</div>
 				<div class="form-group">
-					<input class="form-control" type="radio" value="True"
+					<input class="form-control" type="checkbox" value="True"
 						   id="air_conditioning" name="facilities[air_conditioning]">
 					<label for="air_conditioning">Air Condition</label><br>
 				</div>
 				<div class="form-group">
-					<input class="form-control" type="radio" value="True"
+					<input class="form-control" type="checkbox" value="True"
 						   id="kitchen" name="facilities[kitchen]">
 					<label for="kitchen">Kitchen</label><br>
 				</div>
 				<div class="form-group">
-					<input class="form-control" type="radio" value="True"
+					<input class="form-control" type="checkbox" value="True"
 						   id="tv" name="facilities[tv]">
 					<label for="tv">TV</label><br>
 				</div>
 				<div class="form-group">
-					<input class="form-control" type="radio" value="True"
+					<input class="form-control" type="checkbox" value="True"
 						   id="parking" name="facilities[parking]">
 					<label for="parking">Parking</label><br>
 				</div>
 				<div class="form-group">
-					<input class="form-control" type="radio" value="True"
+					<input class="form-control" type="checkbox" value="True"
 						   id="elevator" name="facilities[elevator]">
 					<label for="elevator">Elevator</label><br>
 				</div>
@@ -98,6 +98,12 @@
 					<input class="form-control" type="text" placeholder="Address"
 						   name="location[address]" required><br>
 				</div>
+				
+				<div class="form-group">
+    		<label for="location[address]">Location</label>
+    		<input class="form-control" 			type="text" name="location[address]" id="location[address]" 		placeholder="Yosemite National Park, CA">
+	</div>
+				
 				<div class="form-group">
 					<input class="form-control" type="text" placeholder="Neighbourhood"
 						   name="location[neighbourhood]" required><br>
