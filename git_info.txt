@@ -1,3 +1,24 @@
+GIT SUMMARY
+
+1. Upload to github:
+	git add .
+	git commit -m "some_message"
+	git push -u origin master
+
+2. Download from github:
+	git pull origin master
+
+3. Create another branch, download github to master and merge master with branch:
+	git checkout -b branch_name
+	git add .
+	git commit -m "some_message"
+	git checkout master
+	git pull origin master
+	git merge branch_name
+	=> press   :wq
+
+/---------------------------------------------------------------------------------------------------------/
+
 GIT BASICS
 
 1. Inside the folder we want git to have access to:	git init
