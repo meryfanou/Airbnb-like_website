@@ -38,13 +38,14 @@ router.get("/", function(req, res){
 });
 
 
-//show the register form
+// Show the register form
 router.get("/register", function(req, res){
 	res.render("register");
 });
 
-// handle sing up logic
+// Handle sing up logic
 router.post("/register", upload.single("image"), function(req, res){
+	// If user has uploaded a profile picture
 	if(req.file){
 		cloudinary.uploader.upload(req.file.path, function(result){
 			// We want to store the image's secure_url (https://)
@@ -78,6 +79,7 @@ router.post("/register", upload.single("image"), function(req, res){
 		});
 	}else{
 		var	tempUser = new User({});
+		// Use default profile picture
 		req.body.user.picture = tempUser.picture;
 
 		req.body.user.username = req.body.username;

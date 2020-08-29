@@ -60,6 +60,7 @@ router.post("/", upload.array("images", 30), async(req,res) => {
 		i += 1;
 	}
 
+	// Get apartment object from new.ejs
 	req.body.apartment["place"] = Object.assign({}, req.body.place);
 	req.body.apartment["renting_rules"] = Object.assign({}, req.body.renting_rules);
 	req.body.apartment["facilities"] = Object.assign({}, req.body.facilities);
@@ -68,41 +69,43 @@ router.post("/", upload.array("images", 30), async(req,res) => {
 	req.body.apartment["reservations"] = [];
 	req.body.apartment["reviews"] = [];
 
-	var	tempapartment = new apartment({});
+	// Use default values if needed
+	var	tempApartment = new apartment({});
 	if(!req.body.apartment.place.living_room){
-		req.body.apartment.place.living_room = tempapartment.place.living_room;
+		req.body.apartment.place.living_room = tempApartment.place.living_room;
 	}
 	if(!req.body.apartment.renting_rules.smoking){
-		req.body.apartment.renting_rules.smoking = tempapartment.renting_rules.smoking;
+		req.body.apartment.renting_rules.smoking = tempApartment.renting_rules.smoking;
 	}
 	if(!req.body.apartment.renting_rules.pets){
-		req.body.apartment.renting_rules.pets = tempapartment.renting_rules.pets;
+		req.body.apartment.renting_rules.pets = tempApartment.renting_rules.pets;
 	}
 	if(!req.body.apartment.renting_rules.events){
-		req.body.apartment.renting_rules.eventse = tempapartment.renting_rules.events;
+		req.body.apartment.renting_rules.eventse = tempApartment.renting_rules.events;
 	}
 	if(!req.body.apartment.facilities.wifi){
-		req.body.apartment.facilities.wifi = tempapartment.facilities.wifi;
+		req.body.apartment.facilities.wifi = tempApartment.facilities.wifi;
 	}
 	if(!req.body.apartment.facilities.air_conditioning){
-		req.body.apartment.facilities.air_conditioning = tempapartment.facilities.air_conditioning;
+		req.body.apartment.facilities.air_conditioning = tempApartment.facilities.air_conditioning;
 	}
 	if(!req.body.apartment.facilities.heating){
-		req.body.apartment.facilities.heating = tempapartment.facilities.heating;
+		req.body.apartment.facilities.heating = tempApartment.facilities.heating;
 	}
 	if(!req.body.apartment.facilities.kitchen){
-		req.body.apartment.facilities.kitchen = tempapartment.facilities.kitchen;
+		req.body.apartment.facilities.kitchen = tempApartment.facilities.kitchen;
 	}
 	if(!req.body.apartment.facilities.tv){
-		req.body.apartment.facilities.tv = tempapartment.facilities.tv;
+		req.body.apartment.facilities.tv = tempApartment.facilities.tv;
 	}
 	if(!req.body.apartment.facilities.parking){
-		req.body.apartment.facilities.parking = tempapartment.facilities.parking;
+		req.body.apartment.facilities.parking = tempApartment.facilities.parking;
 	}
 	if(!req.body.apartment.facilities.elevator){
-		req.body.apartment.facilities.elevator = tempapartment.facilities.elevator;
+		req.body.apartment.facilities.elevator = tempApartment.facilities.elevator;
 	}
 
+	// Find current user in db
 	User.findById(req.user._id, function(err, user){
 		if(err){
 			req.flash("error", err.message);
@@ -112,6 +115,7 @@ router.post("/", upload.array("images", 30), async(req,res) => {
 			req.flash("error", "User not found");
 			res.redirect("back");
 		}else{
+			// Create apartment in db
 			apartment.create(req.body.apartment, function(err, apartment){
 				if(err){
 					req.flash("error", err.message);
@@ -126,25 +130,19 @@ router.post("/", upload.array("images", 30), async(req,res) => {
 			});
 		}
 	});
-	console.log(req.body.apartment);
 });
 
 // SHOW Route - show more info about one specific appartement
 
 router.get("/:id",function(req,res){
-	
 	apartment.findById(req.params.id).populate("reviews").populate("host").exec(function(err, foundapartment){
 		if(err){
-			
 			req.flash("error", err.message);
 			res.redirect("back");
 		}else{
-			
-			
 			res.render("apartments/show", {apartment: foundapartment});
 		}
 	});
-
 });
 
 module.exports = router;

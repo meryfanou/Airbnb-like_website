@@ -16,7 +16,7 @@
 			<div class="navbar-header">
 				<a class="navbar-brand" href="/">Airbnb</a>
 			</div>
-			<div class="collapse navbar-collapse">
+			<div class="collapse navbar-collapse" id="profile_image">
 				<ul class="nav navbar-nav navbar-right">
 					<!-- If currentUser is empty => no user is logged in -->
 	<!-- currentUser is passed from the app.js to the index.ejs(etc) => still header has access to it -->
@@ -26,9 +26,9 @@
 					<% }else{ %>
 						<li> <a href="#"> Signed In As <%= currentUser.username %> </a> </li>
 						<li> <a href="/logout">Logout</a> </li>
-					
+
 						<li> <a href="/users/<%= currentUser._id %>/edit"> Edit Profile <i class="fa fa-user" aria-hidden="true"></i> </a> </li>
-						
+						<li> <img src="<%= currentUser.picture %>" /> </li>
 					<% } %>
 				</ul>
 			</div>

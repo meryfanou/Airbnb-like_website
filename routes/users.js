@@ -1,7 +1,33 @@
 const express	 = require("express"),
 	  router 	 = express.Router(),
+	  multer	 = require("multer"),
+	  cloudinary = require("cloudinary"),
 	  User   	 = require("../models/user"),
 	  middleware = require("../middleware");
+
+// MULTER CONFIGURATION
+var storage = multer.diskStorage({
+	filename: function(req, file, callback){
+		callback(null, Date.now() + file.originalname);
+	}
+});
+var imageFilter = function(req, file, cb){
+	// Accept image files only
+	if(!file.originalname.match(/\.(jpg|jpeg|png|gif)$/i)){
+		return cb(new Error("Only image files are allowed!"), false);
+	}
+	cb(null,true);
+};
+var upload = multer({storage: storage, fileFilter: imageFilter});
+
+
+// CLOUDINARY CONFIGURATION
+cloudinary.config({
+	cloud_name: "meryf",
+	api_key: process.env.CLOUDINARY_API_KEY,
+	api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
 
 // ROUTES
 router.get("/:id/host", function(req,res){
@@ -35,20 +61,33 @@ router.get("/:id/edit",function(req,res){
 });
 
 	
-router.put("/:id",function(req,res){
-	
-	User.findByIdAndUpdate(req.params.id, req.body.user, function(err, updatedUser){
-		if(err){
-			req.flash("error", err.message);
-			res.redirect("/");
-		}else{
-			
-			req.flash("success","Profile updated succesfully! Please login again.");
-			res.redirect("/login" );
-		}
-	});
-	
-	
+router.put("/:id", upload.single("image"), function(req,res){
+	if(req.file){
+		cloudinary.uploader.upload(req.file.path, function(result){
+			// We want to store the image's secure_url (https://)
+			req.body.user.picture = result.secure_url;
+
+			User.findByIdAndUpdate(req.params.id, req.body.user, function(err, updatedUser){
+				if(err){
+					req.flash("error", err.message);
+					res.redirect("/");
+				}else{
+					req.flash("success","Profile updated succesfully! Please login again.");
+					res.redirect("/login" );
+				}
+			});
+		});
+	}else{
+		User.findByIdAndUpdate(req.params.id, req.body.user, function(err, updatedUser){
+			if(err){
+				req.flash("error", err.message);
+				res.redirect("/");
+			}else{
+				req.flash("success","Profile updated succesfully! Please login again.");
+				res.redirect("/login" );
+			}
+		});
+	}	
 });
 
 module.exports = router;
