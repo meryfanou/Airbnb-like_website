@@ -3,9 +3,8 @@ const express	 = require("express"),
 	  multer	 = require("multer"),
 	  cloudinary = require("cloudinary"),
 	  User		 = require("../models/user"),
-	  apartment = require("../models/apartment");
-
-var NodeGeocoder = require('node-geocoder');
+	  apartment = require("../models/apartment"),
+	  NodeGeocoder = require('node-geocoder');
  
 var options = {
   provider: 'google',
@@ -104,7 +103,7 @@ router.post("/", upload.array("images", 30), async(req,res) => {
 	if(!req.body.apartment.facilities.elevator){
 		req.body.apartment.facilities.elevator = tempApartment.facilities.elevator;
 	}
-
+	
 	// Find current user in db
 	User.findById(req.user._id, function(err, user){
 		if(err){

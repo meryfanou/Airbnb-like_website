@@ -2,14 +2,19 @@
 
 <div class="container">
 	<div class="row">
-		<h1 style="text-align: center;"> Edit <%= user.username %> Profile </h1>
+		<h1 style="text-align: center;"> Edit <%= user.username %>'s Profile </h1><br>
 		<div style="width: 30%; margin: 25px auto;">
 			<form action="/users/<%= user._id %>?_method=PUT" method="POST" enctype="multipart/form-data">
-				
+
+				<label for="image">Profile Image:</label>
 				<div class="form-group">
 					<div class="thumbnail">
-						<img src= "<%=user.picture %>" />
-	
+						<img src= "<%=user.picture %>" /><br>
+						<div style="display: inline;">
+							<input type="file" id="image" name="image" accept="image/*">
+							<label for="deleteImage">Remove</label>
+							<input type="checkbox" name="deleteImage[]" id="deleteImage">
+						</div>
 					</div>
 				</div>
 					
@@ -41,10 +46,10 @@
 						   value="<%= user.phone_number %>">
 				</div>
 
-				<div class="form-group">
+				<!-- <div class="form-group">
 					<label for="image">Profile Image:</label>
 					<input type="file" id="image" name="image" accept="image/*"><br><br>
-				</div>
+				</div> -->
 			
 				<div class="form-group">
 					<button class="btn btn-lg btn-primary btn-block">Submit</button>
