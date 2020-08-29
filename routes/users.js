@@ -62,7 +62,9 @@ router.get("/:id/edit",function(req,res){
 
 	
 router.put("/:id", upload.single("image"), function(req,res){
+	// If the user uploaded a new profile picture
 	if(req.file){
+		// New profile picture will be in 'result'
 		cloudinary.uploader.upload(req.file.path, function(result){
 			// We want to store the image's secure_url (https://)
 			req.body.user.picture = result.secure_url;
