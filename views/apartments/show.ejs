@@ -94,10 +94,49 @@
 				<h4 align="center"><li> <strong> Address: <%= apartment.location.address %> </strong><i class='fas fa-tablet'></i></li></h4> 
 				<h4 align="center"><li> <strong> Neighbourhood: <%= apartment.location.neighbourhood %> </strong><i class='fas fa-tablet'></i></li></h4> 
 				<h4 align="center"><li> <strong> Transportation: <%= apartment.location.transportation %> </strong><i class='fas fa-tablet'></i></li></h4> 
+				
+				<div class="col-md-3">
+				  <p class="lead">YelpCamp</p>
+				  <div class="list-group">
+					<li class="list-group-item active">Info 1</li>
+					<li class="list-group-item">Info 2</li>
+					<li class="list-group-item">Info 3</li>
+				  </div>
+				  <div id="map"></div>
+				</div>
 		
 			</div>
 		</div>
 	</div>
 </div>
+
+<script>
+  function initMap() {
+    var lat = <%= apartment.location.lat %>;
+    var lng = <%= apartment.location.lng %>;
+    var center = {lat: lat, lng: lng };
+    var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 8,
+        center: center,
+        scrollwheel: false
+    });
+    var contentString = `
+      <strong><%= apartment.name %><br />
+      <%= apartment.location.address %></strong>
+    `
+	
+    var infowindow = new google.maps.InfoWindow({
+      content: contentString
+    });
+    var marker = new google.maps.Marker({
+        position: center,
+        map: map
+    });
+    marker.addListener('click', function() {
+      infowindow.open(map, marker);
+    });
+  }
+</script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCKH_7OWRtK1O-OhfDDpa5lRpEwYfeb4K0&callback=initMap"></script>
 
 <%- include("../partials/footer") %>

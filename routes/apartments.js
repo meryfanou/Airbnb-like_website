@@ -105,6 +105,18 @@ router.post("/", upload.array("images", 30), async(req,res) => {
 		req.body.apartment.facilities.elevator = tempApartment.facilities.elevator;
 	}
 
+	geocoder.geocode(req.body.location.adress, function (err, data) {
+    	if (err || !data.length) {
+      		req.flash('error', 'Invalid address');
+      		return res.redirect('back');
+    	}
+    
+		req.body.apartment.location["lat"] = data[0].latitude;
+    	req.body.apartment.location["lng"] = data[0].longitude;
+    	req.body.apartment.location["address"] = data[0].formattedAddress;
+		
+	});
+	
 	// Find current user in db
 	User.findById(req.user._id, function(err, user){
 		if(err){
@@ -116,6 +128,9 @@ router.post("/", upload.array("images", 30), async(req,res) => {
 			res.redirect("back");
 		}else{
 			// Create apartment in db
+			
+			console.log(user);
+			
 			apartment.create(req.body.apartment, function(err, apartment){
 				if(err){
 					req.flash("error", err.message);
