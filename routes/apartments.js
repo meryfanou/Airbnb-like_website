@@ -4,17 +4,16 @@ const express	 = require("express"),
 	  cloudinary = require("cloudinary"),
 	  User		 = require("../models/user"),
 	  apartment = require("../models/apartment");
+// 	  NodeGeocoder = require('node-geocoder');
 
-var NodeGeocoder = require('node-geocoder');
+// var options = {
+//   provider: 'google',
+//   httpAdapter: 'https',
+//   apiKey: process.env.GEOCODER_API_KEY,
+//   formatter: null
+// };
  
-var options = {
-  provider: 'google',
-  httpAdapter: 'https',
-  apiKey: process.env.GEOCODER_API_KEY,
-  formatter: null
-};
- 
-var geocoder = NodeGeocoder(options);
+// var geocoder = NodeGeocoder(options);
 
 
 // MULTER CONFIGURATION
@@ -43,7 +42,7 @@ router.post("/", upload.array("images", 30), async(req,res) => {
 	var	i=0;
 	// For each uploaded image
 	for(const file of req.files){
-		let image = await cloudinary.v2.uploader.upload(file.path);
+		var image = await cloudinary.v2.uploader.upload(file.path);
 		// The firstly uploaded image should be the apartment's main image
 		if(i == 0){
 			req.body.apartment["main_image"] = {
@@ -105,22 +104,16 @@ router.post("/", upload.array("images", 30), async(req,res) => {
 		req.body.apartment.facilities.elevator = tempApartment.facilities.elevator;
 	}
 
-
-	
 	// Find current user in db
 	User.findById(req.user._id, function(err, user){
 		if(err){
 			req.flash("error", err.message);
 			res.redirect("/users/" + user._id + "/host");
 		}else if(!user){
-			console.log("User not found");
 			req.flash("error", "User not found");
 			res.redirect("back");
 		}else{
 			// Create apartment in db
-			
-			console.log(user);
-			
 			apartment.create(req.body.apartment, function(err, apartment){
 				if(err){
 					req.flash("error", err.message);
@@ -131,8 +124,6 @@ router.post("/", upload.array("images", 30), async(req,res) => {
 					user.save();
 					req.flash("success", "Added a new place successfully!");
 					res.redirect("/users/" + user._id + "/host");
-					// res.redirect("/");
-
 				}
 			});
 		}
@@ -140,15 +131,129 @@ router.post("/", upload.array("images", 30), async(req,res) => {
 });
 
 // SHOW Route - show more info about one specific appartement
-
 router.get("/:id",function(req,res){
-	apartment.findById(req.params.id).populate("reviews").populate("host").exec(function(err, foundapartment){
+	apartment.findById(req.params.id).populate("reviews").populate("host").exec(function(err, foundApartment){
 		if(err){
 			req.flash("error", err.message);
 			res.redirect("back");
 		}else{
-			res.render("apartments/show", {apartment: foundapartment});
+			res.render("apartments/show", {apartment: foundApartment});
 		}
+	});
+});
+
+router.get("/:id/edit", function(req,res){
+	apartment.findById(req.params.id).populate("host").exec(function(err, foundApartment){
+		if(err){
+			req.flash("error", err.message);
+			res.redirect("back");
+		}else{
+			res.render("apartments/edit", {apartment: foundApartment});
+		}
+	});
+});
+
+router.put("/:id",  upload.array("images", 10), function(req,res){
+	apartment.findById(req.params.id).populate("host").populate("reservations").populate("reviews")
+		.exec(async function(err, foundApartment){
+
+		req.body.apartment["images"] = foundApartment.images.concat([]);
+
+		var	i=0;
+		// For each uploaded image
+		for(const file of req.files){
+			var image = await cloudinary.v2.uploader.upload(file.path);
+			// The firstly uploaded image should be the apartment's main image
+			if(i == 0 && req.body.main_image){
+				req.body.apartment["main_image"] = {
+					url: image.secure_url,
+					public_id: image.public_id
+				};
+			}else{
+				req.body.apartment.images.push({
+					url: image.secure_url,
+					public_id: image.public_id
+				});
+			}
+	
+			i += 1;
+		}
+
+		// Get apartment object from new.ejs
+		req.body.apartment["place"] = Object.assign({}, req.body.place);
+		req.body.apartment["renting_rules"] = Object.assign({}, req.body.renting_rules);
+		req.body.apartment["facilities"] = Object.assign({}, req.body.facilities);
+		req.body.apartment["location"] = Object.assign({}, req.body.location);
+		req.body.apartment["host"] = Object.assign({}, req.user._doc);
+		req.body.apartment["reservations"] = foundApartment.reservations.concat([]);
+		req.body.apartment["reviews"] = foundApartment.reviews.concat([]);
+
+		// Use default values if needed
+		var	tempApartment = new apartment({});
+		if(!req.body.apartment.place.living_room){
+			req.body.apartment.place.living_room = tempApartment.place.living_room;
+		}
+		if(!req.body.apartment.renting_rules.smoking){
+			req.body.apartment.renting_rules.smoking = tempApartment.renting_rules.smoking;
+		}
+		if(!req.body.apartment.renting_rules.pets){
+			req.body.apartment.renting_rules.pets = tempApartment.renting_rules.pets;
+		}
+		if(!req.body.apartment.renting_rules.events){
+			req.body.apartment.renting_rules.eventse = tempApartment.renting_rules.events;
+		}
+		if(!req.body.apartment.facilities.wifi){
+			req.body.apartment.facilities.wifi = tempApartment.facilities.wifi;
+		}
+		if(!req.body.apartment.facilities.air_conditioning){
+			req.body.apartment.facilities.air_conditioning = tempApartment.facilities.air_conditioning;
+		}
+		if(!req.body.apartment.facilities.heating){
+			req.body.apartment.facilities.heating = tempApartment.facilities.heating;
+		}
+		if(!req.body.apartment.facilities.kitchen){
+			req.body.apartment.facilities.kitchen = tempApartment.facilities.kitchen;
+		}
+		if(!req.body.apartment.facilities.tv){
+			req.body.apartment.facilities.tv = tempApartment.facilities.tv;
+		}
+		if(!req.body.apartment.facilities.parking){
+			req.body.apartment.facilities.parking = tempApartment.facilities.parking;
+		}
+		if(!req.body.apartment.facilities.elevator){
+			req.body.apartment.facilities.elevator = tempApartment.facilities.elevator;
+		}
+
+		// Find current user in db
+		User.findById(req.user._id, function(err, user){
+			if(err){
+				req.flash("error", err.message);
+				res.redirect("/users/" + user._id + "/host");
+			}else if(!user){
+				req.flash("error", "User not found");
+				res.redirect("back");
+			}else{
+				// Update apartment in db
+				apartment.findByIdAndUpdate(foundApartment._id, req.body.apartment, function(err, apartment){
+					if(err){
+						req.flash("error", err.message);
+						res.redirect("/users/" + user._id + "/host");
+					}else{
+						apartment.save();
+						var i=0;
+						for(var place in user.apartments){
+							if(place._id == apartment._id){
+								user.apartments[i] = Object.assign({}, apartment);
+							}
+							i += 1;
+						}
+						user.save();
+						req.flash("success", "Updated " + apartment.name + " successfully!");
+						res.redirect("/apartments/" + apartment._id);
+					}
+				});
+			}
+		});
 	});
 });
 
