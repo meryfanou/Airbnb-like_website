@@ -3,6 +3,7 @@ var express    = require("express"),
 	multer	   = require("multer"),
 	cloudinary = require("cloudinary"),
 	passport   = require("passport"),
+	util	   = require("util"),
 	User 	   = require("../models/user");
 
 // MULTER CONFIGURATION
@@ -49,7 +50,8 @@ router.post("/register", upload.single("image"), function(req, res){
 	if(req.file){
 		cloudinary.uploader.upload(req.file.path, function(result){
 			// We want to store the image's secure_url (https://)
-			req.body.user.picture = result.secure_url;
+			req.body.user.picture.url = result.secure_url;
+			req.body.user.picture.public_id = result.public_id;
 
 			req.body.user.username = req.body.username;
 			req.body.user["messages"] = [];
@@ -138,27 +140,92 @@ router.get("/logout", function(req, res){
 	res.redirect("/");
 });
 
-//profile edit route 
+//profile edit route
+router.get("/:id/edit", function(req, res){
+	User.findById(req.params.user_id, function(err, foundUser){
+		if(err){
+			req.flash("error", err.message);
+			res.redirect("back");
+		}else{
+			res.render("users/edit", {user_id: req.params.id});
+		}
+	});
+});
 
+router.put("/:id", upload.single("image"), function(req,res){
+	User.findById(req.params.id, async function(err, foundUser){
+		if(err){
+			req.flash("error", err.message);
+			return res.redirect("/");
+		}
 
+		// If the user uploaded a new profile picture
+		if(req.file){
+			try{
+				// If the user has uploaded a picture before, delete it before uploading the new one
+				if(foundUser.picture.public_id != "Default"){
+					await cloudinary.v2.uploader.destroy(foundUser.picture.public_id);
+				}
 
-// router.get("/:user_id/edit", middleware.checkCommentOwnership, function(req, res){
-// 	User.findById(req.params.user_id, function(err, foundUser){
-// 		if(err){
-// 			req.flash("error", err.message);
-// 			res.redirect("back");
-// 		}else{
-// 			res.render("users/edit", {user_id: req.params.id, comment: User});
-// 		}
-// 	});
-// });
-	
-	
-	
-	
-		   
-		  
-		   
+				// New profile picture will be in 'result'
+				var result = await cloudinary.v2.uploader.upload(req.file.path);
+				// We want to store the image's secure_url (https://) and public id
+				req.body.user["picture"] = {
+					url: result.secure_url,
+					public_id: result.public_id
+				};
+			}catch(err){
+				req.flash("error", err.message);
+				return res.redirect("back");
+			}
+		}
 
+		if(req.body.deleteImage){
+			try{
+				// Remove picture from cloudinary
+				await cloudinary.v2.uploader.destroy(foundUser.picture.public_id);
+
+				// Add default profile picture to the user
+				var tempUser = new User({});
+				req.body.user["picture"] = Object.assign({},tempUser.picture);
+			}catch(err){
+				req.flash("error", err.message);
+				return res.redirect("back");
+			}
+		}
+
+		newUsername = false;
+		// If the user entered a new username, he/she will have to login again
+		if(foundUser.username != req.body.username){
+			newUsername = true;
+		}
+
+		// If the user entered a new password, reset it
+		if(foundUser.password != req.body.password){
+			await foundUser.setPassword(req.body.password);
+			await foundUser.save();
+			const login = util.promisify(req.login.bind(req));
+			await login(foundUser);
+		}
+
+		req.body.user.username = req.body.username;
+		req.body.user.password = req.body.password;
+
+		User.findByIdAndUpdate(req.params.id, req.body.user, function(err, updatedUser){
+			if(err){
+				req.flash("error", err.message);
+				return res.redirect("/");
+			}
+
+			if(newUsername){
+				req.flash("success","Profile updated succesfully! Please login again.");
+				return res.redirect("/login");
+			}
+
+			req.flash("success","Profile updated succesfully!");
+			res.redirect("/users/" + updatedUser._id + "/host");
+		});
+	});
+});
 
 module.exports = router;

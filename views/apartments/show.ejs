@@ -1,12 +1,5 @@
 <%- include("../partials/header") %>
 
-<h1>
-	Show page working!
-</h1>
-
-<%= console.log(apartment.place.bedrooms)%>
-
-
 <div class="container">
 	<div class="row">
 		<div class="col-md-12">
@@ -18,86 +11,179 @@
 					<p>	<%= apartment.description %>	</p>
 					<p>
 						<em> Submitted By <%= apartment.host.username %> </em>
+						<% if(currentUser && apartment.host._id.equals(currentUser._id)){ %>
+						<a class="btn btn-xs btn-warning" href="/apartments/<%= apartment._id %>/edit"
+					   		style="position: relative; left: 915px;">
+							Edit
+						</a>
+						<a class="btn btn-xs btn-danger" style="position: relative; left: 920px;"
+						   href="/apartments/<%= apartment._id %>?_method=DELETE" method="POST">
+							Delete
+						</a>
+						<% } %>
 					</p>
 				</div>
-				
 			</div>
 	
 			<h2 class="text-center">
-				Informations about the place and the facilities: 
+				Information about the place and the facilities: 
 			</h2>
 			
 			<div class="thumbnail">
 				
 				<div align="center" class="alert alert-danger" role="alert">
-  					<strong style="font-size:25px">Appartment's General Info</strong>
-				</div>
-				
-				
+  					<strong style="font-size:25px">General Info</strong>
+				</div>				
+
 				<h4 align="center"><li> <strong> Bedrooms: <%= apartment.place.bedrooms %> </strong><i class="fa fa-bed" aria-hidden="true"></i> </li></h4> 
 				<h4 align="center"><li> <strong> Beds: <%= apartment.place.beds %> </strong><i class="glyphicon glyphicon-bed"></i></li></h4> 
 				<h4 align="center"><li> <strong> Bathrooms: <%= apartment.place.bathrooms %> </strong><i class="fa fa-bath" aria-hidden="true"></i></li></h4> 
 				<h4 align="center"><li> <strong> Room Type: <%= apartment.place.room_type %> </strong><i class="fa fa-home" aria-hidden="true"></i></li></h4> 
 
-				<h4 align="center"><li> <strong> Living Room: <%= apartment.place.living_room %> </strong><i class="fa fa-television" aria-hidden="true"></i></li></h4> 
-	
-				<h4 align="center"><li> <strong> Area: <%= apartment.place.area %> </strong><i class="fa fa-area-chart" aria-hidden="true"></i>
-</li></h4> 
-				
-				<h4 align="center"><li> <strong> Smoking: <%= apartment.renting_rules.smoking %></strong>
-					
-					<% if(apartment.renting_rules.smoking == "True" ){ %>
-						
-						<i class='fa fa-smoking'></i>
-						
-					<% } else { %>
-							
-						<i class='fas fa-smoking-ban'></i>
-					
-					<% } %>
-					
-					</li></h4> 			
-					
-			
-				<h4 align="center"><li> <strong> Pets: <%= apartment.renting_rules.pets %> </strong><i class='fa fa-dog'></i> </li></h4> 
-			
-				<h4 align="center"><li> <strong> Events: <%= apartment.renting_rules.events %> </strong><i class='fas fa-running'></i></li></h4> 
+				<h4 align="center">
+					<li> <strong> Living Room: 
+						<% if(apartment.place.living_room == "False"){ %>
+							No
+						<% }else{ %>
+							Yes
+						<% } %>
+						</strong>
+						<i class="fa fa-television" aria-hidden="true"></i>
+					</li> 
 
-				<h4 align="center"><li> <strong> Minimum Rent Days: <%= apartment.renting_rules.rent_days_min %> </strong><i class='far fa-calendar'></i>
-</li></h4> 
-				
+					<li> <strong> Area: <%= apartment.place.area %> </strong>
+						<i class="fa fa-area-chart" aria-hidden="true"></i>
+					</li>
+
+					<% if(apartment.renting_rules.smoking == "False" ){ %>
+						<li> <strong> Smoking: No </strong>
+						<i class='fa fa-smoking-ban'></i>
+					<% } else { %>
+						<li> <strong> Smoking: Yes </strong>
+						<i class='fas fa-smoking'></i>
+					<% } %>
+					</li> 			
+
+					<li> <strong> Pets: 
+						<% if(apartment.renting_rules.pets == "False"){ %>
+							No
+						<% }else{ %>
+							Yes
+						<% } %>
+						</strong>
+						<i class='fa fa-dog'></i>
+					</li>
+
+					<li> <strong> Events: 
+						<% if(apartment.renting_rules.events == "False"){ %>
+							No
+						<% }else{ %>
+							Yes
+						<% } %>
+						</strong>
+						<i class='fas fa-running'></i>
+					</li> 
+
+					<li> <strong> Minimum Rent Days: 
+						<% if(apartment.renting_rules.rent_days_min == "False"){ %>
+							No
+						<% }else{ %>
+							Yes
+						<% } %>
+						</strong>
+						<i class='far fa-calendar'></i>
+					</li>
+				</h4>
+
 				<div align="center" class="alert alert-info" role="alert">
   				<strong style="font-size:25px">Facilities</strong>
 				</div>
+
+				<h4 align="center">
+					<li> <strong> WiFi: 
+						<% if(apartment.facilities.wifi == "False"){ %>
+							No
+						<% }else{ %>
+							Yes
+						<% } %>
+						</strong>
+						<i class="fas fa-wifi"></i>
+					</li>
+
+					<li> <strong> Air Conditioning: 
+						<% if(apartment.facilities.air_conditioning == "False"){ %>
+							No
+						<%  }else{ %>
+							Yes
+						<% } %>
+						</strong>
+						<i class='far fa-snowflake'></i>
+					</li>
+					<li> <strong> Heating: 
+						<% if(apartment.facilities.heating == "False"){ %>
+							No
+						<% }else{ %>
+							Yes
+						<% } %>
+						</strong>
+						<i class='fas fa-temperature-high'></i>
+					</li>
+
+					<li> <strong> Kitchen: 
+						<% if(apartment.facilities.kitchen == "False"){ %>
+							No
+						<% }else{ %>
+							Yes
+						<% } %>
+						</strong>
+						<i class='fas fa-utensils'></i>
+					</li>
 				
-				<h4 align="center"><li> <strong> WiFi: <%= apartment.facilities.wifi %> </strong><i class="fas fa-wifi"></i></li></h4> 
-				
-				<h4 align="center"><li> <strong> Air Conditioning: <%= apartment.facilities.air_conditioning %> </strong><i class='far fa-snowflake'></i>
-</li></h4> 
-				<h4 align="center"><li> <strong> Heating: <%= apartment.facilities.heating %> </strong><i class='fas fa-temperature-high'></i></li></h4>
-				
-				<h4 align="center"><li> <strong> Kitchen: <%= apartment.facilities.kitchen %> </strong><i class='fas fa-utensils'></i></li></h4> 
-				
-				
-				<h4 align="center"><li> <strong> TV: <%= apartment.facilities.tv %> </strong><i class='fas fa-tv'></i></li></h4>
-				
-				<h4 align="center"><li> <strong> Parking: <%= apartment.facilities.parking %> </strong><i class="fa fa-car" aria-hidden="true"></i>
-</li></h4> 
-				
-				<h4 align="center"><li> <strong> Elevator: <%= apartment.facilities.elevator %> </strong><i class='fas fa-tablet'></i></li></h4> 
+					<li> <strong> TV: 
+						<% if(apartment.facilities.tv == "False"){ %>
+							No
+						<% }else{ %>
+							Yes
+						<% } %>
+						</strong>
+						<i class='fas fa-tv'></i>
+					</li>
+
+					<li> <strong> Parking: 
+						<% if(apartment.facilities.parking == "False"){ %>
+							No
+						<% }else{ %>
+							Yes
+						<% } %>
+						</strong>
+						<i class="fa fa-car" aria-hidden="true"></i>
+					</li>
+
+					<li> <strong> Elevator: 
+						<% if(apartment.facilities.elevator == "False"){ %>
+							No
+						<% }else{ %>
+							Yes
+						<% } %>
+						</strong>
+						<i class='fas fa-tablet'></i>
+					</li>
+				</h4>
 
 				<div align="center" class="alert alert-success" role="alert">
   					<strong style="font-size:25px">Location of the Appartment</strong>
 				</div>
-				
 
 				<h4 align="center"><li> <strong> Address: <%= apartment.location.address %> </strong><i class='fas fa-tablet'></i></li></h4> 
 				<h4 align="center"><li> <strong> Neighbourhood: <%= apartment.location.neighbourhood %> </strong><i class='fas fa-tablet'></i></li></h4> 
 				<h4 align="center"><li> <strong> Transportation: <%= apartment.location.transportation %> </strong><i class='fas fa-tablet'></i></li></h4> 
-		
+
+				  <div id="map"></div>
+
 			</div>
 		</div>
 	</div>
 </div>
+
 
 <%- include("../partials/footer") %>

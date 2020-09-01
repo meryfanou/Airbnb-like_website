@@ -4,26 +4,30 @@
 	<div class="row">
 		<h1 style="text-align: center;"> Edit <%= user.username %>'s Profile </h1><br>
 		<div style="width: 30%; margin: 25px auto;">
-			<form action="/users/<%= user._id %>?_method=PUT" method="POST" enctype="multipart/form-data">
+			<form action="/<%= user._id %>?_method=PUT" method="POST" enctype="multipart/form-data">
 
 				<label for="image">Profile Image:</label>
 				<div class="form-group">
 					<div class="thumbnail">
-						<img src= "<%=user.picture %>" /><br>
-						<div style="display: inline;">
-							<input type="file" id="image" name="image" accept="image/*">
-							<label for="deleteImage">Remove</label>
-							<input type="checkbox" name="deleteImage[]" id="deleteImage">
-						</div>
+						<img src= "<%= user.picture.url %>" /><br>
+
+						<input type="file" id="image" name="image" accept="image/*">
+
+						<% if(user.picture.public_id != "Default"){ %>
+							<label for="deleteImage"
+								   style="position: relative; left: 250px; top: -26px;">Remove</label>
+							<input type="checkbox" name="deleteImage" id="deleteImage"
+								   style="position: relative; left: 255px; top: -23px;">
+						<% } %>
 					</div>
 				</div>
-					
+
 				<div class="form-group">
-					<input class="form-control" type="text" name="user[username]"
+					<input class="form-control" type="text" name="username"
 						   value="<%= user.username %>">
 				</div>
 				<div class="form-group">
-					<input class="form-control" type="password" name="user[password]"
+					<input class="form-control" type="password" name="password"
 						   value="<%= user.password %>">
 				</div>
 				
@@ -45,11 +49,6 @@
 					<input class="form-control" type="text" name="user[phone_number]"
 						   value="<%= user.phone_number %>">
 				</div>
-
-				<!-- <div class="form-group">
-					<label for="image">Profile Image:</label>
-					<input type="file" id="image" name="image" accept="image/*"><br><br>
-				</div> -->
 			
 				<div class="form-group">
 					<button class="btn btn-lg btn-primary btn-block">Submit</button>
