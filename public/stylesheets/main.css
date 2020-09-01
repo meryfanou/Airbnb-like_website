@@ -7,8 +7,13 @@
 	margin-right: auto;
 }
 
-/* Google Maps */
-#map {
-    height: 400px;
-    width: 100%;
+#mapid { 
+	
+	height: 45em; 
 }
+
+/* body { 
+	margin:0; 
+	padding:0; 
+} */
+
