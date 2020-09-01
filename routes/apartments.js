@@ -105,10 +105,11 @@ router.post("/", upload.array("images", 30), async(req,res) => {
 		req.body.apartment.facilities.elevator = tempApartment.facilities.elevator;
 	}
 
-	geocoder.geocode(req.body.location.adress, function (err, data) {
+	geocoder.geocode(req.body.apartment.location.address, function (err, data) {
     	if (err || !data.length) {
       		req.flash('error', 'Invalid address');
       		return res.redirect('back');
+			console.log(err);
     	}
     
 		req.body.apartment.location["lat"] = data[0].latitude;
@@ -141,6 +142,8 @@ router.post("/", upload.array("images", 30), async(req,res) => {
 					user.save();
 					req.flash("success", "Added a new place successfully!");
 					res.redirect("/users/" + user._id + "/host");
+					// res.redirect("/");
+
 				}
 			});
 		}
