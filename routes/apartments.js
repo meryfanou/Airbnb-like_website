@@ -1,19 +1,19 @@
-const express	 = require("express"),
-	  router	 = express.Router(),
-	  multer	 = require("multer"),
-	  cloudinary = require("cloudinary"),
-	  User		 = require("../models/user"),
-	  apartment = require("../models/apartment");
-// 	  NodeGeocoder = require('node-geocoder');
+const express	 	= require("express"),
+	  router	 	= express.Router(),
+	  multer	 	= require("multer"),
+	  cloudinary 	= require("cloudinary"),
+	  User		 	= require("../models/user"),
+	  apartment 	= require("../models/apartment"),
+	  NodeGeocoder 	= require("node-geocoder");
 
-// var options = {
-//   provider: 'google',
-//   httpAdapter: 'https',
-//   apiKey: process.env.GEOCODER_API_KEY,
-//   formatter: null
-// };
- 
-// var geocoder = NodeGeocoder(options);
+var options = {
+  provider: 'opencage',
+  httpAdapter: 'https',
+  apiKey: "6b35a781fad343ddac3172ddaf206b45",
+  formatter:null
+};
+
+var geocoder = NodeGeocoder(options);
 
 
 // MULTER CONFIGURATION
@@ -104,30 +104,58 @@ router.post("/", upload.array("images", 30), async(req,res) => {
 		req.body.apartment.facilities.elevator = tempApartment.facilities.elevator;
 	}
 
-	// Find current user in db
-	User.findById(req.user._id, function(err, user){
-		if(err){
-			req.flash("error", err.message);
-			res.redirect("/users/" + user._id + "/host");
-		}else if(!user){
-			req.flash("error", "User not found");
-			res.redirect("back");
-		}else{
-			// Create apartment in db
-			apartment.create(req.body.apartment, function(err, apartment){
-				if(err){
-					req.flash("error", err.message);
-					res.redirect("/users/" + user._id + "/host");
-				}else{
-					apartment.save();
-					user.apartments.push(apartment);
-					user.save();
-					req.flash("success", "Added a new place successfully!");
-					res.redirect("/users/" + user._id + "/host");
-				}
-			});
-		}
+	var latitude;
+	var longitude;
+	
+	geocoder.geocode(req.body.apartment.location.address, function(err, data){
+    	if(err || !data.length){
+			req.flash('error', 'Invalid address');
+    		return res.redirect('back');
+     	} 
+      	//parse the object campground
+
+		console.log(data[0]);
+		console.log(data[0].latitude);
+		console.log(data[0].longitude);
+		console.log(data[0].formattedAddress);
+		console.log(req.body.apartment.location.address);
+		
+    	req.body.apartment.location.lat 		=    	data[0].latitude;
+    	req.body.apartment.location.lng  		=     	data[0].longitude;
+    	// req.body.apartment.location.address 	= 		data[0].formattedAddress;
+		
+	// });
+	
+	
+		// Find current user in db
+		User.findById(req.user._id, function(err, user){
+			if(err){
+				req.flash("error", err.message);
+				res.redirect("/users/" + user._id + "/host");
+			}else if(!user){
+				req.flash("error", "User not found");
+				res.redirect("back");
+			}else{
+				// Create apartment in db
+				apartment.create(req.body.apartment, function(err, apartment){
+					if(err){
+						req.flash("error", err.message);
+						res.redirect("/users/" + user._id + "/host");
+					}else{
+						apartment.save();
+						user.apartments.push(apartment);
+						user.save();
+						console.log("meta to save");
+						console.log(apartment);
+						req.flash("success", "Added a new place successfully!");
+						res.redirect("/users/" + user._id + "/host");
+					}
+				});
+			}
+		});
+
 	});
+
 });
 
 // SHOW Route - show more info about one specific appartement
@@ -137,6 +165,9 @@ router.get("/:id",function(req,res){
 			req.flash("error", err.message);
 			res.redirect("back");
 		}else{
+			
+			console.log("stoshow");
+			console.log(foundApartment);
 			res.render("apartments/show", {apartment: foundApartment});
 		}
 	});

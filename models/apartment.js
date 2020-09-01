@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 
 var apartmentSchema = mongoose.Schema({
+	
 	name: String,
 	place: {
 		bedrooms: Number,

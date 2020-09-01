@@ -178,8 +178,9 @@
 				<h4 align="center"><li> <strong> Neighbourhood: <%= apartment.location.neighbourhood %> </strong><i class='fas fa-tablet'></i></li></h4> 
 				<h4 align="center"><li> <strong> Transportation: <%= apartment.location.transportation %> </strong><i class='fas fa-tablet'></i></li></h4> 
 
-				  <div id="map"></div>
-
+				<!-- <div id="map"></div>
+				 -->
+				
 				<div id="mapid"></div>
 
 				
@@ -188,10 +189,48 @@
 	</div>
 </div>
 
+	<%console.log("testest") %>
+	<% console.log(apartment.location) %>
+
+
 <script>
 	
+
+	// //Display Map
+	// var mymap = L.map('mapid').setView([lat, lng],13);
+	// L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+	// attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap & OpenCage</a> contributors, <a 							  href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+	// 	maxZoom: 18,
+	// 	id: 'mapbox.streets',
+	// 	accessToken: 'pk.eyJ1IjoiZGZ3dGVpbm9zIiwiYSI6ImNrZWg1a2czYTA3Y3gzMG82NGlsdm5mZHUifQ.wSDWJpIrkAPwk5zeLoE93Q'
+	// }).addTo(mymap);
 	
-// 	var mymap = L.map('mapid').setView([51.505, -0.09], 13);
+	
+	// var marker = L.marker([lat, lng]).addTo(mymap);
+	
+	var lat = <%= apartment.location.lat %>;
+	var lng = <%= apartment.location.lng %>;
+	
+	<% console.log("latitude is:", apartment.latitude ) %> ; 
+	<% console.log(apartment.name) %>
+	<% console.log(apartment.location) %>
+	<% console.log(apartment.location.lat); %>
+	<% console.log(apartment.location.lng); %>
+					 
+	var mymap = L.map('mapid').setView([lat, lng], 15);
+	
+	L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+    maxZoom: 18,
+    id: 'mapbox/streets-v11',
+    tileSize: 512,
+    zoomOffset: -1,
+    accessToken: 'pk.eyJ1IjoiZGZ3dGVpbm9zIiwiYSI6ImNrZWg1a2czYTA3Y3gzMG82NGlsdm5mZHUifQ.wSDWJpIrkAPwk5zeLoE93Q'
+}).addTo(mymap);
+	
+	var marker = L.marker([lat, lng]).addTo(mymap);
+	marker.bindPopup("<b> <%= apartment.name %> </b><br><%= apartment.location.address %>.").openPopup();
+
 	
 // 	L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
 //     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -213,26 +252,27 @@
 
 // 	mymap.on('click', onMapClick);
 	
-	var map = L.map('mapid').setView([37.97, 23.73], 10);
+	// var map = L.map('mapid').setView([37.97, 23.73], 10);
 
-	L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-		attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
-	}).addTo(map);
+	// L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+	// 	attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
+	// }).addTo(map);
 
-	var searchControl = L.esri.Geocoding.geosearch().addTo(map);
+	// var searchControl = L.esri.Geocoding.geosearch().addTo(map);
 
-	var results = L.layerGroup().addTo(map);
+	// var results = L.layerGroup().addTo(map);
 
-	<% console.log("gay1"); %>
+	// searchControl.on('results', function (data) {
+
+	// 	console.log(data);
+		
+	// 	results.clearLayers();
+	// 	for (var i = data.results.length - 1; i >= 0; i--) {
+	// 		results.addLayer(L.marker(data.results[i].latlng));
+	// 	}
+	//  });
 	
-	searchControl.on('results', function (data) {
-		results.clearLayers();
-		for (var i = data.results.length - 1; i >= 0; i--) {
-			results.addLayer(L.marker(data.results[i].latlng));
-		}
-	 });
-	
-	<% console.log("gay2"); %>
+	// console.log("gay1");
 	
 	// map.on('click', onMapClick);
 
