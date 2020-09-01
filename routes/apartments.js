@@ -190,24 +190,44 @@ router.put("/:id",  upload.array("images", 10), function(req,res){
 
 		req.body.apartment["images"] = foundApartment.images.concat([]);
 
-		var	i=0;
-		// For each uploaded image
-		for(const file of req.files){
-			var image = await cloudinary.v2.uploader.upload(file.path);
-			// The firstly uploaded image should be the apartment's main image
-			if(i == 0 && req.body.main_image){
-				req.body.apartment["main_image"] = {
-					url: image.secure_url,
-					public_id: image.public_id
-				};
-			}else{
-				req.body.apartment.images.push({
-					url: image.secure_url,
-					public_id: image.public_id
-				});
+		// Remove selected images, if there is any
+		if(req.body.deleteImages && req.body.deleteImages.length){
+			// For each image selected to be removed
+			for(const public_id of req.body.deleteImages){
+				// Destroy access to the image on cloudinary
+				await cloudinary.v2.uploader.destroy(public_id);
+				// Remove it from apartment's images
+				console.log(req.body.apartment.images);
+				for(const image of req.body.apartment.images){
+					if(image.public_id == public_id){
+						var index = req.body.apartment.images.indexOf(image);
+						req.body.apartment.images.slice(index, 1);
+					}
+				}
+				console.log(req.body.apartment.images);
 			}
-	
-			i += 1;
+		}
+
+		if(req.files){
+			var	i=0;
+			// For each uploaded image
+			for(const file of req.files){
+				var image = await cloudinary.v2.uploader.upload(file.path);
+				// The firstly uploaded image should be the apartment's main image
+				if(i == 0 && req.body.main_image){
+					req.body.apartment["main_image"] = {
+						url: image.secure_url,
+						public_id: image.public_id
+					};
+				}else{
+					req.body.apartment.images.push({
+						url: image.secure_url,
+						public_id: image.public_id
+					});
+				}
+
+				i += 1;
+			}
 		}
 
 		// Get apartment object from new.ejs

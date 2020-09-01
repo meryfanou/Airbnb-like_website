@@ -2,18 +2,18 @@
 
 <div class="container">
 	<div class="row">
-		<h1 style="text-align: center;"> Edit <%= user.username %>'s Profile </h1><br>
+		<h1 style="text-align: center;"> Edit <%= currentUser.username %>'s Profile </h1><br>
 		<div style="width: 30%; margin: 25px auto;">
-			<form action="/<%= user._id %>?_method=PUT" method="POST" enctype="multipart/form-data">
+			<form action="/<%= currentUser._id %>?_method=PUT" method="POST" enctype="multipart/form-data">
 
 				<label for="image">Profile Image:</label>
 				<div class="form-group">
 					<div class="thumbnail">
-						<img src= "<%= user.picture.url %>" /><br>
+						<img src= "<%= currentUser.picture.url %>" /><br>
 
 						<input type="file" id="image" name="image" accept="image/*">
 
-						<% if(user.picture.public_id != "Default"){ %>
+						<% if(currentUser.picture.public_id != "Default"){ %>
 							<label for="deleteImage"
 								   style="position: relative; left: 250px; top: -26px;">Remove</label>
 							<input type="checkbox" name="deleteImage" id="deleteImage"
@@ -23,33 +23,45 @@
 				</div>
 
 				<div class="form-group">
-					<input class="form-control" type="text" name="username"
-						   value="<%= user.username %>">
+					<label for="username">Username:</label>
+					<input class="form-control" type="text" name="username" id="username"
+						   value="<%= currentUser.username %>">
 				</div>
 				<div class="form-group">
-					<input class="form-control" type="password" name="password"
-						   value="<%= user.password %>">
+					<label for="password">Password:</label>
+					<input class="form-control" type="password" name="password" id="password"
+						   value="<%= currentUser.password %>">
 				</div>
-				
+
 				<div class="form-group">
-					<input class="form-control" type="text" name="user[firstname]"
-						   value="<%= user.firstname %>">
+					<label for="confirm_password">Confirm Password:</label>
+					<input class="form-control" type="password" name="confirm_password"
+						   id="confirm_password" value="<%= currentUser.password %>">
+				</div>
+
+				<div class="form-group">
+					<label for="firstname">Firstname:</label>
+					<input class="form-control" type="text" name="user[firstname]" id="firstname"
+						   value="<%= currentUser.firstname %>">
 				</div>
 				<div class="form-group">
-					<input class="form-control" type="text" name="user[lastname]"
-						   value="<%= user.lastname %>">
+					<label for="lastname">Lastname:</label>
+					<input class="form-control" type="text" name="user[lastname]" id="lastname"
+						   value="<%= currentUser.lastname %>">
 				</div>
-				
+
 				<div class="form-group">
-					<input class="form-control" type="text" name="user[email]"
-						   value="<%= user.email %>">
+					<label for="email">Email:</label>
+					<input class="form-control" type="text" name="user[email]" id="email"
+						   value="<%= currentUser.email %>">
 				</div>
-				
+
 				<div class="form-group">
-					<input class="form-control" type="text" name="user[phone_number]"
-						   value="<%= user.phone_number %>">
+					<label for="phone_number">Phine Number:</label>
+					<input class="form-control" type="text" name="user[phone_number]" id="phone_number"
+						   value="<%= currentUser.phone_number %>">
 				</div>
-			
+
 				<div class="form-group">
 					<button class="btn btn-lg btn-primary btn-block">Submit</button>
 				</div>

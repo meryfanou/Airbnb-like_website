@@ -3,9 +3,9 @@
 <div class="container">
 	<div class="row">
 		<h1 style="text-align: center;"> Edit <%= apartment.name %> </h1><br>
-		<div style="width: 30%; margin: 25px auto;">
-			<form action="/<%= apartment._id %>?_method=PUT" method="POST" enctype="multipart/form-data">
-
+		<form action="/apartments/<%= apartment._id %>?_method=PUT" method="POST"
+			  enctype="multipart/form-data">
+			<div class="col-lg-12">
 				<label for="image">Main Image:</label>
 				<div class="form-group">
 					<div class="thumbnail">
@@ -14,7 +14,11 @@
 						<input type="file" id="image" name="main_image" accept="images/*">
 					</div>
 				</div>
+			</div>
 
+			<div class="col-lg-8" style="float: left; width: 20%;">
+			</div>
+			<div class="col-lg-8" style="float: left; width: 60%;">
 				<div class="form-group">
 					<label for="name">Name:</label>
 					<input class="form-control" type="text" name="apartment[name]" id="name"
@@ -45,7 +49,7 @@
 						   style="position: relative; left: 10px"
 						   <% if(apartment.place.room_type == "Private Room"){ %>
 								checked
-						   <% } %>/>
+							<% } %>/>
 				</div>
 
 				<div class="form-group">
@@ -54,7 +58,7 @@
 						   style="position: relative; left: 10px" 
 						   <% if(apartment.place.room_type == "Shared Room"){ %>
 								checked
-						   <% } %>/>
+					   		<% } %>/>
 				</div>
 
 				<div class="form-group">
@@ -72,7 +76,7 @@
 						   style="position: relative; left: 13px"
 						   <% if(apartment.place.living_room == "True"){ %>
 								checked
-						   <% } %>/>
+							<% } %>/>
 				</div>
 
 				<div class="form-group">
@@ -83,8 +87,8 @@
 
 				<div class="form-group">
 					<label for="description">Description:</label>
-					<input class="form-control" type="text" name="apartment[description]" id="description"
-						   value="<%= apartment.description %>"/>
+					<input class="form-control" type="text" name="apartment[description]"
+						   id="description" value="<%= apartment.description %>"/>
 				</div>
 
 				<div class="form-group">
@@ -116,8 +120,9 @@
 
 				<div class="form-group">
 					<label for="rent_days_min">Minimum renting days:</label>
-					<input class="form-control" type="number" name="renting_rules[rent_days_min]" min="1"
-						 step="1" id="rent_days_min" value="<%= apartment.renting_rules.rent_days_min %>"/>
+					<input class="form-control" type="number" name="renting_rules[rent_days_min]"
+						   min="1" step="1" id="rent_days_min"
+						   value="<%= apartment.renting_rules.rent_days_min %>"/>
 				</div>
 
 				<div class="form-group">
@@ -139,12 +144,21 @@
 				</div>
 
 				<div class="form-group">
+					<label for="heating">Heating</label>
+					<input type="checkbox" name="facilities[heating]" id="heating"
+						   value="True" style="position: relative; left: 45px"
+						   <% if(apartment.facilities.heating == "True"){ %>
+								checked
+						   <% } %>>
+				</div>
+
+				<div class="form-group">
 					<label for="kitchen">Kitchen</label>
 					<input type="checkbox" name="facilities[kitchen]" id="kitchen" value="True"
-						   style="position: relative; left: 44px"
-						   <% if(apartment.facilities.kitchen == "True"){ %>
-								checked
-						   <% } %>/>
+					   style="position: relative; left: 44px"
+						<% if(apartment.facilities.kitchen == "True"){ %>
+							checked
+						<% } %>/>
 				</div>
 
 				<div class="form-group">
@@ -153,7 +167,7 @@
 						   style="position: relative; left: 75px"
 						   <% if(apartment.facilities.tv == "True"){ %>
 								checked
-						   <% } %>/>
+							<% } %>/>
 				</div>
 
 				<div class="form-group">
@@ -162,7 +176,7 @@
 						   style="position: relative; left: 43px"
 						   <% if(apartment.facilities.parking == "True"){ %>
 								checked
-						   <% } %>/>
+							<% } %>/>
 				</div>
 
 				<div class="form-group">
@@ -193,13 +207,6 @@
 				</div>
 
 				<div class="form-group">
-					<label for="images">More photos:</label>
-					<input type="file" name="apartment[images]" accept="images/*" multiple>
-					<p>To select multiple files, hold down the CTRL or SHIFT key while selecting.</p>
-<!-- ALSO SHOW EXISTING PHOTOS + REMOVE BUTTON FOR EACH ONE! -->
-				</div>
-
-				<div class="form-group">
 					<label for="price_min">Minimum price per night:</label>
 					<input class="form-control" type="number" name="apartment[price_min]" min="0.01"
 						   step="0.01" id="price_min" value="<%= apartment.price_min %>">
@@ -223,19 +230,115 @@
 					<input class="form-control" type="date" name="apartment[availability_to]"
 						   id="avail_to" value="<%= apartment.availability_to %>">
 				</div>
-
-				<div>
+				<div class="form-group">
 					<label for="capacity">Maximum number of guests:</label>
-					<input class="form-control" type="number" name="apartment[capacity]" min="1" step="1"
-						   id="capacity" value="<%= apartment.capacity %>"><br>
+					<input class="form-control" type="number" name="apartment[capacity]" min="1"
+						   step="1" id="capacity" value="<%= apartment.capacity %>"><br>
 				</div>
 
+				<!-- <div class="form-group">
+					<label for="images">More photos:</label>
+					<input type="file" name="apartment[images]" accept="images/*" multiple>
+					<p>To select multiple files, hold down the CTRL or SHIFT key while selecting.</p>
+				</div> -->
+			</div>
+
+			<div class="col-lg-12" style="width: 90%;">
+				<!-- Container for the image gallery -->
+				<div class="container">
+					<label>Photos:</label>
+					<div class="thumbnail">
+						<div class="row"
+							style="background-color: rgba(0,0,0,0.7); margin-left: auto; margin-right: auto;">
+							<div class="col-lg-8">
+							<!-- Full-width images with number text -->
+								<%	var i = 1;
+									for(var image of apartment.images){ %>
+									<div class="mySlides">
+									    <div class="numbertext">
+											<%= i %> / <%= apartment.images.length %>
+										</div>
+										<img src="<%= image.url %>"
+											 style="width:100%; height:500px;object-fit:cover;">
+										<!-- Next and previous buttons -->
+										<a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+										<a class="next" onclick="plusSlides(1)">&#10095;</a>
+
+										<!-- Remove checkbox -->
+										<label for="image<%= i %>"
+											   style="position: absolute; left: 1045px; font-size:110%;
+													  color: red;">
+											Remove
+										</label>
+										<input type="checkbox" name="deleteImages[]" id="image<%= i %>"
+											   style="position: absolute; left: 1110px;"
+											   value="<%= image.public_id %>">
+									</div>
+									<% i += 1;
+									} %>
+							</div>
+							<!-- Thumbnail images -->
+							<%	var i = 1;
+								for(var image of apartment.images){ %>
+								<div class="column">
+									<img class="demo" src="<%= image.url %>"
+										 style="width:100%; height:100%;"
+										 onclick="currentSlide(<%= i %>)">	
+								</div>
+							<%	i += 1;
+							} %>
+						</div><br>
+
+						<script>
+							var slideIndex = 1;
+							showSlides(slideIndex);
+
+							function plusSlides(n) {
+							  showSlides(slideIndex += n);
+							}
+
+							function currentSlide(n) {
+							  showSlides(slideIndex = n);
+							}
+
+							function showSlides(n) {
+							  var i;
+							  var slides = document.getElementsByClassName("mySlides");
+							  var dots = document.getElementsByClassName("demo");
+							  var captionText = document.getElementById("caption");
+							  if (n > slides.length) {slideIndex = 1}
+							  if (n < 1) {slideIndex = slides.length}
+							  for (i = 0; i < slides.length; i++) {
+								  slides[i].style.display = "none";
+							  }
+							  for (i = 0; i < dots.length; i++) {
+								  dots[i].className = dots[i].className.replace(" active", "");
+							  }
+							   slides[slideIndex-1].style.display = "block";
+							   dots[slideIndex-1].className += " active";
+							   captionText.innerHTML = dots[slideIndex-1].alt;
+							}
+						</script>
+
+						<div class="form-group">
+							<label for="images">Add more photos:</label>
+							<input type="file" name="apartment[images]" accept="images/*" multiple>
+							<p>
+								To select multiple files, hold down the CTRL or SHIFT key while selecting.
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-4" style="float: left; width: 37%">
+			</div>
+			<div class="col-lg-4" style="float: left; width: 25%">
 				<div class="form-group">
 					<button class="btn btn-lg btn-primary btn-block">Submit</button>
 				</div>
-			</form>
-			<a href="/apartments/<%= apartment._id %>">Go Back</a>
-		</div>
+			</div>
+		</form>
 	</div>
 </div>
 
