@@ -201,7 +201,16 @@ router.put("/:id", upload.single("image"), function(req,res){
 		}
 
 		// If the user entered a new password, reset it
-		if(foundUser.password != req.body.password){
+		if(foundUser.password != req.body.password || foundUser.password != req.body.confirm_password ){
+			if(!req.body.confirm_password){
+				req.flash("error", "Please confirm your password first.");
+				return res.redirect("/" + req.user._id + "/edit");
+			}
+			if(req.body.password != req.body.confirm_password){
+				req.flash("error", "Password and confirmation password should match. Please try again.");
+				return res.redirect("/" + req.user._id + "/edit");
+			}
+
 			await foundUser.setPassword(req.body.password);
 			await foundUser.save();
 			const login = util.promisify(req.login.bind(req));

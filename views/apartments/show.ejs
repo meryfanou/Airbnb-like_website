@@ -12,11 +12,11 @@
 					<p>
 						<em> Submitted By <%= apartment.host.username %> </em>
 						<% if(currentUser && apartment.host._id.equals(currentUser._id)){ %>
-						<a class="btn btn-xs btn-warning" href="/apartments/<%= apartment._id %>/edit"
-					   		style="position: relative; left: 915px;">
+						<a class="btn btn-sm btn-warning" href="/apartments/<%= apartment._id %>/edit"
+					   		style="position: absolute; left: 1040px;">
 							Edit
 						</a>
-						<a class="btn btn-xs btn-danger" style="position: relative; left: 920px;"
+						<a class="btn btn-sm btn-danger" style="position: absolute; left: 1090px;"
 						   href="/apartments/<%= apartment._id %>?_method=DELETE" method="POST">
 							Delete
 						</a>
@@ -222,8 +222,6 @@
 	var searchControl = L.esri.Geocoding.geosearch().addTo(map);
 
 	var results = L.layerGroup().addTo(map);
-
-	<% console.log("gay1"); %>
 	
 	searchControl.on('results', function (data) {
 		results.clearLayers();
@@ -231,12 +229,78 @@
 			results.addLayer(L.marker(data.results[i].latlng));
 		}
 	 });
-	
-	<% console.log("gay2"); %>
+
 	
 	// map.on('click', onMapClick);
 
 	
 </script>
+
+ <!-- Container for the image gallery -->
+<div class="container">
+	<label>More photos</label>
+	<div class="thumbnail">
+		<div class="row" style="background-color: rgba(0,0,0,0.7); margin-left: auto;
+								margin-right: auto;">
+			<div class="col-lg-8">
+			<!-- Full-width images with number text -->
+			<%	var i = 1;
+				for(var image of apartment.images){ %>
+					<div class="mySlides">
+					    <div class="numbertext"> <%= i %> / <%= apartment.images.length %></div>
+							<img src="<%= image.url %>" style="width:100%; height:500px;object-fit:cover;">
+
+						<!-- Next and previous buttons -->
+						<a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+						<a class="next" onclick="plusSlides(1)">&#10095;</a>
+					</div>
+				<% i += 1;
+				} %>
+			</div>
+
+			<!-- Thumbnail images -->
+			<%	var i = 1;
+				for(var image of apartment.images){ %>
+					<div class="column">
+						<img class="demo" src="<%= image.url %>"
+							 style="width:100%; height:100%;" onclick="currentSlide(<%= i %>)">
+					</div>
+				<%	i += 1;
+			} %>
+		</div>
+	</div>
+</div> 
+
+<script>
+var slideIndex = 1;
+showSlides(slideIndex);
+
+function plusSlides(n) {
+  showSlides(slideIndex += n);
+}
+
+function currentSlide(n) {
+  showSlides(slideIndex = n);
+}
+
+function showSlides(n) {
+  var i;
+  var slides = document.getElementsByClassName("mySlides");
+  var dots = document.getElementsByClassName("demo");
+  var captionText = document.getElementById("caption");
+  if (n > slides.length) {slideIndex = 1}
+  if (n < 1) {slideIndex = slides.length}
+  for (i = 0; i < slides.length; i++) {
+      slides[i].style.display = "none";
+  }
+  for (i = 0; i < dots.length; i++) {
+      dots[i].className = dots[i].className.replace(" active", "");
+  }
+   slides[slideIndex-1].style.display = "block";
+   dots[slideIndex-1].className += " active";
+   captionText.innerHTML = dots[slideIndex-1].alt;
+}
+</script>
+
 
 <%- include("../partials/footer") %>
