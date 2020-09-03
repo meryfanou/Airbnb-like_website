@@ -1,5 +1,9 @@
 <%- include("../partials/header") %>
 
+<p style="position: relative; left:1%; top:10%; font-size:115%;">
+	<a href="/users/<%= currentUser._id %>/host">Host Page</a>
+</p>
+
 <div class="container">
 	<div class="row">
 		<h1 style="text-align: center;"> Edit <%= currentUser.username %>'s Profile </h1><br>
@@ -66,7 +70,6 @@
 					<button class="btn btn-lg btn-primary btn-block">Submit</button>
 				</div>
 			</form>
-			<a href="/">Go Back</a>
 		</div>
 	</div>
 </div>

@@ -1,5 +1,9 @@
 <%- include("../partials/header") %>
 
+<p style="position: relative; left:1%; top:10%; font-size:115%;">
+	<a href="/users/<%= currentUser._id %>/host">Host Page</a>
+</p>
+
 <div class="container">
 	<div class="row">
 		<h1 style="text-align: center;"> Edit <%= apartment.name %> </h1><br>
@@ -11,7 +15,24 @@
 					<div class="thumbnail">
 						<img src= "<%= apartment.main_image.url %>" /><br>
 
-						<input type="file" id="image" name="main_image" accept="images/*">
+						<label for="new_main_image">Load new image</label>
+						<input type="checkbox" id="new_main_image" onclick="browseButton()"
+							   name="new_main_image">
+						<input type="file" id="image" name="images" accept="image/*"
+							   style="display: none;">
+
+						<script>
+							function browseButton(){
+								var	checkbox = document.getElementById("new_main_image");
+								var button = document.getElementById("image");
+
+								if(checkbox.checked == true){
+									button.style.display = "block";
+								}else{
+									button.style.display = "none";
+								}
+							}
+						</script>
 					</div>
 				</div>
 			</div>
@@ -77,6 +98,12 @@
 						   <% if(apartment.place.living_room == "True"){ %>
 								checked
 							<% } %>/>
+				</div>
+
+				<div class="form-group">
+					<label for="floor">Floor Number:</label>
+					<input class="form-control" type="text" name="place[floor]" id="floor"
+						   value="<%= apartment.place.floor %>"/>
 				</div>
 
 				<div class="form-group">
@@ -235,19 +262,16 @@
 					<input class="form-control" type="number" name="apartment[capacity]" min="1"
 						   step="1" id="capacity" value="<%= apartment.capacity %>"><br>
 				</div>
-
-				<!-- <div class="form-group">
-					<label for="images">More photos:</label>
-					<input type="file" name="apartment[images]" accept="images/*" multiple>
-					<p>To select multiple files, hold down the CTRL or SHIFT key while selecting.</p>
-				</div> -->
 			</div>
 
 			<div class="col-lg-12" style="width: 90%;">
 				<!-- Container for the image gallery -->
 				<div class="container">
+					<% if(apartment.images.length > 0){ %>
 					<label>Photos:</label>
+					<% } %>
 					<div class="thumbnail">
+						<% if(apartment.images.length > 0){ %>
 						<div class="row"
 							style="background-color: rgba(0,0,0,0.7); margin-left: auto; margin-right: auto;">
 							<div class="col-lg-8">
@@ -319,10 +343,10 @@
 							   captionText.innerHTML = dots[slideIndex-1].alt;
 							}
 						</script>
-
+						<% } %>
 						<div class="form-group">
 							<label for="images">Add more photos:</label>
-							<input type="file" name="apartment[images]" accept="images/*" multiple>
+							<input type="file" name="images" accept="image/*" multiple>
 							<p>
 								To select multiple files, hold down the CTRL or SHIFT key while selecting.
 							</p>

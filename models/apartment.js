@@ -9,6 +9,7 @@ var apartmentSchema = mongoose.Schema({
 		bathrooms: Number,
 		room_type: String,				// private room, shared room, apartment
 		living_room: { type: String, default: 'False'},
+		floor: String,
 		area: Number
 	},
 	description: String,
@@ -47,8 +48,8 @@ var apartmentSchema = mongoose.Schema({
 	],
 	price_min: Number,
 	extra_charge_per_guest: Number,
-	availability_from: String,			// dates availble to rent
-	availability_to: String,			// dates availble to rent
+	availability_from: Date,			// dates availble to rent
+	availability_to: Date,			// dates availble to rent
 	capacity: Number,					// maximum number of persons
 	host: {
 		type: mongoose.Schema.Types.ObjectId,

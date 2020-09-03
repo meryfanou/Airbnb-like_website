@@ -59,7 +59,22 @@ router.post("/", upload.array("images", 30), async(req,res) => {
 		i += 1;
 	}
 
-	// Get apartment object from new.ejs
+	// Check if the renting dates are valid
+	var today = new Date();
+	var dd = String(today.getDate()).padStart(2, '0');
+	var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+	var yyyy = today.getFullYear();
+
+	today = yyyy + '-' + mm + '-' + dd;
+
+	if(req.body.apartment.availability_from.valueOf() < today.valueOf() ||
+	   req.body.apartment.availability_to.valueOf() < today.valueOf() ||
+	   req.body.apartment.availability_from.valueOf() > req.body.apartment.availability_to.valueOf()){
+		req.flash("error", "Availability dates should be valid. Please try again.");
+		return res.redirect("/apartments/new");
+	}
+
+	// Get apartment objects from new.ejs
 	req.body.apartment["place"] = Object.assign({}, req.body.place);
 	req.body.apartment["renting_rules"] = Object.assign({}, req.body.renting_rules);
 	req.body.apartment["facilities"] = Object.assign({}, req.body.facilities);
@@ -114,11 +129,11 @@ router.post("/", upload.array("images", 30), async(req,res) => {
      	} 
       	//parse the object campground
 
-		console.log(data[0]);
-		console.log(data[0].latitude);
-		console.log(data[0].longitude);
-		console.log(data[0].formattedAddress);
-		console.log(req.body.apartment.location.address);
+		// console.log(data[0]);
+		// console.log(data[0].latitude);
+		// console.log(data[0].longitude);
+		// console.log(data[0].formattedAddress);
+		// console.log(req.body.apartment.location.address);
 		
     	req.body.apartment.location.lat 		=    	data[0].latitude;
     	req.body.apartment.location.lng  		=     	data[0].longitude;
@@ -145,9 +160,7 @@ router.post("/", upload.array("images", 30), async(req,res) => {
 						apartment.save();
 						user.apartments.push(apartment);
 						user.save();
-						console.log("meta to save");
-						console.log(apartment);
-						req.flash("success", "Added a new place successfully!");
+						req.flash("success", "Added " + apartment.name + " successfully!");
 						res.redirect("/users/" + user._id + "/host");
 					}
 				});
@@ -165,9 +178,6 @@ router.get("/:id",function(req,res){
 			req.flash("error", err.message);
 			res.redirect("back");
 		}else{
-			
-			console.log("stoshow");
-			console.log(foundApartment);
 			res.render("apartments/show", {apartment: foundApartment});
 		}
 	});
@@ -197,14 +207,15 @@ router.put("/:id",  upload.array("images", 10), function(req,res){
 				// Destroy access to the image on cloudinary
 				await cloudinary.v2.uploader.destroy(public_id);
 				// Remove it from apartment's images
-				console.log(req.body.apartment.images);
 				for(const image of req.body.apartment.images){
 					if(image.public_id == public_id){
 						var index = req.body.apartment.images.indexOf(image);
-						req.body.apartment.images.slice(index, 1);
+						var part1 = req.body.apartment.images.slice(0, index);
+						var part2 = req.body.apartment.images.slice(index+1,
+																	req.body.apartment.images.length+1);
+						req.body.apartment.images = part1.concat(part2);
 					}
 				}
-				console.log(req.body.apartment.images);
 			}
 		}
 
@@ -214,7 +225,7 @@ router.put("/:id",  upload.array("images", 10), function(req,res){
 			for(const file of req.files){
 				var image = await cloudinary.v2.uploader.upload(file.path);
 				// The firstly uploaded image should be the apartment's main image
-				if(i == 0 && req.body.main_image){
+				if(i == 0 && req.body.new_main_image){
 					req.body.apartment["main_image"] = {
 						url: image.secure_url,
 						public_id: image.public_id
@@ -307,5 +318,39 @@ router.put("/:id",  upload.array("images", 10), function(req,res){
 		});
 	});
 });
+
+router.delete("/:id", function(req,res){
+	// Find current user in db
+	User.findById(req.user._id, function(err, user){
+		if(err){
+			req.flash("error", err.message);
+			return res.redirect("/users/" + user._id + "/host");
+		}else if(!user){
+			req.flash("error", "User not found");
+			return res.redirect("back");
+		}else{
+			for(const apartment of user.apartments){
+				if(apartment._id == req.params.id){
+					var index = user.apartments.indexOf(apartment);
+					var part1 = user.apartments.slice(0, index);
+					var part2 = user.apartments.slice(index+1,user.apartments.length+1);
+					user.apartments = part1.concat(part2);
+				}
+			}
+			user.save();
+		}
+	});
+
+	apartment.findByIdAndRemove(req.params.id, function(err){
+		if(err){
+			req.flash("error", err.message);
+			res.redirect("/apartments/" + req.params.id);
+		}else{
+			req.flash("success", "Place deleted successfully!");
+			res.redirect("/users/" + req.user._id + "/host");
+		}
+	});
+});
+
 
 module.exports = router;

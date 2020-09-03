@@ -1,10 +1,16 @@
 <%- include("../partials/header") %>
 
+<p style="position: relative; left:1%; top:10%; font-size:115%;">
+	<a href="/users/<%= currentUser._id %>/host">Host Page</a>
+</p>
+
 <div class="container">
 	<div class="row">
-		<h1 style="text-align: center;">Create New Place</h1>
-		<div style="width: 30%; margin: 25px auto;">
-			<form action="/apartments/" method="POST" enctype="multipart/form-data">
+		<h1 style="text-align: center;">Create New Place</h1><br>
+		<form action="/apartments/" method="POST" enctype="multipart/form-data">
+			<div class="col-lg-8" style="float: left; width: 20%;">
+			</div>
+			<div class="col-lg-8" style="float: left; width: 60%;">
 				<div class="form-group">
 					<input class="form-control" type="text" placeholder="Name" name="apartment[name]"
 						   required><br>
@@ -14,10 +20,12 @@
 					<input class="form-control" type="number" placeholder="Number of bedrooms"
 						   name="place[bedrooms]" min="0" step="1" required><br>
 				</div>
+
 				<div class="form-group">
 					<input class="form-control" type="number" placeholder="Number of beds"
 						   name="place[beds]" min="0" step="1" required><br>
 				</div>
+
 				<div class="form-group">
 					<input class="form-control" type="number" placeholder="Number of bathrooms"
 						   name="place[bathrooms]" min="0" step="1" required><br>
@@ -45,6 +53,11 @@
 					<label for="linving_room">Living Room</label>
 					<input type="checkbox" value="True" id="linving_room" name="place[linving_room]"
 						   style="position: relative; left: 13px">
+				</div>
+
+				<div class="form-group">
+					<input class="form-control" type="text" placeholder="Floor number"
+						   name="place[floor]" required><br>
 				</div>
 
 				<div class="form-group">
@@ -148,12 +161,12 @@
 
 				<div>
 					<label for="main_image">Select main photo:</label>
-					<input type="file" id="main_image" name="images" accept="images/*" required /><br>
+					<input type="file" id="main_image" name="images" accept="image/*" required /><br>
 				</div>
 
 				<div>
 					<label for="images">More photos:</label>
-					<input type="file" id="images" name="images" accept="images/*" multiple />
+					<input type="file" id="images" name="images" accept="image/*" multiple />
 					<p>To select multiple files, hold down the CTRL or SHIFT key while selecting.</p><br>
 				</div>
 
@@ -180,13 +193,16 @@
 					<input class="form-control" type="number" placeholder="Maximum number of guests"
 						   name="apartment[capacity]" min="1" step="1" required><br>
 				</div>
+			</div>
 
+			<div class="col-lg-4" style="float: left; width: 37%">
+			</div>
+			<div class="col-lg-4" style="float: left; width: 25%">
 				<div class="form-group">
 					<button class="btn btn-lg btn-primary btn-block">Submit</button>
 				</div>
-			</form>
-			<a href="/users/<%= currentUser._id %>/host">Go Back</a>
-		</div>
+			</div>
+		</form>
 	</div>
 </div>
 
