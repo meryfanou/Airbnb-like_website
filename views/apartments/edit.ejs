@@ -13,7 +13,8 @@
 				<label for="image">Main Image:</label>
 				<div class="form-group">
 					<div class="thumbnail">
-						<img src= "<%= apartment.main_image.url %>" /><br>
+						<img src= "<%= apartment.main_image.url %>"
+							 style="object-fit:cover; width:auto; height:450px;"/><br>
 
 						<label for="new_main_image">Load new image</label>
 						<input type="checkbox" id="new_main_image" onclick="browseButton()"
@@ -306,7 +307,7 @@
 								for(var image of apartment.images){ %>
 								<div class="column">
 									<img class="demo" src="<%= image.url %>"
-										 style="width:100%; height:100%;"
+										 style="width:186px; height:123px;"
 										 onclick="currentSlide(<%= i %>)">	
 								</div>
 							<%	i += 1;

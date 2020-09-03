@@ -8,7 +8,8 @@
 	<div class="row">
 		<div class="col-md-12">
 			<div class="thumbnail">
-				<img class="img-responsive" src="<%= apartment.main_image.url %>">
+				<img class="img-responsive" src="<%= apartment.main_image.url %>"
+					 style="object-fit:cover; width:auto; height:450px;">
 				<div class="caption-full">
 					<!-- <h4 class="pull-right"> $<%= apartment.price_min %>/night </h4> -->
 					<em style="font-size:160%;"> <a> <%= apartment.name %> </a> </em>
@@ -46,7 +47,9 @@
 					<!-- <em style="font-size:110%;">
 						Submitted By <%= apartment.host.username %>
 					</em><br><br><br> -->
-					<h4 style="padding:5px;"> $<%= apartment.price_min %>/night </h4>
+					<h4 style="padding:5px;"><i class="fas fa-euro-sign"></i>
+						<%= apartment.price_min %>/night
+					</h4>
 				</div>
 			</div>
 
@@ -82,16 +85,22 @@
 						</strong>
 						<!-- <i class="fa fa-television" aria-hidden="true"></i> -->
 						<i class="fas fa-couch" aria-hidden="true"></i>
-					</li> 
+					</li>
+				</h4>
 
+				<h4 align="center">
 					<li> <strong> Floor Number: <%= apartment.place.floor %> </strong>
 						<i class="fas fa-building" aria-hidden="true"></i>
 					</li>
+				</h4>
 
+				<h4 align="center">
 					<li> <strong> Area: <%= apartment.place.area %> </strong>
 						<i class="fa fa-area-chart" aria-hidden="true"></i>
 					</li>
+				</h4>
 
+				<h4 align="center">
 					<% if(apartment.renting_rules.smoking == "False" ){ %>
 						<li> <strong> Smoking: No </strong>
 						<i class='fa fa-smoking-ban'></i>
@@ -99,8 +108,10 @@
 						<li> <strong> Smoking: Yes </strong>
 						<i class='fas fa-smoking'></i>
 					<% } %>
-					</li> 			
+					</li>
+				</h4>
 
+				<h4 align="center">
 					<li> <strong> Pets: 
 						<% if(apartment.renting_rules.pets == "False"){ %>
 							No
@@ -110,7 +121,9 @@
 						</strong>
 						<i class='fa fa-dog'></i>
 					</li>
+				</h4>
 
+				<h4 align="center">
 					<li> <strong> Events: 
 						<% if(apartment.renting_rules.events == "False"){ %>
 							No
@@ -120,11 +133,34 @@
 						</strong>
 						<!-- <i class='fas fa-running'></i> -->
 						<i class="fas fa-glass-martini-alt" aria-hidden="true"></i>
-					</li> 
+					</li>
+				</h4>
 
-					<li> <strong> Minimum Rent Days: <%= apartment.renting_rules.rent_days_min %>
+				<h4 align="center">
+					<li> <strong> Availability: 
+						<%= apartment.availability_from %> - <%= apartment.availability_to %>
+						</strong><i class="far fa-calendar-alt"></i>
+					</li>
+				</h4>
+
+				<h4 align="center">
+					<li> <strong> Minimum Renting Days: <%= apartment.renting_rules.rent_days_min %>
 						</strong>
 						<i class="far fa-calendar-alt"></i>
+					</li>
+				</h4>
+
+				<h4 align="center">
+					<li> <strong> Maximum Number of Guests: <%= apartment.capacity %>
+						</strong>
+						<i class="fas fa-user-friends"></i>
+					</li>
+				</h4>
+
+				<h4 align="center">
+					<li> <strong> Extra Charge per Guest: <%= apartment.extra_charge_per_guest %>
+						</strong>
+						<i class="fas fa-euro-sign"></i>
 					</li>
 				</h4>
 
@@ -142,7 +178,9 @@
 						</strong>
 						<i class="fas fa-wifi"></i>
 					</li>
+				</h4>
 
+				<h4 align="center">
 					<li> <strong> Air Conditioning: 
 						<% if(apartment.facilities.air_conditioning == "False"){ %>
 							No
@@ -152,6 +190,9 @@
 						</strong>
 						<i class='far fa-snowflake'></i>
 					</li>
+				</h4>
+
+				<h4 align="center">
 					<li> <strong> Heating: 
 						<% if(apartment.facilities.heating == "False"){ %>
 							No
@@ -161,7 +202,9 @@
 						</strong>
 						<i class='fas fa-temperature-high'></i>
 					</li>
+				</h4>
 
+				<h4 align="center">
 					<li> <strong> Kitchen: 
 						<% if(apartment.facilities.kitchen == "False"){ %>
 							No
@@ -171,7 +214,9 @@
 						</strong>
 						<i class='fas fa-utensils'></i>
 					</li>
-				
+				</h4>
+
+				<h4 align="center">
 					<li> <strong> TV: 
 						<% if(apartment.facilities.tv == "False"){ %>
 							No
@@ -181,7 +226,9 @@
 						</strong>
 						<i class='fas fa-tv'></i>
 					</li>
+				</h4>
 
+				<h4 align="center">
 					<li> <strong> Parking: 
 						<% if(apartment.facilities.parking == "False"){ %>
 							No
@@ -191,7 +238,9 @@
 						</strong>
 						<i class="fa fa-car" aria-hidden="true"></i>
 					</li>
+				</h4>
 
+				<h4 align="center">
 					<li> <strong> Elevator: 
 						<% if(apartment.facilities.elevator == "False"){ %>
 							No
@@ -212,7 +261,7 @@
 				<h4 align="center"><li> <strong> Neighbourhood: <%= apartment.location.neighbourhood %> 
 					</strong><i class="fa fa-city"></i></li></h4> 
 				<h4 align="center"><li> <strong> Transportation: <%= apartment.location.transportation %> 
-					</strong><i class="fas fa-bus"></i></li></h4> 
+					</strong><i class="fas fa-bus"></i></li></h4><br>
 
 				<!-- <div id="map"></div>
 				 -->
@@ -345,7 +394,8 @@
 				for(var image of apartment.images){ %>
 					<div class="column">
 						<img class="demo" src="<%= image.url %>"
-							 style="width:100%; height:100%;" onclick="currentSlide(<%= i %>)">
+							 style="object-fit:cover; max-width:186; height:123px; width:auto;"
+							 onclick="currentSlide(<%= i %>)">
 					</div>
 				<%	i += 1;
 			} %>

@@ -64,7 +64,6 @@ router.post("/", upload.array("images", 30), async(req,res) => {
 	var dd = String(today.getDate()).padStart(2, '0');
 	var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
 	var yyyy = today.getFullYear();
-
 	today = yyyy + '-' + mm + '-' + dd;
 
 	if(req.body.apartment.availability_from.valueOf() < today.valueOf() ||
@@ -238,6 +237,28 @@ router.put("/:id",  upload.array("images", 10), function(req,res){
 				}
 
 				i += 1;
+			}
+		}
+
+		// If any of the availability dates has changed
+		if((req.body.apartment.availability_from && 
+		   foundApartment.availability_from.valueOf() != req.body.apartment.availability_from.valueOf()) || 
+		   (req.body.apartment.availability_to &&
+		   foundApartment.availability_to.valueOf() != req.body.apartment.availability_to.valueOf())){
+
+			// Check if the renting dates are valid
+			var today = new Date();
+			var dd = String(today.getDate()).padStart(2, '0');
+			var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+			var yyyy = today.getFullYear();
+			today = yyyy + '-' + mm + '-' + dd;
+
+			if(req.body.apartment.availability_from.valueOf() < today.valueOf() ||
+			   req.body.apartment.availability_to.valueOf() < today.valueOf() ||
+			   req.body.apartment.availability_from.valueOf() > 	
+			   req.body.apartment.availability_to.valueOf()){
+					req.flash("error", "Availability dates should be valid. Please try again.");
+					return res.redirect("/apartments/" + foundApartment._id + "/edit");
 			}
 		}
 

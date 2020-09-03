@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 
 var apartmentSchema = mongoose.Schema({
-	
 	name: String,
 	place: {
 		bedrooms: Number,
@@ -48,8 +47,8 @@ var apartmentSchema = mongoose.Schema({
 	],
 	price_min: Number,
 	extra_charge_per_guest: Number,
-	availability_from: Date,			// dates availble to rent
-	availability_to: Date,			// dates availble to rent
+	availability_from: String,			// dates availble to rent
+	availability_to: String,			// dates availble to rent
 	capacity: Number,					// maximum number of persons
 	host: {
 		type: mongoose.Schema.Types.ObjectId,
