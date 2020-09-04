@@ -16,8 +16,9 @@ const express		 = require("express"),
 
 var userRoutes		 = require("./routes/users"),
 	messageRoutes	 = require("./routes/messages"),
-	apartmentRoutes = require("./routes/apartments"),
-	indexRoutes		 = require("./routes/index");
+	apartmentRoutes  = require("./routes/apartments"),
+	indexRoutes		 = require("./routes/index"),
+	searchRoutes	 = require("./routes/search");
 
 var port = process.env.PORT || 3000,
 	db_url = process.env.DATABASEURL || "mongodb://localhost/airbnb";
@@ -65,7 +66,7 @@ app.use("/users", userRoutes);
 app.use("/users/:id/messages", messageRoutes);
 app.use("/apartments", apartmentRoutes);
 app.use("/", indexRoutes);
-
+app.use("/search", searchRoutes);
 
 
 https.createServer({

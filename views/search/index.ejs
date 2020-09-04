@@ -1,0 +1,30 @@
+<%- include("../partials/header") %>
+
+<div class="container">
+	<div class="row text-center" style="display: flex; flex-wrap: wrap;">
+		<% apartments.forEach(function(apartment){ %>
+			<div class="col-md-3 col-sm-6">
+				<div class="thumbnail">
+					<a href="/search/<%= apartment._id %>">
+						<img src="<%= apartment.main_image.url %>"
+							 style="object-fit:cover; width:250px; height:250px">
+					</a>
+					<div class="caption">
+						<strong>
+							<button name="<%= num_days %>" id="button-like-link"
+									onclick="location.href='/search/<%= apartment._id %>';">
+								<%= apartment.name %>
+							</button>
+							
+							<!-- <a href="/search/<%= apartment._id %>"
+								style="font-size:170%; font-family:URW Chancery L, cursive; color:firebrick">
+							<%= apartment.name %></a> -->
+						</strong>
+					</div>
+				</div>
+			</div>
+		<% }) %>
+	</div>
+</div>
+
+<%- include("../partials/footer") %>

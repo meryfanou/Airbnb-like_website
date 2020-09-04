@@ -1,10 +1,12 @@
 const express	 	= require("express"),
 	  router	 	= express.Router(),
 	  multer	 	= require("multer"),
+	  middleware	= require("../middleware"),
 	  cloudinary 	= require("cloudinary"),
 	  User		 	= require("../models/user"),
 	  apartment 	= require("../models/apartment"),
 	  NodeGeocoder 	= require("node-geocoder");
+
 
 var options = {
   provider: 'opencage',
@@ -30,13 +32,13 @@ cloudinary.config({
 
 
 // New Route for a host's apartment
-router.get("/new", function(req,res){
+router.get("/new", middleware.isLoggedIn, function(req,res){
 	res.render("apartments/new");
 });
 
 
 // Create Route for a host's apartment
-router.post("/", upload.array("images", 30), async(req,res) => {
+router.post("/", middleware.isLoggedIn, upload.array("images", 30), async(req,res) => {
 	req.body.apartment["images"] = [];
 
 	var	i=0;
@@ -118,6 +120,13 @@ router.post("/", upload.array("images", 30), async(req,res) => {
 		req.body.apartment.facilities.elevator = tempApartment.facilities.elevator;
 	}
 
+	for([key, value] of Object.entries(req.body)){
+		if(typeof value == 'string' && value == 'reverse_geocoding'){
+			req.body.apartment.location.address = key;
+			break;
+		}
+	}
+
 	var latitude;
 	var longitude;
 	
@@ -171,7 +180,7 @@ router.post("/", upload.array("images", 30), async(req,res) => {
 });
 
 // SHOW Route - show more info about one specific appartement
-router.get("/:id",function(req,res){
+router.get("/:id", middleware.checkApartmentOwnership, function(req,res){
 	apartment.findById(req.params.id).populate("reviews").populate("host").exec(function(err, foundApartment){
 		if(err){
 			req.flash("error", err.message);
@@ -182,7 +191,7 @@ router.get("/:id",function(req,res){
 	});
 });
 
-router.get("/:id/edit", function(req,res){
+router.get("/:id/edit", middleware.checkApartmentOwnership, function(req,res){
 	apartment.findById(req.params.id).populate("host").exec(function(err, foundApartment){
 		if(err){
 			req.flash("error", err.message);
@@ -193,7 +202,7 @@ router.get("/:id/edit", function(req,res){
 	});
 });
 
-router.put("/:id",  upload.array("images", 10), function(req,res){
+router.put("/:id",  middleware.checkApartmentOwnership, upload.array("images", 10), function(req,res){
 	apartment.findById(req.params.id).populate("host").populate("reservations").populate("reviews")
 		.exec(async function(err, foundApartment){
 
@@ -218,6 +227,7 @@ router.put("/:id",  upload.array("images", 10), function(req,res){
 			}
 		}
 
+		// If one or more images were uploaded
 		if(req.files){
 			var	i=0;
 			// For each uploaded image
@@ -340,7 +350,7 @@ router.put("/:id",  upload.array("images", 10), function(req,res){
 	});
 });
 
-router.delete("/:id", function(req,res){
+router.delete("/:id", middleware.checkApartmentOwnership, function(req,res){
 	// Find current user in db
 	User.findById(req.user._id, function(err, user){
 		if(err){

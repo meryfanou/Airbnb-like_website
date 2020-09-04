@@ -46,6 +46,8 @@ router.get("/register", function(req, res){
 
 // Handle sing up logic
 router.post("/register", upload.single("image"), function(req, res){
+	req.body.user.picture = [];
+
 	// If user has uploaded a profile picture
 	if(req.file){
 		cloudinary.uploader.upload(req.file.path, function(result){
