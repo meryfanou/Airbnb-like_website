@@ -7,12 +7,21 @@
 				<img class="img-responsive" src="<%= apartment.main_image.url %>"
 					 style="object-fit:cover; width:auto; height:450px;">
 				<div class="caption-full">
-					<h4 class="pull-right" style="padding:5px;"><i class="fas fa-euro-sign"></i>
-						<%= apartment.price_min %>/night
+					<h4 class="pull-right" style="padding:5px; color:seagreen;">
+						<strong>
+						<%= 
+						(num_days)*(apartment.price_min) + (guests)*(apartment.extra_charge_per_guest)
+						%> &euro;
+						</strong>
 					</h4>
 					<em style="font-size:160%;"> <a> <%= apartment.name %> </a> </em><br>
+					<div class="pull-right" style="position:relative; left:50px;">
+						<em style="font-size:110%; color:seagreen;">
+							<%= num_days %> nights ~ <%= guests %> guests
+						</em>
+					</div>
 					<em style="font-size:110%;">
-						Submitted By <%= apartment.host.username %>
+						Submitted By <%= apartment.host.firstname %> <%= apartment.host.lastname %>
 					</em><br>
 				</div>
 			</div>
@@ -21,9 +30,11 @@
 				<div align="center" class="alert alert-warning" role="alert">
   					<strong style="font-size:25px">Description</strong>
 				</div>
-				<p style="font-size:135%; padding:10px;"><%= apartment.description %></p><br>
+				<p style="font-size:135%; padding:10px; text-align:center;">
+					<%= apartment.description %>
+				</p><br>
 
-				<div align="center" class="alert alert-danger" role="alert">
+				<div align="center" class="alert alert-success" role="alert">
   					<strong style="font-size:25px">General Info</strong>
 				</div>				
 
@@ -53,42 +64,6 @@
 				<h4 align="center">
 					<li> <strong> Area: <%= apartment.place.area %> </strong>
 						<i class="fa fa-area-chart" aria-hidden="true"></i>
-					</li>
-				</h4>
-
-				<h4 align="center">
-					<% if(apartment.renting_rules.smoking == "False" ){ %>
-						<li> <strong> Smoking: No </strong>
-						<i class='fa fa-smoking-ban'></i>
-					<% } else { %>
-						<li> <strong> Smoking: Yes </strong>
-						<i class='fas fa-smoking'></i>
-					<% } %>
-					</li>
-				</h4>
-
-				<h4 align="center">
-					<li> <strong> Pets: 
-						<% if(apartment.renting_rules.pets == "False"){ %>
-							No
-						<% }else{ %>
-							Yes
-						<% } %>
-						</strong>
-						<i class='fa fa-dog'></i>
-					</li>
-				</h4>
-
-				<h4 align="center">
-					<li> <strong> Events: 
-						<% if(apartment.renting_rules.events == "False"){ %>
-							No
-						<% }else{ %>
-							Yes
-						<% } %>
-						</strong>
-						<!-- <i class='fas fa-running'></i> -->
-						<i class="fas fa-glass-martini-alt" aria-hidden="true"></i>
 					</li>
 				</h4>
 
@@ -132,11 +107,49 @@
 				</h4>
 
 				<h4 align="center">
-					<li> <strong> Extra Charge per Guest: <%= apartment.extra_charge_per_guest %>
+					<li> <strong> Extra Charge per Guest: <%= apartment.extra_charge_per_guest %>&euro;
 						</strong>
-						<i class="fas fa-euro-sign"></i>
+					</li>
+				</h4><br>
+
+				<div align="center" class="alert alert-danger" role="alert">
+  					<strong style="font-size:25px">Renting Rules</strong>
+				</div>
+
+				<h4 align="center">
+					<% if(apartment.renting_rules.smoking == "False" ){ %>
+						<li> <strong> Smoking: No </strong>
+						<i class='fa fa-smoking-ban'></i>
+					<% } else { %>
+						<li> <strong> Smoking: Yes </strong>
+						<i class='fas fa-smoking'></i>
+					<% } %>
 					</li>
 				</h4>
+
+				<h4 align="center">
+					<li> <strong> Pets: 
+						<% if(apartment.renting_rules.pets == "False"){ %>
+							No
+						<% }else{ %>
+							Yes
+						<% } %>
+						</strong>
+						<i class='fa fa-dog'></i>
+					</li>
+				</h4>
+
+				<h4 align="center">
+					<li> <strong> Events: 
+						<% if(apartment.renting_rules.events == "False"){ %>
+							No
+						<% }else{ %>
+							Yes
+						<% } %>
+						</strong>
+						<i class="fas fa-glass-martini-alt" aria-hidden="true"></i>
+					</li>
+				</h4><br>
 
 				<div align="center" class="alert alert-info" role="alert">
   				<strong style="font-size:25px">Facilities</strong>
@@ -224,7 +237,7 @@
 						</strong>
 						<i class="fa fa-door-closed"></i>
 					</li>
-				</h4>
+				</h4><br>
 
 				<div align="center" class="alert alert-success" role="alert">
   					<strong style="font-size:25px">Location</strong>
@@ -331,8 +344,8 @@
 	 		<strong style="font-size:25px">Gallery</strong>
 	</div>
 
-	<div class="row" style="background-color: rgba(0,0,0,0.7); margin-left: auto;
-							margin-right: auto;">
+	<div class="row"
+		 style="background-color: rgba(0,0,0,0.7); margin-left: auto; margin-right: auto;">
 		<div class="col-lg-8">
 		<!-- Full-width images with number text -->
 		<%	var i = 1;
@@ -362,6 +375,10 @@
 	</div>
 <% } %>
 </div>
+
+			<!-- <div class="container">
+				<%= apartment.main_image %>
+			</div> -->
 		</div>
 	</div>
 </div>
@@ -395,6 +412,15 @@
 	   dots[slideIndex-1].className += " active";
 	   captionText.innerHTML = dots[slideIndex-1].alt;
 	}
+
+	// document.onkeydown = function(event){
+	// 	var keyCode = event.which || event.keyCode;
+	// 	if(keyCode == '37'){
+	// 		plusSlides(-1);
+	// 	}else if(keyCode == '39'){
+	// 		plusSlides(1);
+	// 	}
+	// }
 </script>
 
 

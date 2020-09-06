@@ -23,7 +23,7 @@
 
 				<div class="form-group">
 					<input class="form-control" type="number" placeholder="Number of beds"
-						   name="place[beds]" min="0" step="1" required><br>
+						   name="place[beds]" min="1" step="1" required><br>
 				</div>
 
 				<div class="form-group">
@@ -134,7 +134,7 @@
 						   style="position: relative; left: 40px">
 				</div>
 
-				<select id="maps" onchange="reverseGeocoding()">
+				<select id="maps" onclick="reverseGeocoding()">
 					<option value="geocoding">Give an address</option>
 					<option value="reverse_geocoding">Choose on map</option>
 				</select>

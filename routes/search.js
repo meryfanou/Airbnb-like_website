@@ -46,9 +46,28 @@ router.post("/", function(req, res){
 			var d1 = Date.parse(check_in),
 				d2 = Date.parse(check_out),
 				one_day = 1000*60*60*24,
-				diff = Math.round((d2-d1)/one_day);
+				diff = Math.round((d2-d1)/one_day) + 1;
 
-			res.render("search/index", {apartments: apartments, num_days: diff});
+			var	price,
+				values = [],
+				sorted = [];
+
+			apartments.forEach(function(apartment){
+				values.push([apartment._id, apartment.price_min]);
+			});
+
+			values.sort(function([a,b],[c,d]){return b-d});
+			values.forEach(function([id, price]){
+				for(var apartment of apartments){
+					if(apartment._id == id){
+						sorted.push(apartment);
+						break;
+					}
+				}
+			});
+
+			res.render("search/index", {apartments: sorted, num_days: diff, guests: guests,
+									    check_in: check_in, check_out: check_out});
 		}
 	});
 });
@@ -60,7 +79,9 @@ router.get("/:id", function(req,res){
 			req.flash("error", err.message);
 			res.redirect("back");
 		}else{
-			res.render("search/show", {apartment: foundApartment});
+			res.render("search/show", {apartment: foundApartment, num_days: req.query.num_days,
+									   guests: req.query.guests, check_in: req.query.check_in,
+									   check_out: req.query.check_outh});
 		}
 	});
 });

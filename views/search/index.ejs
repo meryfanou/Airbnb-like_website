@@ -5,21 +5,24 @@
 		<% apartments.forEach(function(apartment){ %>
 			<div class="col-md-3 col-sm-6">
 				<div class="thumbnail">
-					<a href="/search/<%= apartment._id %>">
+					<a href="/search/<%= apartment._id %>?num_days=<%=num_days%>&guests=<%=guests%>&check_in=<%=check_in%>&check_out=<%=check_out%>">
 						<img src="<%= apartment.main_image.url %>"
 							 style="object-fit:cover; width:250px; height:250px">
 					</a>
-					<div class="caption">
+					<div class="caption" style="padding:5px;">
 						<strong>
-							<button name="<%= num_days %>" id="button-like-link"
-									onclick="location.href='/search/<%= apartment._id %>';">
-								<%= apartment.name %>
-							</button>
-							
-							<!-- <a href="/search/<%= apartment._id %>"
-								style="font-size:170%; font-family:URW Chancery L, cursive; color:firebrick">
-							<%= apartment.name %></a> -->
-						</strong>
+							<a href="/search/<%=apartment._id%>?num_days=<%=num_days%>&guests=<%=guests%>&check_in=<%=check_in%>&check_out=<%=check_out%>"
+							style="font-size:170%; font-family:URW Chancery L, cursive; color:firebrick">
+								<%= apartment.name %></a>
+						</strong><br>
+						<h4 style="font-size:150%; font-family:URW Chancery L, cursive;">
+							rating (#reviews), &euro;<%= apartment.price_min %>/night
+							<% if(apartment.place.beds == 1){ %>
+								<%= apartment.place.room_type %>, <%= apartment.place.beds %> bed
+							<% }else{ %>
+								<%= apartment.place.room_type %>, <%= apartment.place.beds %> beds
+							<% } %>
+						</h4>
 					</div>
 				</div>
 			</div>

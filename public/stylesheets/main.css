@@ -107,18 +107,3 @@
 }
 
 /* ------------------------------ Slideshow for Apartment Images --------------------------------- */
-
-
-#button_like_link{
-	background: none!important;
-	border: none;
-	padding: 0!important;
-	cursor: pointer;
-	font-size:170%;
-	font-family: URW Chancery L, cursive;
-	color:firebrick;
-}
-
-#button_like_link:hover{
-	text-decoration: underline;
-}
