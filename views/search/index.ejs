@@ -81,19 +81,42 @@
 						style="transform:rotate(90deg); display:inline-block; position:relative; left:5px; top:2px; transition: 0.2s;">&nbsp;&#10095;</a>
 			</p>
 			<div id="price-range"
-				 style="display:none; width:30%; position:relative; left:270px; top:-50px;">
-				<br><div class="form-group" style="display:flex; color:#eeeeee;">
+				 style="display:none; width:400px; position:relative; left:200px; top:-35px;">
+				<div class="form-group" style="display:flex; color:#eeeeee;">
 					0.01&euro;&nbsp;&nbsp;
-					<input type="range" min="0.01" max="<%= max_price %>" step="0.01" name="max_price"
+					<br><input type="range" min="0.01" max="<%= max_price %>" step="0.01" name="max_price"
 						<% // If the user has set any filters
 						if(typeof filters != 'undefined'){ %>
 						   value="<%= filters.max_price %>"
 						<% }else{ %>
 						   value="<%= max_price %>"
-						<% } %>>
+						<% } %> id="rangeBar" oninput="outputUpdate(value)">
 					&nbsp;&nbsp;<%= max_price %>&euro;
+					<output for="rangeBar" id="bubble">
+						<% // If the user has set any filters
+						if(typeof filters != 'undefined'){ %>
+						   <%= filters.max_price %>
+						<% }else{ %>
+						   <%= max_price %>
+						<% } %>
+					</output>
 				</div><br>
 			</div><br>
+
+<script>
+function outputUpdate(value){
+	var output = document.querySelector("#bubble"),
+		rangeBar = document.getElementById("rangeBar");
+
+	var range = rangeBar.max - rangeBar.min;
+
+	var position = ((value-rangeBar.min) / range) * 150;
+	var positionOffset = Math.round(position);
+
+	output.value = value;
+	output.style.left = position + positionOffset - 350 + 'px';
+}
+</script>
 
 			<p><strong>Facilities</strong>
 					<a onclick="browseFacilities()"

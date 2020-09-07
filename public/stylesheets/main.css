@@ -171,4 +171,17 @@
   font-size: 60px;
 }
 
-/* ----------------------------------------------------------------------------------------------- */
+/* --------------------------------- Add Input Range Value Bubble ---------------------------------- */
+
+output {
+  position: relative;
+  left: -110px;
+  top: -27px;
+  width: 50px;
+  height: 24px;
+  padding: 2px;
+  border: 1px solid #e2e2e2;
+  background-color: #fff;
+  border-radius: 3px;
+  color: rgba(0,0,0,0.8);
+}
