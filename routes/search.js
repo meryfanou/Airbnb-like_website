@@ -70,9 +70,9 @@ router.post("/", function(req, res){
 				}
 			});
 
-			res.render("search/index", {apartments: sorted, num_days: diff, guests: guests,
-									    check_in: check_in, check_out: check_out, location: location,
-									    max_price: max_price});
+			res.render("search/index", {apartments: sorted, num_days: diff,	guests: guests,
+										check_in: check_in, check_out: check_out,
+										location: location,	max_price: max_price});
 		}
 	});
 });
@@ -93,42 +93,50 @@ router.get("/:id", function(req,res){
 
 
 router.post("/filters", function(req,res){
-	// var apartments = (new Function("return [" + req.query.apartments + "];")());
-	var apartments = req.query.apartments.split(",").map(Object);
-	var	num_days = req.query.num_days,
+	var str_apartments = req.query.str_apartments,
+		num_days = req.query.num_days,
 		guests = req.query.guests,
 		check_in = req.query.check_in,
 		check_out = req.query.check_out,
-		location = req.query.location;
+		location = req.query.location,
+		apartments = [];
 
-	var	room_type = req.body.room_type,
-		max_price = req.body.max_price,
-		facilities = Object.assign({}, req.body.facilities),
-		valid_room_type = false,
-		valid_max_price = false,
-		valid_facilities = false,
+	var	facilities = Object.assign({}, req.body.facilities),
+		filters = {
+			room_type: req.body.room_type,
+			max_price: req.body.max_price,
+			facilities: facilities
+		},
+		valid_room_type,
+		valid_max_price,
+		valid_facilities,
 		filtered = [];
 
-	console.log(apartments);
+	apartments = JSON.parse(str_apartments);
 
-	apartments.forEach(function(apartment){
-		if(room_type){
-			if(typeof room_type == "string" && apartment.place.room_type == room_type){
+	for(var apartment of apartments){
+		valid_room_type = false;
+		valid_max_price = false;
+		valid_facilities = false;
+
+		if(filters.room_type){
+			if(typeof filters.room_type == "string" && apartment.place.room_type == filters.room_type){
 				valid_room_type = true;
-			}else if(typeof room_type == "object"){		// an array in specific
-				valid_room_type = room_type.includes(apartment.place.room_type);
+			}else if(typeof filters.room_type == "object"){		// an array in specific
+				valid_room_type = filters.room_type.includes(apartment.place.room_type);
 			}else{
 				valid_room_type = false;
+				continue;
 			}
 		}else{
 			valid_room_type = true;
 		}
 
-		if(apartment.price_min <= max_price){
+		if(apartment.price_min <= filters.max_price){
 			valid_max_price = true;
 		}
 
-		if(facilities){
+		if(typeof facilities.length != 'undefined'){
 			for([key,value] of Object.entries(facilities)){
 				if(apartment.facilities.hasOwnProperty(key) && facilities.key == value){
 					valid_facilities = true;
@@ -145,11 +153,11 @@ router.post("/filters", function(req,res){
 		if(valid_room_type && valid_max_price && valid_facilities){
 			filtered.push(apartment);
 		}
-	});
+	};
 
-	res.render("search/index", {apartments: filtered, num_days: num_days, guests: guests,
-									    check_in: check_in, check_out: check_out, location: location,
-									    max_price: max_price});
+	res.render("search/index", {apartments: filtered, initial: apartments, filters: filters,
+								num_days: num_days,	guests: guests, check_in: check_in,
+								check_out: check_out, location: location, max_price: req.query.max_price});
 });
 
 
