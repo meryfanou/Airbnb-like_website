@@ -142,7 +142,7 @@
 				<div id="mapid"></div><br>
 	
 				<div id="addr" class="form-group">
-					<input class="form-control" type="text" placeholder="Address"
+					<input class="form-control" type="text" placeholder="Address e.g: Αγίου Δημητρίου 15,105 54,Αθήνα,Αττική,GRC"
 						   name="location[address]"><br>
 				</div>
 				
@@ -242,6 +242,7 @@
 // 	mymap.on('click', onMapClick);
 	
 // ESRI - REVERSE GECODING => ADDRESS
+	
 	var mapid = null;
 	mapid = document.getElementById("mapid");
 	mapid.style.display= "none";
@@ -271,7 +272,7 @@
   				console.log(map); // nothing should actually happen to the value of mymap
 			}
 
-			map = L.map('mapid').setView([40.725, -73.985], 13);
+			map = L.map('mapid').setView([37.980, 23.750], 12);
 			// document.getElementById('mapid').innerHTML = "<div id='map' style='width: 100%; height: 100%;'></div>";
 
 			
@@ -312,11 +313,13 @@
 						// map.removeLayer(marker);
 					// }
 					
+					console.log(result);
+					console.log('reverse');
 					popup.setLatLng(result.latlng);
 					popup.setContent("You clicked the map at " + result.address.Match_addr);
 					popup.openOn(map);
 					marker = L.marker(result.latlng).addTo(map);
-					marker.bindPopup("<b>You clicked at:<b>" + result.address.Match_addr).openPopup();
+					marker.bindPopup("<b>You clicked at:<b>" + result.address.LongLabel).openPopup();
 					
 					// $("addr").hide();
 					// var addr= document.getElementById("addr").style.visibility="hidden";
@@ -329,8 +332,14 @@
 
 					
 					// L.marker(result.latlng).addTo(map).bindPopup("<b>Hello world!</b><br>I am a popup.").openPopup();
+					
+					var string = result.address.Address + "," + result.address.Postal + "," + result.address.City + "," + result.address.Region + "," + result.address.CountryCode;
+					
+					console.log(string);
+					
+					// document.getElementById("maps").name = result.address.Match_addr;
+					document.getElementById("maps").name = string;
 
-					document.getElementById("maps").name = result.address.Match_addr;
 				});
 			});
 			
