@@ -250,6 +250,11 @@ router.put("/:id",  middleware.checkApartmentOwnership, upload.array("images", 1
 			}
 		}
 
+		// If the room type is still the old one
+		if(typeof req.body.room_type == 'undefined'){
+			req.body.place.room_type = foundApartment.place.room_type;
+		}
+
 		// If any of the availability dates has changed
 		if((req.body.apartment.availability_from && 
 		   foundApartment.availability_from.valueOf() != req.body.apartment.availability_from.valueOf()) || 
