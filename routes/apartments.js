@@ -317,35 +317,59 @@ router.put("/:id",  middleware.checkApartmentOwnership, upload.array("images", 1
 			req.body.apartment.facilities.elevator = tempApartment.facilities.elevator;
 		}
 
-		// Find current user in db
-		User.findById(req.user._id, function(err, user){
-			if(err){
-				req.flash("error", err.message);
-				res.redirect("/users/" + user._id + "/host");
-			}else if(!user){
-				req.flash("error", "User not found");
-				res.redirect("back");
-			}else{
-				// Update apartment in db
-				apartment.findByIdAndUpdate(foundApartment._id, req.body.apartment, function(err, apartment){
-					if(err){
-						req.flash("error", err.message);
-						res.redirect("/users/" + user._id + "/host");
-					}else{
-						apartment.save();
-						var i=0;
-						for(var place in user.apartments){
-							if(place._id == apartment._id){
-								user.apartments[i] = Object.assign({}, apartment);
-							}
-							i += 1;
-						}
-						user.save();
-						req.flash("success", "Updated " + apartment.name + " successfully!");
-						res.redirect("/apartments/" + apartment._id);
-					}
-				});
+		for([key, value] of Object.entries(req.body)){
+			if(typeof value == 'string' && value == 'reverse_geocoding'){
+				req.body.apartment.location.address = key;
+				break;
 			}
+		}
+		
+		geocoder.geocode(req.body.apartment.location.address, function(err, data){
+    	if(err || !data.length){
+			req.flash('error', 'Invalid address');
+    		return res.redirect('back');
+     	} 
+      	//parse the object campground
+
+		// console.log(data[0]);
+		// console.log(data[0].latitude);
+		// console.log(data[0].longitude);
+		// console.log(data[0].formattedAddress);
+		// console.log(req.body.apartment.location.address);
+		
+    	req.body.apartment.location.lat 		=    	data[0].latitude;
+    	req.body.apartment.location.lng  		=     	data[0].longitude;
+		
+			// Find current user in db
+			User.findById(req.user._id, function(err, user){
+				if(err){
+					req.flash("error", err.message);
+					res.redirect("/users/" + user._id + "/host");
+				}else if(!user){
+					req.flash("error", "User not found");
+					res.redirect("back");
+				}else{
+					// Update apartment in db
+					apartment.findByIdAndUpdate(foundApartment._id, req.body.apartment, function(err, apartment){
+						if(err){
+							req.flash("error", err.message);
+							res.redirect("/users/" + user._id + "/host");
+						}else{
+							apartment.save();
+							var i=0;
+							for(var place in user.apartments){
+								if(place._id == apartment._id){
+									user.apartments[i] = Object.assign({}, apartment);
+								}
+								i += 1;
+							}
+							user.save();
+							req.flash("success", "Updated " + apartment.name + " successfully!");
+							res.redirect("/apartments/" + apartment._id);
+						}
+					});
+				}
+			});
 		});
 	});
 });
