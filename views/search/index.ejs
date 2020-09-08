@@ -265,32 +265,53 @@ function closeNav() {
 </script>
 
 <div class="container">
-	<div class="row text-center" style="display: flex; flex-wrap: wrap; padding:10px;">
+	<div class="row text-center" style="display: flex; flex-wrap: wrap; justify-content:center;">
 		<% apartments.forEach(function(apartment){ %>
-			<div class="col-md-3 col-sm-6">
-				<div class="thumbnail">
-					<a href="/search/<%= apartment._id %>?num_days=<%=num_days%>&guests=<%=guests%>&check_in=<%=check_in%>&check_out=<%=check_out%>">
-						<img src="<%= apartment.main_image.url %>"
-							 style="object-fit:cover; width:250px; height:250px">
-					</a>
-					<div class="caption" style="padding:5px;">
-						<strong>
-							<a href="/search/<%=apartment._id%>?num_days=<%=num_days%>&guests=<%=guests%>&check_in=<%=check_in%>&check_out=<%=check_out%>"
+		<div style="padding: 40px;">
+			<div class="thumbnail">
+				<a href="/search/<%= apartment._id %>?num_days=<%=num_days%>&guests=<%=guests%>&check_in=<%=check_in%>&check_out=<%=check_out%>">
+					<img src="<%= apartment.main_image.url %>"
+						 style="object-fit:cover; width:350px; height:350px;">
+				</a>
+				<div class="caption" style="padding:5px;">
+					<strong>
+						<a href="/search/<%=apartment._id%>?num_days=<%=num_days%>&guests=<%=guests%>&check_in=<%=check_in%>&check_out=<%=check_out%>"
 							style="font-size:170%; font-family:URW Chancery L, cursive; color:firebrick">
 								<%= apartment.name %></a>
-						</strong><br>
-						<h4 style="font-size:150%; font-family:URW Chancery L, cursive;">
-							rating (#reviews), &euro;<%= apartment.price_min %>/night
-							<% if(apartment.place.beds == 1){ %>
-								<%= apartment.place.room_type %>, <%= apartment.place.beds %> bed
-							<% }else{ %>
-								<%= apartment.place.room_type %>, <%= apartment.place.beds %> beds
-							<% } %>
-						</h4>
-					</div>
+					</strong><br>
+					<h4 style="font-size:150%; font-family:URW Chancery L, cursive;">
+						rating (#reviews), &euro;<%= apartment.price_min %>/night<br>
+						<% if(apartment.place.beds == 1){ %>
+							<%= apartment.place.room_type %>, <%= apartment.place.beds %> bed
+						<% }else{ %>
+							<%= apartment.place.room_type %>, <%= apartment.place.beds %> beds
+						<% } %>
+					</h4>
 				</div>
 			</div>
+		</div>
 		<% }) %>
+	</div>
+
+	<div class="row text-center">
+		<div class="pagination">
+			<% var str_all = JSON.stringify(all_apartments);
+			   if(pageNum > 1){ %>
+				<a href="/search/page/<%= Number(pageNum) - 1 %>?apartments=<%=str_all%>&num_days=<%=num_days%>&guests=<%=guests%>&check_in=<%=check_in%>&check_out=<%=check_out%>&location=<%=location%>&max_price=<%=max_price%>">&laquo;</a>
+			<% } %>
+
+			<% for(var i=1; i<=(all_apartments.length / results_per_page); i++){ %>
+				<a href="/search/page/<%= i %>?apartments=<%=str_all%>&num_days=<%=num_days%>&guests=<%=guests%>&check_in=<%=check_in%>&check_out=<%=check_out%>&location=<%=location%>&max_price=<%=max_price%>"
+				<% if(i == pageNum){ %>
+					class="active"
+				<% } %>
+				><%= i %></a>
+			<% }
+
+			if(pageNum < (all_apartments.length / results_per_page)){ %>
+				<a href="/search/page/<%= Number(pageNum) + 1 %>?apartments=<%=str_all%>&num_days=<%=num_days%>&guests=<%=guests%>&check_in=<%=check_in%>&check_out=<%=check_out%>&location=<%=location%>&max_price=<%=max_price%>">&raquo;</a>
+			<% } %>
+		</div>
 	</div>
 </div>
 

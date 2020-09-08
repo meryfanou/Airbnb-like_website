@@ -1,6 +1,7 @@
 const express	 	= require("express"),
 	  router	 	= express.Router(),
-	  Apartment		= require("../models/apartment");
+	  Apartment		= require("../models/apartment"),
+	  url			= require("url");
 
 
 router.post("/", function(req, res){
@@ -70,9 +71,23 @@ router.post("/", function(req, res){
 				}
 			});
 
-			res.render("search/index", {apartments: sorted, num_days: diff,	guests: guests,
-										check_in: check_in, check_out: check_out,
-										location: location,	max_price: max_price});
+			var str_apartments = JSON.stringify(sorted);
+
+			res.redirect(url.format({
+				pathname: "/search/page/1",
+				query: {
+					"apartments": str_apartments,
+					"num_days": diff,
+					"guests": guests,
+					"check_in": check_in,
+					"check_out": check_out,
+					"location": location,
+					"max_price": max_price
+				}
+			}));
+			// res.render("search/index", {apartments: sorted, num_days: diff,	guests: guests,
+			// 							check_in: check_in, check_out: check_out,
+			// 							location: location,	max_price: max_price});
 		}
 	});
 });
@@ -160,5 +175,26 @@ router.post("/filters", function(req,res){
 								check_out: check_out, location: location, max_price: req.query.max_price});
 });
 
+
+// Pagination
+router.get("/page/:pageNum", function(req,res){
+	var apartments = JSON.parse(req.query.apartments),
+		num_days   = req.query.num_days,
+		guests	   = req.query.guests,
+		check_in   = req.query.check_in,
+		check_out  = req.query.check_out,
+		location   = req.query.location,
+		max_price  = req.query.max_price;
+
+	var results_per_page = 1,
+		start			 = (req.params.pageNum - 1) * results_per_page;
+
+	var paginated = apartments.slice(start,start + results_per_page);
+
+	res.render("search/index", {apartments: paginated, all_apartments: apartments,
+								results_per_page: results_per_page, pageNum: req.params.pageNum,
+								num_days: num_days, guests: guests,	check_in: check_in,
+								check_out: check_out, location: location, max_price: max_price});
+});
 
 module.exports = router;
