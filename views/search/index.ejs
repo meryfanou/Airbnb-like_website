@@ -14,7 +14,7 @@
 			var str_apartments = JSON.stringify(apartments);
 		} %>
 
-		<form action="/search/filters?str_apartments=<%=str_apartments%>&num_days=<%=num_days%>&guests=<%=guests%>&check_in=<%=check_in%>&check_out=<%=check_out%>&location=<%=location%>&max_price=<%=max_price%>"
+		<form action="/search/filters?str_apartments=<%=str_apartments%>&num_days=<%=num_days%>&guests=<%=guests%>&check_in=<%=check_in%>&check_out=<%=check_out%>&str_location=<%=str_location%>&max_price=<%=max_price%>"
 			  method="POST">
 			<p><strong>Room Type</strong>
 				<a onclick="browseRoomTypes()"
@@ -242,7 +242,14 @@ function browseFacilities(){
 <div class="jumbotron" style="position:relative; left:-10px; top:-20px; height:30px; width:101%; background-image:url('https://images.unsplash.com/photo-1502920514313-52581002a659?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80'); background-size: cover; background-position: center center;">
 	<h2 align="center" style="color:white; position:relative; top:-40px;">
 		<div style="background-color:rgba(255,255,255,0.4); padding:6px; position:relative; top:-5px; font-family:URW Chancery L, cursive; font-size:125%;">
-			<strong>Available places from <%= check_in %> to <%= check_out %> in <%= location %>
+			<% var location = JSON.parse(str_location); %>
+			<strong>Available places from <%= check_in %> to <%= check_out %> in
+				<% if(location.area =! null){ %>
+					<%= location.area %>, 
+				<% }else if(location.region =! null){ %>
+					<%= location.region %>, 
+				<% } %>
+					<%= location.country %>
 			</strong>
 		</div>
 		<p style="padding:1px;"></p>
@@ -297,11 +304,11 @@ function closeNav() {
 		<div class="pagination">
 			<% var str_all = JSON.stringify(all_apartments);
 			   if(pageNum > 1){ %>
-				<a href="/search/page/<%= Number(pageNum) - 1 %>?apartments=<%=str_all%>&num_days=<%=num_days%>&guests=<%=guests%>&check_in=<%=check_in%>&check_out=<%=check_out%>&location=<%=location%>&max_price=<%=max_price%>">&laquo;</a>
+				<a href="/search/page/<%= Number(pageNum) - 1 %>?apartments=<%=str_all%>&num_days=<%=num_days%>&guests=<%=guests%>&check_in=<%=check_in%>&check_out=<%=check_out%>&max_price=<%=max_price%>&str_location=<%=str_location%>">&laquo;</a>
 			<% } %>
 
 			<% for(var i=1; i<=(all_apartments.length / results_per_page); i++){ %>
-				<a href="/search/page/<%= i %>?apartments=<%=str_all%>&num_days=<%=num_days%>&guests=<%=guests%>&check_in=<%=check_in%>&check_out=<%=check_out%>&location=<%=location%>&max_price=<%=max_price%>"
+				<a href="/search/page/<%= i %>?apartments=<%=str_all%>&num_days=<%=num_days%>&guests=<%=guests%>&check_in=<%=check_in%>&check_out=<%=check_out%>&str_location=<%=str_location%>&max_price=<%=max_price%>"
 				<% if(i == pageNum){ %>
 					class="active"
 				<% } %>
@@ -309,7 +316,7 @@ function closeNav() {
 			<% }
 
 			if(pageNum < (all_apartments.length / results_per_page)){ %>
-				<a href="/search/page/<%= Number(pageNum) + 1 %>?apartments=<%=str_all%>&num_days=<%=num_days%>&guests=<%=guests%>&check_in=<%=check_in%>&check_out=<%=check_out%>&location=<%=location%>&max_price=<%=max_price%>">&raquo;</a>
+				<a href="/search/page/<%= Number(pageNum) + 1 %>?apartments=<%=str_all%>&num_days=<%=num_days%>&guests=<%=guests%>&check_in=<%=check_in%>&check_out=<%=check_out%>&str_location=<%=str_location%>&max_price=<%=max_price%>">&raquo;</a>
 			<% } %>
 		</div>
 	</div>

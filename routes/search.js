@@ -1,8 +1,14 @@
-const express	 	= require("express"),
-	  router	 	= express.Router(),
-	  Apartment		= require("../models/apartment"),
-	  url			= require("url");
+const 	express	 	= require("express"),
+	  	router	 	= express.Router(),
+	  	Apartment		= require("../models/apartment"),
+	  	url			= require("url"),
+	  	lookup = require('country-code-lookup');
 
+
+
+function hasNumber(myString) {
+  return /\d/.test(myString);
+}
 
 router.post("/", function(req, res){
 	var location = req.body.location,
@@ -10,12 +16,92 @@ router.post("/", function(req, res){
 		check_out = req.body.check_out,
 		guests = req.body.guests,
 		apartments = [];
+		var zipcode = null;
+		var area = null; 
+		var country = null; 
+		var region = null; 
+		var realCountry;
+		// var args = str_array.length;
+	
+		// var location = 'Hello, World, etc';
+		var str_array = location.split(',');
+		var args = str_array.length;
 
+
+		switch (args) {
+		  case 2:
+			
+			if(hasNumber(str_array[0]) == true ){
+	
+				zipcode = str_array[0];
+			}else {
+				
+				area = str_array[0];
+			}
+			
+			country = str_array[1];
+			break;
+
+			case 3:
+				
+				if (hasNumber(str_array[0]) == true ){
+					zipcode = str_array[0];
+					area 	= str_array[1];						//Maybe and region , wdk
+				} else if(hasNumber(str_array[1])) {
+					
+					area = str_array[0];
+					zipcode = str_array[1];
+				} 
+
+				else {
+					area = str_array[0];
+					region = str_array[1];
+				}
+
+				country = str_array[2];
+			break;
+
+		case 4:
+		
+			if(hasNumber(str_array[0]) == true){
+				zipcode = str_array[0];
+				area = str_array[1];
+			} else {
+				
+				zipcode = str_array[1];
+				area = str_array[0];
+			}
+				
+			region = str_array[2];
+			country = str_array[3];
+			break;
+	
+		default:
+			
+			req.flash("error", "Wrong Location, follow the given search format");
+			res.redirect("/search");
+		}
+
+		// lookup.byInternet(country);
+		// realCountry = lookup.countries.country;
+	
+		var locationObj = {
+			zipcode:	zipcode, 
+			area:		area,
+			region:		region,
+			country:	country
+		};
+console.log(locationObj);
+
+		
+	
+	
 	Apartment.find({}, function(err, results){
 		if(err){
 			req.flash("error", err.message);
 			res.redirect("/");
 		}else{
+			
 			// Check if the renting dates are valid
 			var today = new Date();
 			var dd = String(today.getDate()).padStart(2, '0');
@@ -30,11 +116,29 @@ router.post("/", function(req, res){
 				return res.redirect("/");
 			}
 
+			var info_addr = apartment.location.address.split(',');
+			var validLocation=0;
+
 			results.forEach(function(apartment){
+				locationObj.forEach(element)({
+					
+					if(element=! null ){
+						if(hasNumber(element) == false ){
+							
+							if(info_addr.includes(element)){
+								validLocation+= 1;
+							}
+						}else if( (element[0,3]) == (info_addr[2][0,3]) ) {
+
+							validLocation+= 1;
+						}
+					}
+				});
+				
 				if(check_in.valueOf() >= apartment.availability_from.valueOf() &&
 				   check_out.valueOf() <= apartment.availability_to.valueOf() &&
 				   check_in.valueOf() <= check_out.valueOf() &&
-				   guests <= apartment.capacity){
+				   guests <= apartment.capacity && validLocation>0) {
 					apartments.push(apartment);
 				}
 			});
@@ -72,6 +176,7 @@ router.post("/", function(req, res){
 			});
 
 			var str_apartments = JSON.stringify(sorted);
+			var str_location = JSON.stringify(locationObj);
 
 			res.redirect(url.format({
 				pathname: "/search/page/1",
@@ -81,7 +186,7 @@ router.post("/", function(req, res){
 					"guests": guests,
 					"check_in": check_in,
 					"check_out": check_out,
-					"location": location,
+					"str_location": str_location,
 					"max_price": max_price
 				}
 			}));
@@ -172,7 +277,8 @@ router.post("/filters", function(req,res){
 
 	res.render("search/index", {apartments: filtered, initial: apartments, filters: filters,
 								num_days: num_days,	guests: guests, check_in: check_in,
-								check_out: check_out, location: location, max_price: req.query.max_price});
+								check_out: check_out, location: location, max_price: req.query.max_price,
+							    str_location: req.query.str_location});
 });
 
 
@@ -184,7 +290,8 @@ router.get("/page/:pageNum", function(req,res){
 		check_in   = req.query.check_in,
 		check_out  = req.query.check_out,
 		location   = req.query.location,
-		max_price  = req.query.max_price;
+		max_price  = req.query.max_price,
+		str_location = req.query.str_location;
 
 	var results_per_page = 1,
 		start			 = (req.params.pageNum - 1) * results_per_page;
@@ -194,7 +301,8 @@ router.get("/page/:pageNum", function(req,res){
 	res.render("search/index", {apartments: paginated, all_apartments: apartments,
 								results_per_page: results_per_page, pageNum: req.params.pageNum,
 								num_days: num_days, guests: guests,	check_in: check_in,
-								check_out: check_out, location: location, max_price: max_price});
+								check_out: check_out, location: location, max_price: max_price,
+							    str_location: str_location});
 });
 
 module.exports = router;
