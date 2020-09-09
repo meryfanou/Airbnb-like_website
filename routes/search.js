@@ -1,14 +1,12 @@
 const 	express	 	= require("express"),
 	  	router	 	= express.Router(),
-	  	Apartment		= require("../models/apartment"),
-	  	url			= require("url"),
-	  	lookup = require('country-code-lookup');
+	  	Apartment	= require("../models/apartment"),
+	  	url			= require("url");
 
 
-
-function hasNumber(myString) {
-  return /\d/.test(myString);
-}
+// function hasNumber(myString) {
+//   return /\d/.test(myString);
+// }
 
 router.post("/", function(req, res){
 	var location = req.body.location,
@@ -16,92 +14,69 @@ router.post("/", function(req, res){
 		check_out = req.body.check_out,
 		guests = req.body.guests,
 		apartments = [];
-		var zipcode = null;
-		var area = null; 
-		var country = null; 
-		var region = null; 
-		var realCountry;
-		// var args = str_array.length;
-	
-		// var location = 'Hello, World, etc';
-		var str_array = location.split(',');
-		var args = str_array.length;
 
+	var zipcode = null,
+		area = null,
+		country = null,
+		region = null;
 
-		switch (args) {
-		  case 2:
-			
-			if(hasNumber(str_array[0]) == true ){
-	
+	var str_array = location.split(/,| /),
+		args = str_array.length;
+
+	switch (args) {
+		case 2:
+			if(!isNaN(str_array[0])){
 				zipcode = str_array[0];
 			}else {
-				
 				area = str_array[0];
 			}
-			
+
 			country = str_array[1];
 			break;
+		case 3:
+			if(!isNaN(str_array[0])){
+				zipcode = str_array[0];
+				area 	= str_array[1];						//Maybe and region , wdk
+			} else if(!isNaN(str_array[1])) {
+				area = str_array[0];
+				zipcode = str_array[1];
+			} else {
+				area = str_array[0];
+				region = str_array[1];
+			}
 
-			case 3:
-				
-				if (hasNumber(str_array[0]) == true ){
-					zipcode = str_array[0];
-					area 	= str_array[1];						//Maybe and region , wdk
-				} else if(hasNumber(str_array[1])) {
-					
-					area = str_array[0];
-					zipcode = str_array[1];
-				} 
-
-				else {
-					area = str_array[0];
-					region = str_array[1];
-				}
-
-				country = str_array[2];
+			country = str_array[2];
 			break;
 
 		case 4:
-		
-			if(hasNumber(str_array[0]) == true){
+			if(!isNaN(str_array[0]) == true){
 				zipcode = str_array[0];
 				area = str_array[1];
 			} else {
-				
 				zipcode = str_array[1];
 				area = str_array[0];
 			}
-				
+
 			region = str_array[2];
 			country = str_array[3];
 			break;
-	
 		default:
-			
-			req.flash("error", "Wrong Location, follow the given search format");
+			req.flash("error", "Wrong location, please follow the given format.");
 			res.redirect("/search");
-		}
+	}
 
-		// lookup.byInternet(country);
-		// realCountry = lookup.countries.country;
-	
-		var locationObj = {
-			zipcode:	zipcode, 
-			area:		area,
-			region:		region,
-			country:	country
-		};
-console.log(locationObj);
+	var locationObj = {
+		zipcode:	zipcode, 
+		area:		area,
+		region:		region,
+		country:	country
+	};
 
-		
-	
-	
 	Apartment.find({}, function(err, results){
 		if(err){
 			req.flash("error", err.message);
 			res.redirect("/");
 		}else{
-			
 			// Check if the renting dates are valid
 			var today = new Date();
 			var dd = String(today.getDate()).padStart(2, '0');
@@ -116,29 +91,31 @@ console.log(locationObj);
 				return res.redirect("/");
 			}
 
-			var info_addr = apartment.location.address.split(',');
-			var validLocation=0;
+			var d1 = Date.parse(check_in),
+				d2 = Date.parse(check_out),
+				one_day = 1000*60*60*24,
+				diff = Math.round((d2-d1)/one_day) + 1;
 
 			results.forEach(function(apartment){
-				locationObj.forEach(element)({
-					
-					if(element=! null ){
-						if(hasNumber(element) == false ){
-							
-							if(info_addr.includes(element)){
+				var info_addr = apartment.location.address.split(',');
+				var validLocation=0;
+
+				for(var element of Object.values(locationObj)){
+					if(element != null){
+						if(!isNaN(element)){
+							if(element.slice(0,3) == info_addr[1].slice(0,3)){
 								validLocation+= 1;
 							}
-						}else if( (element[0,3]) == (info_addr[2][0,3]) ) {
-
-							validLocation+= 1;
+						}else if(info_addr.includes(element)){
+								validLocation += 1;
 						}
 					}
-				});
-				
+				};
+
 				if(check_in.valueOf() >= apartment.availability_from.valueOf() &&
 				   check_out.valueOf() <= apartment.availability_to.valueOf() &&
-				   check_in.valueOf() <= check_out.valueOf() &&
-				   guests <= apartment.capacity && validLocation>0) {
+				   check_in.valueOf() <= check_out.valueOf() && guests <= apartment.capacity &&
+				   diff >= apartment.renting_rules.rent_days_min && validLocation >= 2) {
 					apartments.push(apartment);
 				}
 			});
@@ -147,11 +124,6 @@ console.log(locationObj);
 				req.flash("warning", "No results found for your search.");
 				return res.redirect("/");
 			}
-
-			var d1 = Date.parse(check_in),
-				d2 = Date.parse(check_out),
-				one_day = 1000*60*60*24,
-				diff = Math.round((d2-d1)/one_day) + 1;
 
 			var	price,
 				max_price = 0,
@@ -293,7 +265,7 @@ router.get("/page/:pageNum", function(req,res){
 		max_price  = req.query.max_price,
 		str_location = req.query.str_location;
 
-	var results_per_page = 1,
+	var results_per_page = 10,
 		start			 = (req.params.pageNum - 1) * results_per_page;
 
 	var paginated = apartments.slice(start,start + results_per_page);

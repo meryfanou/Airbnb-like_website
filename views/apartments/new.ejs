@@ -134,15 +134,16 @@
 						   style="position: relative; left: 40px">
 				</div>
 
-				<select id="maps" onclick="GeocodingFunction()">
+				<br><br><select id="maps" onclick="GeocodingFunction()">
+					<option style="display:none;">Location</option>
 					<option value="geocoding">Give an address</option>
 					<option value="reverse_geocoding">Choose on map</option>
-				</select><br><br>
+				</select><br>
 
 				<div id="mapid"></div><br>
 	
 				<div id="addr" class="form-group">
-					<input class="form-control" type="text" placeholder="Address e.g: Αγίου Δημητρίου 15,105 54,Αθήνα,Αττική,GRC"
+					<input class="form-control" type="text" placeholder="Address e.g: Αγίου Δημητρίου 15,105 54,Αθήνα,Αττική,Ελλάδα"
 						   name="location[address]"><br>
 				</div>
 				
@@ -291,9 +292,6 @@
 			map.on('click', function (e) {
 				
 				map.eachLayer(function (layer) {
-						console.log("gay");
-						console.log(layer);
-						console.log("gay2");
   						layer.closePopup();	
 					});
 
@@ -312,9 +310,7 @@
 					// if(marker){
 						// map.removeLayer(marker);
 					// }
-					
-					console.log(result);
-					console.log('reverse');
+
 					popup.setLatLng(result.latlng);
 					popup.setContent("You clicked the map at " + result.address.Match_addr);
 					popup.openOn(map);
@@ -332,12 +328,11 @@
 
 					
 					// L.marker(result.latlng).addTo(map).bindPopup("<b>Hello world!</b><br>I am a popup.").openPopup();
-					
-					var string = result.address.Address + "," + result.address.Postal + "," + result.address.City + "," + result.address.Region + "," + result.address.CountryCode;
-					
-					console.log(string);
-					
-					// document.getElementById("maps").name = result.address.Match_addr;
+
+					var postal = result.address.Postal.split(' ').join('');
+					var string = result.address.Address + "," + postal + "," + result.address.City + "," + result.address.Region;
+
+					//document.getElementById("maps").name = result.address.Match_addr;
 					document.getElementById("maps").name = string;
 
 				});

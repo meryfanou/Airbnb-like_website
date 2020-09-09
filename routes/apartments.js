@@ -68,9 +68,15 @@ router.post("/", middleware.isLoggedIn, upload.array("images", 30), async(req,re
 	var yyyy = today.getFullYear();
 	today = yyyy + '-' + mm + '-' + dd;
 
+	var d1 = Date.parse(req.body.apartment.availability_from),
+		d2 = Date.parse(req.body.apartment.availability_to),
+		one_day = 1000*60*60*24,
+		diff = Math.round((d2-d1)/one_day) + 1;
+
 	if(req.body.apartment.availability_from.valueOf() < today.valueOf() ||
 	   req.body.apartment.availability_to.valueOf() < today.valueOf() ||
-	   req.body.apartment.availability_from.valueOf() > req.body.apartment.availability_to.valueOf()){
+	   req.body.apartment.availability_from.valueOf() > req.body.apartment.availability_to.valueOf() ||
+	   diff < req.body.renting_rules.rent_days_min){
 		req.flash("error", "Availability dates should be valid. Please try again.");
 		return res.redirect("/apartments/new");
 	}
@@ -120,9 +126,11 @@ router.post("/", middleware.isLoggedIn, upload.array("images", 30), async(req,re
 		req.body.apartment.facilities.elevator = tempApartment.facilities.elevator;
 	}
 
+	var reverse_geocoding = false;
 	for([key, value] of Object.entries(req.body)){
 		if(typeof value == 'string' && value == 'reverse_geocoding'){
 			req.body.apartment.location.address = key;
+			reverse_geocoding = true;
 			break;
 		}
 	}
@@ -131,11 +139,13 @@ router.post("/", middleware.isLoggedIn, upload.array("images", 30), async(req,re
 	var longitude;
 	
 	geocoder.geocode(req.body.apartment.location.address, function(err, data){
-    	if(err || !data.length){
+    	if(err){
+			req.flash("error", err.message);
+			return res.redirect('back');
+		}else if(!data.length){
 			req.flash('error', 'Invalid address');
     		return res.redirect('back');
-     	} 
-      	//parse the object campground
+     	}
 
 		// console.log(data[0]);
 		// console.log(data[0].latitude);
@@ -143,8 +153,11 @@ router.post("/", middleware.isLoggedIn, upload.array("images", 30), async(req,re
 		// console.log(data[0].formattedAddress);
 		// console.log(req.body.apartment.location.address);
 		
-    	req.body.apartment.location.lat 		=    	data[0].latitude;
-    	req.body.apartment.location.lng  		=     	data[0].longitude;
+    	req.body.apartment.location.lat 	= data[0].latitude;
+    	req.body.apartment.location.lng  	= data[0].longitude;
+		if(reverse_geocoding){
+			req.body.apartment.location.address += "," + data[0].country;
+		}
     	// req.body.apartment.location.address 	= 		data[0].formattedAddress;
 		
 	// });
