@@ -26,10 +26,6 @@ router.post("/", function(req, res){
 	var str_array = location.split(/[ ,]+/),
 		args = str_array.length;
 
-	// str_array = str_array.split(" ").join("");
-	
-	console.log(str_array);
-	
 	switch (args) {
 		case 2:
 			if(!isNaN(str_array[0])){
@@ -109,9 +105,7 @@ router.post("/", function(req, res){
 				info_addr = info_addr.split(',');
 				// var info_addr = apartment.location.address.split(',');
 				var validLocation=0;
-				
-				console.log(info_addr);
-				
+
 				for(var element of Object.values(locationObj)){
 					if(element != null){
 						if(!isNaN(element) && !isNaN(info_addr[1]) ){				//error fixed

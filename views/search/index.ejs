@@ -241,12 +241,13 @@ function browseFacilities(){
 
 <div class="jumbotron" style="position:relative; left:-10px; top:-20px; height:30px; width:101%; background-image:url('https://images.unsplash.com/photo-1502920514313-52581002a659?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80'); background-size: cover; background-position: center center;">
 	<h2 align="center" style="color:white; position:relative; top:-40px;">
-		<div style="background-color:rgba(255,255,255,0.4); padding:6px; position:relative; top:-5px; font-family:URW Chancery L, cursive; font-size:125%;">
+		<div style="background-color:rgba(255,255,255,0.4); padding:6px; position:relative; top:-5px;">
 			<% var location = JSON.parse(str_location); %>
-			<strong>Available places from <%= check_in %> to <%= check_out %> in
-				<% if(location.area =! null){ %>
+			<strong style="font-family:URW Chancery L, cursive; font-size:125%;">
+				Available places from <%= check_in %> to <%= check_out %> in
+				<% if(location.area != null){ %>
 					<%= location.area %>, 
-				<% }else if(location.region =! null){ %>
+				<% }else if(location.region != null){ %>
 					<%= location.region %>, 
 				<% } %>
 					<%= location.country %>
