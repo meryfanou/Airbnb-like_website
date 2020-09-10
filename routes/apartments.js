@@ -313,9 +313,40 @@ router.put("/:id",  middleware.checkApartmentOwnership, upload.array("images", 1
 				if(dates.to.valueOf() != d2.valueOf()){
 					dates.to = d2;
 				};
-
-				req.body.apartment.availability.push(dates);
 			};
+
+			req.body.apartment.availability.push(dates);
+		};
+
+		// If new dates have been added
+		if(req.body.more_dates_from && req.body.more_dates_to){
+			d1 = req.body.more_dates_from;
+			d2 = req.body.more_dates_to;
+
+			// Check if the new dates are valid
+			if(d1.valueOf() < today.valueOf() || d2.valueOf() < today.valueOf() ||
+			   d1.valueOf() > d2.valueOf()){
+				req.flash("error", "Availability dates should be valid. Please try again.");
+				return res.redirect("/apartments/" + foundApartment._id + "/edit");
+			};
+
+			dates = {
+				from: d1,
+				to:   d2
+			};
+
+			req.body.apartment.availability.push(dates);
+		};
+
+		if(req.body.apartment.availability.length > 0){
+			req.body.apartment.availability.sort(function({ from: f1, to: t1 },{ from: f2, to: t2 }){
+			var d1 = Date.parse(f1),
+				d2 = Date.parse(f2),
+				one_day = 1000*60*60*24,
+				diff = Math.round((d2-d1)/one_day);
+
+				return diff < 0;
+			});
 		};
 
 		// if((req.body.apartment.availability_from && 

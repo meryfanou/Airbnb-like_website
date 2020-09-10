@@ -273,6 +273,27 @@ function closeNav() {
 </script>
 
 <div class="container">
+	<div class="row text-center">
+		<div class="pagination">
+			<% var str_all = JSON.stringify(all_apartments);
+			   if(pageNum > 1){ %>
+				<a href="/search/page/<%= Number(pageNum) - 1 %>?apartments=<%=str_all%>&num_days=<%=num_days%>&guests=<%=guests%>&check_in=<%=check_in%>&check_out=<%=check_out%>&max_price=<%=max_price%>&str_location=<%=str_location%>">&laquo;</a>
+			<% } %>
+
+			<% for(var i=1; i<=(all_apartments.length / results_per_page); i++){ %>
+				<a href="/search/page/<%= i %>?apartments=<%=str_all%>&num_days=<%=num_days%>&guests=<%=guests%>&check_in=<%=check_in%>&check_out=<%=check_out%>&str_location=<%=str_location%>&max_price=<%=max_price%>"
+				<% if(i == pageNum){ %>
+					class="active"
+				<% } %>
+				><%= i %></a>
+			<% }
+
+			if(pageNum < (all_apartments.length / results_per_page)){ %>
+				<a href="/search/page/<%= Number(pageNum) + 1 %>?apartments=<%=str_all%>&num_days=<%=num_days%>&guests=<%=guests%>&check_in=<%=check_in%>&check_out=<%=check_out%>&str_location=<%=str_location%>&max_price=<%=max_price%>">&raquo;</a>
+			<% } %>
+		</div>
+	</div>
+
 	<div class="row text-center" style="display: flex; flex-wrap: wrap; justify-content:center;">
 		<% apartments.forEach(function(apartment){ %>
 		<div style="padding: 40px;">

@@ -75,7 +75,8 @@ router.post("/", function(req, res){
 		country:	country
 	};
 	
-	Apartment.find({}, function(err, results){
+	Apartment.find({}).populate("host").populate("reservations").populate("reviews")
+	.exec(function(err, results){
 		if(err){
 			req.flash("error", err.message);
 			return res.redirect("/");
@@ -186,14 +187,15 @@ router.post("/", function(req, res){
 
 // SHOW Route - show more info about one specific search result
 router.get("/:id", function(req,res){
-	Apartment.findById(req.params.id).populate("reviews").populate("host").populate("reservations").exec(function(err, foundApartment){
+	Apartment.findById(req.params.id).populate("reviews").populate("host")
+	.populate("reservations").exec(function(err, foundApartment){
 		if(err){
 			req.flash("error", err.message);
 			res.redirect("back");
 		}else{
 			res.render("search/show", {apartment: foundApartment, num_days: req.query.num_days,
 									   guests: req.query.guests, check_in: req.query.check_in,
-									   check_out: req.query.check_out});
+									   check_out: req.query.check_out, booked: req.query.booked});
 		}
 	});
 });

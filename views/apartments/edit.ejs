@@ -270,11 +270,43 @@
 							<input class="form-control" type="date" name="availability[from_<%= i %>]"
 									id="avail_from" value="<%= dates.from %>">
 							<input class="form-control" type="date" name="availability[to_<%= i %>]"
-									id="avail_from" value="<%= dates.to %>">
+									id="avail_to" value="<%= dates.to %>">
 						</div>
 						<% i += 1;
 					}); %>
 					</div>
+
+					<label for="more_dates">Add more dates</label>
+					<input type="checkbox" id="more_dates" onclick="browseDateInputs()"
+							name="more_dates">
+					<br><label for="more_dates_from" id="label_from" style="display:none;">from:</label>
+					<input class="form-control" type="date" name="more_dates_from"
+							id="more_dates_from" style="display:none;"><br>
+					<label for="more_dates_to" id="label_to" style="display:none;">to:</label>
+					<input class="form-control" type="date" name="more_dates_to"
+							id="more_dates_to" style="display:none;"><br>
+
+					<script>
+						function browseDateInputs(){
+							var	checkbox = document.getElementById("more_dates");
+							var label_from = document.getElementById("label_from");
+							var input_from = document.getElementById("more_dates_from");
+							var label_to = document.getElementById("label_to");
+							var input_to = document.getElementById("more_dates_to");
+
+							if(checkbox.checked == true){
+								label_from.style.display = "block";
+								input_from.style.display = "block";
+								label_to.style.display = "block";
+								input_to.style.display = "block";
+							}else{
+								label_from.style.display = "none";
+								input_from.style.display = "none";
+								label_to.style.display = "none";
+								input_to.style.display = "none";
+							}
+						}
+					</script>
 				</div>
 
 				<div class="form-group">
