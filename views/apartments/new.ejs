@@ -315,7 +315,13 @@
 					popup.setContent("You clicked the map at " + result.address.Match_addr);
 					popup.openOn(map);
 					marker = L.marker(result.latlng).addTo(map);
-					marker.bindPopup("<b>You clicked at:<b>" + result.address.LongLabel).openPopup();
+					
+					var postal = result.address.Postal.split(' ').join('');
+					var string = result.address.Address + "," + postal + "," + result.address.City + "," + result.address.Region;
+					
+					marker.bindPopup("<b>You clicked at:<b>" + string).openPopup();
+
+					// marker.bindPopup("<b>You clicked at:<b>" + result.address.LongLabel).openPopup();
 					
 					// $("addr").hide();
 					// var addr= document.getElementById("addr").style.visibility="hidden";
@@ -329,8 +335,8 @@
 					
 					// L.marker(result.latlng).addTo(map).bindPopup("<b>Hello world!</b><br>I am a popup.").openPopup();
 
-					var postal = result.address.Postal.split(' ').join('');
-					var string = result.address.Address + "," + postal + "," + result.address.City + "," + result.address.Region;
+					// var postal = result.address.Postal.split(' ').join('');
+					// var string = result.address.Address + "," + postal + "," + result.address.City + "," + result.address.Region;
 
 					//document.getElementById("maps").name = result.address.Match_addr;
 					document.getElementById("maps").name = string;
