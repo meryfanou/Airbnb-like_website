@@ -68,18 +68,26 @@ router.post("/", middleware.isLoggedIn, upload.array("images", 30), async(req,re
 	var yyyy = today.getFullYear();
 	today = yyyy + '-' + mm + '-' + dd;
 
-	var d1 = Date.parse(req.body.apartment.availability_from),
-		d2 = Date.parse(req.body.apartment.availability_to),
+	var d1 = Date.parse(req.body.availability_from),
+		d2 = Date.parse(req.body.availability_to),
 		one_day = 1000*60*60*24,
-		diff = Math.round((d2-d1)/one_day) + 1;
+		diff = Math.round((d2-d1)/one_day);
 
-	if(req.body.apartment.availability_from.valueOf() < today.valueOf() ||
-	   req.body.apartment.availability_to.valueOf() < today.valueOf() ||
-	   req.body.apartment.availability_from.valueOf() > req.body.apartment.availability_to.valueOf() ||
+	if(req.body.availability_from.valueOf() < today.valueOf() ||
+	   req.body.availability_to.valueOf() < today.valueOf() ||
+	   req.body.availability_from.valueOf() > req.body.availability_to.valueOf() ||
 	   diff < req.body.renting_rules.rent_days_min){
 		req.flash("error", "Availability dates should be valid. Please try again.");
 		return res.redirect("/apartments/new");
 	}
+
+	// Dates are valid
+	var availability = {
+		from: req.body.availability_from,
+		to:	  req.body.availability_to
+	};
+	req.body.apartment["availability"] = [];
+	req.body.apartment.availability.push(availability);
 
 	// Get apartment objects from new.ejs
 	req.body.apartment["place"] = Object.assign({}, req.body.place);
@@ -268,27 +276,61 @@ router.put("/:id",  middleware.checkApartmentOwnership, upload.array("images", 1
 			req.body.place.room_type = foundApartment.place.room_type;
 		}
 
-		// If any of the availability dates has changed
-		if((req.body.apartment.availability_from && 
-		   foundApartment.availability_from.valueOf() != req.body.apartment.availability_from.valueOf()) || 
-		   (req.body.apartment.availability_to &&
-		   foundApartment.availability_to.valueOf() != req.body.apartment.availability_to.valueOf())){
+		var today = new Date();
+		var dd = String(today.getDate()).padStart(2, '0');
+		var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+		var yyyy = today.getFullYear();
+		today = yyyy + '-' + mm + '-' + dd;
 
-			// Check if the renting dates are valid
-			var today = new Date();
-			var dd = String(today.getDate()).padStart(2, '0');
-			var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-			var yyyy = today.getFullYear();
-			today = yyyy + '-' + mm + '-' + dd;
+		req.body.apartment["availability"] = [];
+		var entries = Object.entries(req.body.availability);
+		var	d1, d2, from, to;
 
-			if(req.body.apartment.availability_from.valueOf() < today.valueOf() ||
-			   req.body.apartment.availability_to.valueOf() < today.valueOf() ||
-			   req.body.apartment.availability_from.valueOf() > 	
-			   req.body.apartment.availability_to.valueOf()){
+		// For each from-to date pair
+		for(var i=0; i<foundApartment.availability.length; i++){
+			var dates = {
+				from: foundApartment.availability[i].from,
+				to: foundApartment.availability[i].to
+			};
+
+			[from,d1] = entries.find(([from,d1]) => from == "from_"+i);
+			[to,d2] = entries.find(([to,d2]) => to == "to_"+i);
+
+			// If any of the availability dates has changed
+			if(dates.from.valueOf() != d1.valueOf() ||
+			   dates.to.valueOf() != d2.valueOf()){
+				// Check if the renting dates are valid
+				if(d1.valueOf() < today.valueOf() || d2.valueOf() < today.valueOf() ||
+				   d1.valueOf() > d2.valueOf()){
 					req.flash("error", "Availability dates should be valid. Please try again.");
 					return res.redirect("/apartments/" + foundApartment._id + "/edit");
-			}
-		}
+				};
+
+				if(dates.from.valueOf() != d1.valueOf()){
+					dates.from = d1;
+				};
+
+				if(dates.to.valueOf() != d2.valueOf()){
+					dates.to = d2;
+				};
+
+				req.body.apartment.availability.push(dates);
+			};
+		};
+
+		// if((req.body.apartment.availability_from && 
+		//    foundApartment.availability_from.valueOf() != req.body.apartment.availability_from.valueOf()) || 
+		//    (req.body.apartment.availability_to &&
+		//    foundApartment.availability_to.valueOf() != req.body.apartment.availability_to.valueOf())){
+
+		// 	if(req.body.apartment.availability_from.valueOf() < today.valueOf() ||
+		// 	   req.body.apartment.availability_to.valueOf() < today.valueOf() ||
+		// 	   req.body.apartment.availability_from.valueOf() > 	
+		// 	   req.body.apartment.availability_to.valueOf()){
+		// 			req.flash("error", "Availability dates should be valid. Please try again.");
+		// 			return res.redirect("/apartments/" + foundApartment._id + "/edit");
+		// 	}
+		// }
 
 		// Get apartment object from new.ejs
 		req.body.apartment["place"] = Object.assign({}, req.body.place);

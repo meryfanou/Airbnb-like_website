@@ -257,16 +257,26 @@
 				</div>
 
 				<div class="form-group">
-					<label for="avail_from">Available from:</label>
-					<input class="form-control" type="date" name="apartment[availability_from]"
-						   id="avail_from" value="<%= apartment.availability_from %>">
+					<label style="position:relative; left:-35px; top:10px;">Availability Dates:</label>
+					<h5 class="pull-left" style="position:relative; top:45px;">
+						<strong>from:<br><br>
+							to:</strong>
+					</h5>
+					<div class="row text-center"
+						 style="display:flex; flex-wrap:wrap; justify-content:center;">
+					<%	var i = 0;
+					apartment.availability.forEach(function(dates){ %>
+						<div style="padding: 20px;">
+							<input class="form-control" type="date" name="availability[from_<%= i %>]"
+									id="avail_from" value="<%= dates.from %>">
+							<input class="form-control" type="date" name="availability[to_<%= i %>]"
+									id="avail_from" value="<%= dates.to %>">
+						</div>
+						<% i += 1;
+					}); %>
+					</div>
 				</div>
 
-				<div class="form-group">
-					<label for="avail_to">Available until:</label>
-					<input class="form-control" type="date" name="apartment[availability_to]"
-						   id="avail_to" value="<%= apartment.availability_to %>">
-				</div>
 				<div class="form-group">
 					<label for="capacity">Maximum number of guests:</label>
 					<input class="form-control" type="number" name="apartment[capacity]" min="1"

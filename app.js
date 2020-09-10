@@ -12,13 +12,14 @@ const express		 = require("express"),
 	  https			 = require("https"),
 	  User			 = require("./models/user"),
 	  Message		 = require("./models/message"),
-	  Apartment	 = require("./models/apartment");
+	  Apartment		 = require("./models/apartment");
 
-var userRoutes		 = require("./routes/users"),
-	messageRoutes	 = require("./routes/messages"),
-	apartmentRoutes  = require("./routes/apartments"),
-	indexRoutes		 = require("./routes/index"),
-	searchRoutes	 = require("./routes/search");
+var userRoutes		  = require("./routes/users"),
+	messageRoutes	  = require("./routes/messages"),
+	apartmentRoutes   = require("./routes/apartments"),
+	indexRoutes		  = require("./routes/index"),
+	searchRoutes	  = require("./routes/search"),
+	reservationRoutes = require("./routes/reservations");
 
 var port = process.env.PORT || 3000,
 	db_url = process.env.DATABASEURL || "mongodb://localhost/airbnb";
@@ -67,6 +68,7 @@ app.use("/users/:id/messages", messageRoutes);
 app.use("/apartments", apartmentRoutes);
 app.use("/", indexRoutes);
 app.use("/search", searchRoutes);
+app.use("/reservations", reservationRoutes);
 
 
 https.createServer({

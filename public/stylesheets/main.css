@@ -205,3 +205,39 @@ output {
   background-color: #ddd;
   border-radius: 5px;
 }
+
+
+/* ----------------------------------------- Cloud Button ------------------------------------------- */
+
+.cloud-button form {
+  text-decoration: none;
+  color:crimson;
+  position: relative;
+  left: 262px;
+  top: -90px;
+  transition: transform 0.2s;
+}
+
+.cloud-button form:hover {
+  transform: scale(1.1);
+}
+
+.cloud-shape svg {
+  height: 60%;
+  width: 92%;
+}
+.cloud-shape path {
+  fill: crimson;
+  opacity: 0.5;
+  stroke: crimson;
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+/* 
+.cloud-shape path:hover {
+  fill: crimson;
+  opacity: 0.5;
+  stroke: crimson;
+  /* fill: transparent;
+  stroke: crimson; */
+} */

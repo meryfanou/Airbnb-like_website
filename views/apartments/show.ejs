@@ -93,24 +93,42 @@
 				<h4 align="center">
 					<li> <strong> Availability: 
 						<%	function getToday(){
-								var today = new Date();
-								var dd = String(today.getDate()).padStart(2, '0');
-								var mm = String(today.getMonth() + 1).padStart(2, '0');
-								var yyyy = today.getFullYear();
-								return yyyy + '-' + mm + '-' + dd;
-							}
+							var today = new Date();
+							var dd = String(today.getDate()).padStart(2, '0');
+							var mm = String(today.getMonth() + 1).padStart(2, '0');
+							var yyyy = today.getFullYear();
+							return yyyy + '-' + mm + '-' + dd;
+						}
 
-							var today = getToday();
-							if(apartment.availability_to < today.valueOf()){ %>
-							No longer available
-						<% }else{
-							if(apartment.availability_from < today.valueOf()){ %>
-								<%= today %> - 
-							<% }else{ %>
-								<%= apartment.availability_from %> - 
-							<% } %>
-							<%= apartment.availability_to %>
-						<% } %>
+						var today = getToday();
+						var i = 0;
+						apartment.availability.forEach(function(dates){
+							if(dates.to.valueOf() < today.valueOf()){ %>
+								No longer available
+							<% }else{
+								if(i > 0){ %>
+									, 
+								<% }
+								if(dates.from.valueOf() < today.valueOf()){ %>
+									<%= today %> -
+								<% }else{ %>
+									<%= dates.from %> -
+								<% }; %>
+								<%= dates.to %>
+							<% };
+							i += 1;
+						}); %>
+
+						 	<!-- if(apartment.availability_to < today.valueOf()){  -->
+						<!-- 	No longer available -->
+						  <!-- }else{ -->
+						 	<!-- if(apartment.availability_from < today.valueOf()){  -->
+						 		 <!-- today - 
+						 	 }else{ 
+						 		 apartment.availability_from - 
+						 	}
+						 	 apartment.availability_to 
+						  }  -->
 						</strong><i class="far fa-calendar-alt"></i>
 					</li>
 				</h4>

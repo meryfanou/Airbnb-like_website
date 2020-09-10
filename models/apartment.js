@@ -47,21 +47,25 @@ var apartmentSchema = mongoose.Schema({
 	],
 	price_min: Number,
 	extra_charge_per_guest: Number,
-	availability_from: String,			// dates availble to rent
-	availability_to: String,			// dates availble to rent
+	availability: [
+		{
+			from: String,
+			to:	  String
+		}
+	],
 	capacity: Number,					// maximum number of persons
 	host: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: "User"
 	},
-									   
 	reservations: [
 		{
 			tenant: {
 				type: mongoose.Schema.Types.ObjectId,
 				ref: "User"
 			},
-			time_period: String
+			from: String,
+			to: String,
 		}
 	],
 	reviews: [
