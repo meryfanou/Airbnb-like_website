@@ -21,9 +21,15 @@ router.post("/", function(req, res){
 		country = null,
 		region = null;
 
-	var str_array = location.split(/,| /),
+
+	// location = location.split(" ").join("");
+	var str_array = location.split(/[ ,]+/),
 		args = str_array.length;
 
+	// str_array = str_array.split(" ").join("");
+	
+	console.log(str_array);
+	
 	switch (args) {
 		case 2:
 			if(!isNaN(str_array[0])){
@@ -72,7 +78,7 @@ router.post("/", function(req, res){
 		region:		region,
 		country:	country
 	};
-
+	
 	Apartment.find({}, function(err, results){
 		if(err){
 			req.flash("error", err.message);
@@ -98,12 +104,17 @@ router.post("/", function(req, res){
 				diff = Math.round((d2-d1)/one_day);
 
 			results.forEach(function(apartment){
-				var info_addr = apartment.location.address.split(',');
+				
+				var info_addr = apartment.location.address.split(" ").join("");
+				info_addr = info_addr.split(',');
+				// var info_addr = apartment.location.address.split(',');
 				var validLocation=0;
-
+				
+				console.log(info_addr);
+				
 				for(var element of Object.values(locationObj)){
 					if(element != null){
-						if(!isNaN(element)){
+						if(!isNaN(element) && !isNaN(info_addr[1]) ){				//error fixed
 							if(element.slice(0,3) == info_addr[1].slice(0,3)){
 								validLocation+= 1;
 							}
