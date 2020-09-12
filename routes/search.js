@@ -1,7 +1,10 @@
 const 	express	 	= require("express"),
 	  	router	 	= express.Router(),
 	  	Apartment	= require("../models/apartment"),
-	  	url			= require("url");
+	  	url			= require("url"),
+		greekUtils = require('greek-utils');
+
+var tr = require('transliteration').transliterate;
 
 
 // function hasNumber(myString) {
@@ -75,6 +78,10 @@ router.post("/", function(req, res){
 		country:	country
 	};
 	
+	console.log(area);
+	console.log(region);
+	console.log(country);
+	
 	Apartment.find({}).populate("host").populate("reservations").populate("reviews")
 	.exec(function(err, results){
 		if(err){
@@ -104,6 +111,7 @@ router.post("/", function(req, res){
 				
 				var info_addr = apartment.location.address.split(" ").join("");
 				info_addr = info_addr.split(',');
+				console.log(info_addr);
 				// var info_addr = apartment.location.address.split(',');
 				var validLocation=0;
 
@@ -113,7 +121,7 @@ router.post("/", function(req, res){
 							if(element.slice(0,3) == info_addr[1].slice(0,3)){
 								validLocation+= 1;
 							}
-						}else if(info_addr.includes(element)){
+						}else if(info_addr.includes(tr(element))){					//tr == translated search
 								validLocation += 1;
 						}
 					}

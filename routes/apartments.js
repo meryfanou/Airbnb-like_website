@@ -5,7 +5,16 @@ const express	 	= require("express"),
 	  cloudinary 	= require("cloudinary"),
 	  User		 	= require("../models/user"),
 	  apartment 	= require("../models/apartment"),
-	  NodeGeocoder 	= require("node-geocoder");
+	  NodeGeocoder 	= require("node-geocoder"),
+	  transliteration = require('transliteration'),
+	  greekUtils = require('greek-utils');
+	
+var tr = require('transliteration').transliterate;
+
+
+	// import { transliterate as tr } from 'transliteration';
+
+// import { transliterate as tr } from 'transliteration';
 
 
 var options = {
@@ -138,6 +147,10 @@ router.post("/", middleware.isLoggedIn, upload.array("images", 30), async(req,re
 	for([key, value] of Object.entries(req.body)){
 		if(typeof value == 'string' && value == 'reverse_geocoding'){
 			req.body.apartment.location.address = key;
+			console.log(req.body.apartment.location.address);
+			var greeklish = greekUtils.toGreeklish(req.body.apartment.location.address);
+			console.log(tr('Γεια σας, τον κόσμο')); // Geia sas, ton kosmo
+			console.log(greeklish);
 			reverse_geocoding = true;
 			break;
 		}
@@ -145,6 +158,9 @@ router.post("/", middleware.isLoggedIn, upload.array("images", 30), async(req,re
 
 	var latitude;
 	var longitude;
+	
+	// var greeklish = greekUtils.toGreeklish('Εύηχο: αυτό που ακούγεται ωραία.');
+	// console.log(greeklish); //Euhxo: auto pou akougetai wraia.	
 	
 	geocoder.geocode(req.body.apartment.location.address, function(err, data){
     	if(err){
@@ -166,7 +182,14 @@ router.post("/", middleware.isLoggedIn, upload.array("images", 30), async(req,re
 		if(reverse_geocoding){
 			req.body.apartment.location.address += "," + data[0].country;
 		}
+		
     	// req.body.apartment.location.address 	= 		data[0].formattedAddress;
+		// console.log(data[0]);
+		// console.log(data[0].formattedAddress);
+		// console.log(req.body.apartment.location.address);
+		// console.log(tr(req.body.apartment.location.address)); // Geia sas, ton kosmo
+		
+		req.body.apartment.location.address = tr(req.body.apartment.location.address);		//Making Normal Geocoding and Reverse in english format
 		
 	// });
 	
@@ -432,6 +455,8 @@ router.put("/:id",  middleware.checkApartmentOwnership, upload.array("images", 1
     	req.body.apartment.location.lat 		=    	data[0].latitude;
     	req.body.apartment.location.lng  		=     	data[0].longitude;
 		
+		req.body.apartment.location.address = tr(req.body.apartment.location.address);		//Making Normal Geocoding and Reverse in english format
+			
 			// Find current user in db
 			User.findById(req.user._id, function(err, user){
 				if(err){
@@ -498,6 +523,7 @@ router.delete("/:id", middleware.checkApartmentOwnership, function(req,res){
 		}
 	});
 });
+
 
 
 module.exports = router;

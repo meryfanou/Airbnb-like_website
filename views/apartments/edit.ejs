@@ -449,7 +449,10 @@
   				console.log(map); // nothing should actually happen to the value of mymap
 			}
 
-			map = L.map('mapid').setView([40.725, -73.985], 13);
+			
+			map = L.map('mapid').setView([ <%= apartment.location.lat %> , <%= apartment.location.lng %> ], 15);
+			var marker = L.marker([ <%= apartment.location.lat %> , <%= apartment.location.lng %> ]).addTo(map);
+			marker.bindPopup("<b> <%= apartment.name %> </b><br><%= apartment.location.address %>.").openPopup();
 			// document.getElementById('mapid').innerHTML = "<div id='map' style='width: 100%; height: 100%;'></div>";
 
 			
@@ -495,6 +498,8 @@
 					popup.openOn(map);
 					marker = L.marker(result.latlng).addTo(map);
 					marker.bindPopup("<b>You clicked at:<b>" + result.address.Match_addr).openPopup();
+					
+					σδ
 					
 					// $("addr").hide();
 					// var addr= document.getElementById("addr").style.visibility="hidden";
