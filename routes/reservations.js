@@ -7,7 +7,8 @@ const	express	 	= require("express"),
 
 router.post("/:tenant_id/:apartment_id",function(req,res){
 	var check_in  = req.query.check_in,
-		check_out = req.query.check_out;
+		check_out = req.query.check_out,
+		guests	  = req.query.guests;
 
 	Apartment.findById(req.params.apartment_id, function(err,foundApartment){
 		if(err){
@@ -18,7 +19,8 @@ router.post("/:tenant_id/:apartment_id",function(req,res){
 		var reservation = {
 			tenant: req.params.tenant_id,
 			from:	check_in,
-			to:		check_out
+			to:		check_out,
+			guests:	guests
 		};
 
 		// Add new reservation
@@ -31,7 +33,7 @@ router.post("/:tenant_id/:apartment_id",function(req,res){
 				var temp, dd, mm, yyyy, date;
 				var newDates = {};
 
-				if(check_in.valueOf > dates.from.valueOf){
+				if(check_in.valueOf() > dates.from.valueOf()){
 					temp = dates.to;
 
 					// Get previous day from check in
@@ -58,6 +60,7 @@ router.post("/:tenant_id/:apartment_id",function(req,res){
 							from: yyyy + '-' + mm + '-' + dd,
 							to:   temp
 						};
+
 					}
 				}else if(check_out.valueOf() < dates.to.valueOf()){
 					// Get next day from check out
@@ -97,19 +100,13 @@ router.post("/:tenant_id/:apartment_id",function(req,res){
 			pathname: "/search/" + foundApartment._id,
 			query: {
 				"num_days":		req.query.num_days,
-				"guests":		req.query.guests,
+				"guests":		guests,
 				"check_in":		check_in,
 				"check_out":	check_out
 			}
 		}));
 	});
 });
-
-
-
-
-
-
 
 
 

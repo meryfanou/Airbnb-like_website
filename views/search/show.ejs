@@ -517,9 +517,12 @@
 							<li><i class="fa fa-user" aria-hidden="true"></i>
 								 <%= apartment.host.firstname %> <%= apartment.host.lastname %><br><br>
 							</li>
-							<li><i class="fas fa-envelope"></i> 
-								<!-- <%= apartment.host.email %><br><br> -->
-								<a href=""> <%= apartment.host.email %></a><br><br>
+							<li><i class="fas fa-envelope"></i>
+								<% if(currentUser && currentUser.app_role.includes("tenant")){ %>
+									<a href=""> <%= apartment.host.email %></a><br><br>
+								<% }else{ %>
+									<%= apartment.host.email %><br><br>
+								<% } %>
 							</li>
 							<li><i class="fas fa-phone"></i> 
 								 <%= apartment.host.phone_number %><br><br>

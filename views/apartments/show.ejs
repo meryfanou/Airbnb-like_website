@@ -7,21 +7,22 @@
 <div class="container">
 	<div class="row">
 		<div class="col-md-12">
-			<div class="thumbnail">
+			<div class="thumbnail" style="border:none;">
 				<img class="img-responsive" src="<%= apartment.main_image.url %>"
-					 style="object-fit:cover; width:auto; height:450px;">
+					 style="object-fit:cover; width:auto; height:450px; border-radius:8px;">
 				<div class="caption-full">
-					<em style="font-size:160%;"> <a> <%= apartment.name %> </a> </em>
+					<em style="font-size:160%; margin-left:20%; margin-right:20%;">
+						<a> <%= apartment.name %> </a> </em>
 
-					<div class="row" style="margin-left: auto; margin-right: auto; display:inline-block;">
+					<h4 class="pull-right" style="margin-right:26%">
 						<% if(currentUser && apartment.host._id.equals(currentUser._id)){ %>
-							<a class="btn btn-sm btn-warning" href="/apartments/<%= apartment._id %>/edit"
-						   		style="position: absolute; left: 1040px;">
+							<a class="btn btn-sm btn-warning" href="/apartments/<%= apartment._id %>/edit">
 								Edit
 							</a>
+					</h4>
 
+					<h4 class="pull-right" style="position:relative; left:9%;">
 							<form action="/apartments/<%= apartment._id %>?_method=DELETE" method="POST"
-								  style="position: absolute; left: 1090px; display: block;"
 								  onsubmit="return confirmDeletion()">
 								<button class="btn btn-sm btn-danger">
 									Delete
@@ -41,9 +42,9 @@
 								}
 							</script>
 						<% } %>
-					</div>
+					</h4>
 
-					<h4 style="padding:5px;">
+					<h4 style="padding:5px; margin-left:20%; margin-right:20%;">
 						&euro;<%= apartment.price_min %>/night
 					</h4>
 				</div>
@@ -101,26 +102,31 @@
 						}
 
 						var today = getToday();
-						var i = 0;
+						var i = 0, invalid = 0;
 						if(apartment.availability.length == 0){ %>
 							No longer available
 						<% }else{
 							apartment.availability.forEach(function(dates){
-								if(dates.to.valueOf() < today.valueOf()){ %>
-									No longer available
-								<% }else{
+								if(dates.to.valueOf() < today.valueOf()){
+									invalid += 1;
+								}else{
 									if(i > 0){ %>
 										, 
 									<% }
-									if(dates.from.valueOf() < today.valueOf()){ %>
-										<%= today %> -
-									<% }else{ %>
-										<%= dates.from %> -
-									<% }; %>
+									if(dates.from.valueOf() != dates.to.valueOf()){
+										if(dates.from.valueOf() < today.valueOf()){ %>
+											<%= today %> -
+										<% }else{ %>
+											<%= dates.from %> -
+										<% };
+									} %>
 									<%= dates.to %>
 								<% };
 								i += 1;
 							});
+							if(invalid == apartment.availability.length){ %>
+								No longer available
+							<% }
 						} %>
 						</strong><i class="far fa-calendar-alt"></i>
 					</li>
@@ -463,6 +469,47 @@
 	   captionText.innerHTML = dots[slideIndex-1].alt;
 	}
 </script>
+
+<% if(apartment.reservations.length > 0){ %>
+	<br><div class="container">
+		<div class="jumbotron" style="height:auto;">
+			<h4 style="background-color:crimson; border-radius:25px; color:white; width:30%;
+					   text-align:center; margin-top:-3%; margin-left:35%; padding:8px;">
+				Reservations
+			</h4><br><br>
+			<h4	style="list-style-type:none;">
+				<% var i = 0;
+				apartment.reservations.forEach(function(reservation){ %>
+				<li style="position:relative; top:-20px; text-align:center; margin-left:0.5%;
+						   margin-right:0.5%;">
+					<div class="col-lg-4">
+						<% if(reservation.to.valueOf() >= getToday().valueOf()){ %>
+							<i class="far fa-calendar-alt" style="color:green;"></i>
+						<% }else{ %>
+							<i class="far fa-calendar-alt" style="color:red;"></i>
+						<% } %>
+						 <%= reservation.from %> - <%= reservation.to %>
+					</div>
+					<div class="col-lg-4">
+						by <%= reservation.tenant.firstname %> <%= reservation.tenant.lastname %>
+					</div>
+					<div class="col-lg-4">
+						<%= reservation.guests %> guests
+					</div>
+					<% if(i < (apartment.reservations.length - 1)){ %>
+						<svg height="30" width="950"
+							 style="position:relative; top:15px; margin-left:2%; margin-right:2%;">
+							<line x1="1" y1="0" x2="950" y2="0"
+								  style="stroke:rgb(0,0,0,0.2);stroke-width:2;" />
+						</svg><br>
+					<% }
+					i += 1; %>
+				</li>
+				<% }); %>
+			</h4>
+		</div>
+	</div>
+<% } %>
 
 
 <%- include("../partials/footer") %>

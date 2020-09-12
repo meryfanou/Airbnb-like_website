@@ -66,6 +66,7 @@ var apartmentSchema = mongoose.Schema({
 			},
 			from: String,
 			to: String,
+			guests: String
 		}
 	],
 	reviews: [
