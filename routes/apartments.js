@@ -147,10 +147,7 @@ router.post("/", middleware.isLoggedIn, upload.array("images", 30), async(req,re
 	for([key, value] of Object.entries(req.body)){
 		if(typeof value == 'string' && value == 'reverse_geocoding'){
 			req.body.apartment.location.address = key;
-			console.log(req.body.apartment.location.address);
 			var greeklish = greekUtils.toGreeklish(req.body.apartment.location.address);
-			console.log(tr('Γεια σας, τον κόσμο')); // Geia sas, ton kosmo
-			console.log(greeklish);
 			reverse_geocoding = true;
 			break;
 		}

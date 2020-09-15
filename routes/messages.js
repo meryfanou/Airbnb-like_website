@@ -63,6 +63,7 @@ router.get("/host/:host_id/:apartment_id", function(req,res){
 		for(var mail of host.messages){
 			if(mail.apartment._id.equals(apartment._id)){
 				for(var message of mail.conversation){
+
 					if(message.sender._id.equals(host._id)){
 						sent.push(message);
 					}else{
@@ -115,9 +116,9 @@ router.get("/:user/:apartment/new", function(req,res){
 
 
 // Create Route
-router.post("/:tenant/:apartment", function(req,res){
-	User.findById(req.params.tenant).populate("messages.apartment").populate("messages.conversation")
-	.exec(function(err, tenant){
+router.post("/:user/:apartment", function(req,res){
+	User.findById(req.params.user).populate("messages.apartment").populate("messages.conversation")
+	.exec(function(err, user){
 		if(err){
 			req.flash("error", err.message);
 			return res.redirect("back");
@@ -132,15 +133,8 @@ router.post("/:tenant/:apartment", function(req,res){
 				return res.redirect("back");
 			}
 
-			var sender, recipient;
-
-			if(req.query.sender == "tenant"){
-				sender = tenant._id;
-				recipient = apartment.host._id;
-			}else{
-				sender = apartment.host._id;
-				recipient = tenant._id;
-			}
+			var sender = user._id;
+			var recipient = req.query.recipient;
 
 			var message = {
 				subject:	req.body.subject,
@@ -160,10 +154,10 @@ router.post("/:tenant/:apartment", function(req,res){
 				var updated = false;
 
 				// Add new message in tenant's mail
-				for(var mail of tenant.messages){
+				for(var mail of user.messages){
 					if(mail.apartment._id.equals(apartment._id)){
 						mail.conversation.push(newMessage);
-						tenant.save();
+						user.save();
 						updated = true;
 						break;
 					}
@@ -178,13 +172,13 @@ router.post("/:tenant/:apartment", function(req,res){
 						conversation: conversation
 					};
 
-					tenant.messages.push(mail);
-					tenant.save();
+					user.messages.push(mail);
+					user.save();
 				}
 
 				updated = false;
 
-				if(tenant._id.equals(apartment.host._id) == false){
+				if(user._id.equals(apartment.host._id) == false){
 					// Add new massage in host's mail
 					for(var mail of apartment.host.messages){
 						if(mail.apartment._id.equals(apartment._id)){
@@ -211,10 +205,10 @@ router.post("/:tenant/:apartment", function(req,res){
 				}
 
 				req.flash("success", "Your message was sent successfully.");
-				if(req.user._id.equals(tenant._id)){
-					res.redirect("/messages/tenant/" + tenant._id + "/" + apartment._id);
+				if(user._id.equals(apartment.host._id)){
+					res.redirect("/messages/host/" + user._id + "/" + apartment._id);
 				}else{
-					res.redirect("/messages/host/" + tenant._id + "/" + apartment._id);
+					res.redirect("/messages/tenant/" + user._id + "/" + apartment._id);
 				}
 			});
 		});
@@ -280,30 +274,30 @@ router.delete("/:user/:apartment/:message", function(req,res){
 								// If both users have deleted this message,
 								// it should be removed from the db as well
 								if(found == false){
-									Message.findByIdAndRemove(message, function(err){
+									Message.findByIdAndRemove(req.params.message, function(err){
 										if(err){
 											req.flash("error", err.message);
 											return res.redirect("back");
 										}
 
 										req.flash("success", "Message was deleted successfully.");
-										if(req.user._id.equals(apartment.host)){
-											return res.redirect("/messages/host/" + req.params.user + "/"
-														 + req.params.apartment);
+										if(foundUser._id.equals(apartment.host)){
+											return res.redirect("/messages/host/" + foundUser._id + "/"
+														 + apartment._id);
 										}else{
-											return res.redirect("/messages/tenant/" + req.params.user + "/"
-														 + req.params.apartment);
+											return res.redirect("/messages/tenant/" + foundUser._id + "/"
+														 + apartment._id);
 										}
 									});
 								}
 
 								req.flash("success", "Message was deleted successfully.");
-								if(req.user._id.equals(apartment.host)){
-									return res.redirect("/messages/host/" + req.params.user + "/"
-											+ req.params.apartment);
+								if(foundUser._id.equals(apartment.host)){
+									return res.redirect("/messages/host/" + foundUser._id + "/"
+											+ apartment._id);
 								}else{
-									return res.redirect("/messages/tenant/" + req.params.user + "/"
-											+ req.params.apartment);
+									return res.redirect("/messages/tenant/" + foundUser._id + "/"
+											+ apartment._id);
 								}
 							});
 							break;

@@ -1,11 +1,13 @@
 <%- include("../../partials/header") %>
 
-<p>
-	From: <%= message.sender.email %><br>
-	To: <%= message.recipient.email %><br>
-	Subject: <%= message.subject %><br>
-	Text: <%= message.content %>
-</p><br>
+From: <%= message.sender.email %><br>
+To: <%= message.recipient.email %><br>
+Subject: <%= message.subject %><br>
+Text: <%= message.content %><br>
+<form method="POST"
+	action="/messages/<%=currentUser._id%>/<%=apartment%>/<%=message._id%>?_method=DELETE">
+	<button class="btn btn-sm btn-danger">Delete</button>
+</form><br>
 
 <% if(message.recipient._id.equals(currentUser._id)){
 	var recipient = JSON.stringify(message.sender); %>

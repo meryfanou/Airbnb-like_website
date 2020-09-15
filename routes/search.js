@@ -24,7 +24,6 @@ router.post("/", function(req, res){
 		country = null,
 		region = null;
 
-
 	// location = location.split(" ").join("");
 	var str_array = location.split(/[ ,]+/),
 		args = str_array.length;
@@ -78,10 +77,6 @@ router.post("/", function(req, res){
 		country:	country
 	};
 	
-	console.log(area);
-	console.log(region);
-	console.log(country);
-	
 	Apartment.find({}).populate("host").populate("reservations").populate("reviews")
 	.exec(function(err, results){
 		if(err){
@@ -111,7 +106,6 @@ router.post("/", function(req, res){
 				
 				var info_addr = apartment.location.address.split(" ").join("");
 				info_addr = info_addr.split(',');
-				console.log(info_addr);
 				// var info_addr = apartment.location.address.split(',');
 				var validLocation=0;
 
