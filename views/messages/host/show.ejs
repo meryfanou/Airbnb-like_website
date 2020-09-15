@@ -1,0 +1,15 @@
+<%- include("../../partials/header") %>
+
+<p>
+	From: <%= message.sender.email %><br>
+	To: <%= message.recipient.email %><br>
+	Subject: <%= message.subject %><br>
+	Text: <%= message.content %>
+</p><br>
+
+<% if(message.recipient._id.equals(currentUser._id)){
+	var recipient = JSON.stringify(message.sender); %>
+	<a href="/messages/<%=currentUser._id%>/<%=apartment%>/new?recipient=<%=recipient%>">Reply</a>
+<% } %>
+
+<%- include("../../partials/footer") %>

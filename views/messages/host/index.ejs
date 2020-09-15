@@ -1,0 +1,22 @@
+<%- include("../../partials/header") %>
+
+<h4>Inbox</h4>
+<p>
+	<% for(var message of inbox){ %>
+		From: <%= message.sender.email %>
+		Subject: <%= message.subject %>
+		<a href="/messages/host/<%=currentUser._id%>/<%=apartment._id%>/<%=message._id%>">Read More</a><br>
+	<% } %>
+</p>
+
+<h4>Sent</h4>
+<p>
+	<% for(var message of sent){ %>
+		To: <%= message.recipient.email %>
+		Subject: <%= message.subject %>
+		<a href="/messages/host/<%=currentUser._id%>/<%=apartment._id%>/<%=message._id%>">Read More</a><br>
+	<% } %>
+</p>
+
+
+<%- include("../../partials/footer") %>
