@@ -188,8 +188,9 @@ router.post("/", function(req, res){
 
 // SHOW Route - show more info about one specific search result
 router.get("/:id", function(req,res){
-	Apartment.findById(req.params.id).populate("reviews").populate("host")
-	.populate("reservations").exec(function(err, foundApartment){
+	Apartment.findById(req.params.id).populate("reviews").populate("reservations")
+	.populate({ path:"host", populate: { path:"reviews", populate: { path:"author" }}})
+	.exec(function(err, foundApartment){
 		if(err){
 			req.flash("error", err.message);
 			res.redirect("back");

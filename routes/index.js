@@ -61,6 +61,7 @@ console.log("2");
 			req.body.user.username = req.body.username;
 			req.body.user["messages"] = [];
 			req.body.user["apartments"] = [];
+			req.body.user["reviews"] = [];
 
 			if(req.body.password != req.body.confirm_password){
 				req.flash("error", "Password confirmation failed. Please try again.");
@@ -93,6 +94,7 @@ console.log("2");
 		req.body.user.username = req.body.username;
 		req.body.user["messages"] = [];
 		req.body.user["apartments"] = [];
+		req.body.user["reviews"] = [];
 
 		if(req.body.password != req.body.confirm_password){
 			req.flash("error", "Password confirmation failed. Please try again.");

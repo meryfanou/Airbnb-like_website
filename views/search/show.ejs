@@ -527,7 +527,7 @@
 										if( i < average ) { %>
 											<span class="fa fa-star" style="color:gold"></span>
 										<% }else { %>
-											<span class="fa fa-star"></span>
+											<span class="far fa-star" style="color:gold"></span>
 										<%	}
 									}else{
 										if( i == average) {%>
@@ -535,7 +535,7 @@
 										<% }else if(i < average){ %>	
 											<span class="fa fa-star" style="color:gold"></span>
 										<%	}else{%>
-											<span class="fa fa-star"></span>
+											<span class="far fa-star" style="color:gold"></span>
 										<%	}
 									}
 								}  %>
@@ -575,7 +575,7 @@
 								</li><br>
 							<% } %>
 						</ul>
-						<a class="outline-button" href="/reviews/host/<%=apartment.host._id%>"
+						<a class="outline-button" href="/reviews/host/<%=apartment._id%>"
 						   style="position:relative; left:125px; font-size:100%; text-decoration: none;">
 							<strong>&nbsp;Read More&nbsp;</strong>
 						</a>

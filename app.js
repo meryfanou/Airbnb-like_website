@@ -12,7 +12,8 @@ const express		 = require("express"),
 	  https			 = require("https"),
 	  User			 = require("./models/user"),
 	  Message		 = require("./models/message"),
-	  Apartment		 = require("./models/apartment");
+	  Apartment		 = require("./models/apartment"),
+	  Review		 = require("./models/review");
 
 var userRoutes		  = require("./routes/users"),
 	messageRoutes	  = require("./routes/messages"),

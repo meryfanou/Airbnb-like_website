@@ -71,12 +71,8 @@ var apartmentSchema = mongoose.Schema({
 	],
 	reviews: [
 		{
-			rating: Number,
-			text: String,
-			author: {
-				type: mongoose.Schema.Types.ObjectId,
-				ref: "User"
-			}
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "Review"
 		}
 	]
 });

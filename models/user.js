@@ -42,14 +42,8 @@ var userSchema = mongoose.Schema({
 	],
 	reviews: [
 		{
-			about: String,
-			rating: Number,
-			text: String,
-			date: String,
-			author: {
-				type: mongoose.Schema.Types.ObjectId,
-				ref: "User"
-			}
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "Review"
 		}
 	]
 });
