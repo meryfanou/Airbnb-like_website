@@ -26,12 +26,79 @@
 	height: 45em; 
 }
 
-/* body { 
-	margin:0; 
-	padding:0; 
-} */
+/*--------------------------------------- Host Mail Index Page --------------------------------------*/
 
-/* ------------------------------ Slideshow for Apartment Images --------------------------------- */
+.mail_column {
+	float: left;
+	width: 42%;
+	margin-top:4%;
+	border-radius: 10px;
+	padding: 3%;
+	background-color: rgba(0,0,0,0.15);
+}
+
+.mail_column h3 {
+	color: white;
+	background-color: crimson;
+	border-radius: 25px;
+	width: 30%;
+	text-align: center;
+	padding: 5px;
+	margin-left: 35%;
+	margin-top: -4%;
+}
+
+.mail_column li {
+	border-style: none none none solid;
+	border-color: rgba(0,0,0,0.4);
+	padding: 3%;
+	margin-left: -5%;
+	transition: background-color 0.25s;
+}
+
+.mail_column li:hover {
+	background-color: rgba(0,0,0,0.1);
+}
+
+.mail_column a {
+	text-decoration: none;
+	color: rgba(0,0,0,0.6);
+	font-size: 108%;
+}
+
+.mail_column a:hover {
+	color: rgba(0,0,0,0.7);
+}
+
+.mail_column p {
+	text-align: center;
+	font-size: 175%;
+	color: rgba(0,0,0,0.6);
+	font-family: URW Chancery L, cursive;
+}
+
+/*------------------------------------- Host Mail Show Page ----------------------------------------*/
+
+body, html {
+  height: 100%;
+  margin: 0;
+}
+
+.mail_bg_img {
+	position: fixed;
+	width: 100%;
+	z-index: 2;
+    height:100%;
+	opacity: 0.9;
+	overflow: auto;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-clip: border-box;
+}
+
+
+/* --------------------------------- Slideshow for Apartment Images --------------------------------- */
 
 * {
   box-sizing: border-box;

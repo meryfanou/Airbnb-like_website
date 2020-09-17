@@ -65,7 +65,7 @@ app.use(function(req, res, next){
 });
 
 app.use("/users", userRoutes);
-app.use("/users/:id/messages", messageRoutes);
+app.use("/messages", messageRoutes);
 app.use("/apartments", apartmentRoutes);
 app.use("/", indexRoutes);
 app.use("/search", searchRoutes);

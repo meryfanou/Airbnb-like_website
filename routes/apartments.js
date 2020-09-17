@@ -147,10 +147,7 @@ router.post("/", middleware.isLoggedIn, upload.array("images", 30), async(req,re
 	for([key, value] of Object.entries(req.body)){
 		if(typeof value == 'string' && value == 'reverse_geocoding'){
 			req.body.apartment.location.address = key;
-			console.log(req.body.apartment.location.address);
 			var greeklish = greekUtils.toGreeklish(req.body.apartment.location.address);
-			console.log(tr('Γεια σας, τον κόσμο')); // Geia sas, ton kosmo
-			console.log(greeklish);
 			reverse_geocoding = true;
 			break;
 		}
@@ -265,7 +262,7 @@ router.put("/:id",  middleware.checkApartmentOwnership, upload.array("images", 1
 						var index = req.body.apartment.images.indexOf(image);
 						var part1 = req.body.apartment.images.slice(0, index);
 						var part2 = req.body.apartment.images.slice(index+1,
-																	req.body.apartment.images.length+1);
+																	req.body.apartment.images.length);
 						req.body.apartment.images = part1.concat(part2);
 					}
 				}
@@ -505,7 +502,7 @@ router.delete("/:id", middleware.checkApartmentOwnership, function(req,res){
 				if(apartment._id == req.params.id){
 					var index = user.apartments.indexOf(apartment);
 					var part1 = user.apartments.slice(0, index);
-					var part2 = user.apartments.slice(index+1,user.apartments.length+1);
+					var part2 = user.apartments.slice(index+1,user.apartments.length);
 					user.apartments = part1.concat(part2);
 				}
 			}

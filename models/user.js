@@ -22,8 +22,16 @@ var userSchema = mongoose.Schema({
 	},
 	messages: [
 		{
-			type: mongoose.Schema.Types.ObjectId,
-			ref: "Message"
+			apartment: {
+				type: mongoose.Schema.Types.ObjectId,
+				ref: "Apartment"
+			},
+			conversation: [
+				{
+					type: mongoose.Schema.Types.ObjectId,
+					ref: "Message"
+				}
+			]
 		}
 	],
 	apartments: [

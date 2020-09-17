@@ -519,7 +519,8 @@
 							</li>
 							<li><i class="fas fa-envelope"></i>
 								<% if(currentUser && currentUser.app_role.includes("tenant")){ %>
-									<a href=""> <%= apartment.host.email %></a><br><br>
+									<a href="/messages/tenant/<%=currentUser._id%>/<%=apartment._id%>">
+										<%= apartment.host.email %></a><br><br>
 								<% }else{ %>
 									<%= apartment.host.email %><br><br>
 								<% } %>

@@ -1,7 +1,9 @@
 <%- include("../partials/header") %>
 
-<p style="position: relative; left:1%; top:10%; font-size:115%;">
-	<a href="/users/<%= currentUser._id %>/host">Host Page</a>
+<p style="font-size:115%;">
+	<a href="/users/<%= currentUser._id %>/host" style="margin-left:1%">Host Page</a>
+	<a href="/messages/host/<%= currentUser._id %>/<%= apartment._id %>" style="margin-left:85%;">
+		Messages</a>
 </p><br><br>
 
 <div class="container">

@@ -1,7 +1,7 @@
 <%- include("./partials/header") %>
 
 <% if(currentUser && currentUser.app_role.includes("host")){ %>
-	<p style="position: relative; left:1%; top:10%; font-size:110%;">
+	<p style="position: relative; left:1%; top:3%; font-size:110%;">
 		<a href="/users/<%= currentUser._id %>/host">Host Page</a>
 	</p>
 <% } %>

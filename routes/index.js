@@ -47,13 +47,16 @@ router.get("/register", function(req, res){
 // Handle sing up logic
 router.post("/register", upload.single("image"), function(req, res){
 	req.body.user.picture = [];
-
+console.log("1");
 	// If user has uploaded a profile picture
 	if(req.file){
+console.log("2");
 		cloudinary.uploader.upload(req.file.path, function(result){
 			// We want to store the image's secure_url (https://)
-			req.body.user.picture.url = result.secure_url;
-			req.body.user.picture.public_id = result.public_id;
+			req.body.user["picture"] = {
+				url: result.secure_url,
+				public_id: result.public_id
+			}
 
 			req.body.user.username = req.body.username;
 			req.body.user["messages"] = [];
@@ -69,6 +72,7 @@ router.post("/register", upload.single("image"), function(req, res){
 						req.flash("error", err.message);
 						return res.redirect("/register");
 					}
+
 					passport.authenticate("local")(req, res, function(){
 						req.flash("success", "Welcome to Airbnb " + user.username);
 						if(user.app_role.includes("host")){
@@ -76,7 +80,7 @@ router.post("/register", upload.single("image"), function(req, res){
 									  "The approval of your registration in Airbnb as a host is pending");
 							return res.redirect("/users/" + req.user._id + "/host");
 						}
-						res.redirect("/");
+						return res.redirect("/");
 					})
 				});
 			}
@@ -234,7 +238,11 @@ router.put("/:id", upload.single("image"), function(req,res){
 			}
 
 			req.flash("success","Profile updated succesfully!");
-			res.redirect("/users/" + updatedUser._id + "/host");
+			if(updatedUser.app_role.includes("host")){
+				res.redirect("/users/" + updatedUser._id + "/host");
+			}else{
+				res.redirect("/");
+			}
 		});
 	});
 });
