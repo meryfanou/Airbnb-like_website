@@ -112,6 +112,13 @@
 									font-size:190%;	font-family:URW Chancery L, cursive; color:firebrick;">
 								Reservation!
 							</h5>
+						
+						
+						<a class="outline-button" href="/reviews/apartment/<%=apartment._id%>"
+							style="position:relative; left:50px; font-size:100%; text-decoration: none;">
+							<strong>&nbsp;Leave a Review!&nbsp;</strong>
+						</a>
+						
 						<% }else if(currentUser && currentUser.app_role.includes("tenant")){ %>
 							<div class="cloud-button">
 								<form class="pull-right" method="POST"
@@ -148,7 +155,7 @@
 						<% if(booked){ %>
 							style="font-size:25px;"
 						<% }else if(currentUser && currentUser.app_role.includes("tenant")){ %>
-							style="font-size:25px; margin-left:-57%;"
+							style="font-size:25px;"
 						<% }else{ %>
 							style="font-size:25px;"
 						<% } %>>

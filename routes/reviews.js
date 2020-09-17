@@ -6,6 +6,8 @@ const 	express 	= require("express"),
 
 // ROUTES
 
+// ----------------------------------------- REVIEWS FOR HOST  ----------------------------------------- //
+
 // NEW Route 
 router.get("/host/new", function(req, res){
 	var host = JSON.parse(req.query.host);
@@ -112,6 +114,7 @@ router.get("/host/:apartment_id", function(req,res){
 		}
 	});
 });
+
 
 // Delete Route
 router.delete("/host/:id", function(req,res){
