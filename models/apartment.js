@@ -71,7 +71,7 @@ var apartmentSchema = mongoose.Schema({
 	],
 	reviews: [
 		{
-			rating: String,
+			rating: Number,
 			text: String,
 			author: {
 				type: mongoose.Schema.Types.ObjectId,

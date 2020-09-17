@@ -31,6 +31,18 @@ var userSchema = mongoose.Schema({
 			type: mongoose.Schema.Types.ObjectId,
 			ref: "Apartment"
 		}
+	],
+	reviews: [
+		{
+			about: String,
+			rating: Number,
+			text: String,
+			date: String,
+			author: {
+				type: mongoose.Schema.Types.ObjectId,
+				ref: "User"
+			}
+		}
 	]
 });
 

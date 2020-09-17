@@ -19,7 +19,8 @@ var userRoutes		  = require("./routes/users"),
 	apartmentRoutes   = require("./routes/apartments"),
 	indexRoutes		  = require("./routes/index"),
 	searchRoutes	  = require("./routes/search"),
-	reservationRoutes = require("./routes/reservations");
+	reservationRoutes = require("./routes/reservations"),
+	reviewsRoutes	  = require("./routes/reviews");
 
 var port = process.env.PORT || 3000,
 	db_url = process.env.DATABASEURL || "mongodb://localhost/airbnb";
@@ -69,7 +70,7 @@ app.use("/apartments", apartmentRoutes);
 app.use("/", indexRoutes);
 app.use("/search", searchRoutes);
 app.use("/reservations", reservationRoutes);
-
+app.use("/reviews",reviewsRoutes);
 
 https.createServer({
   key: fs.readFileSync('server.key'),
