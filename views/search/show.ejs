@@ -514,30 +514,14 @@
 					<div class="col-lg-4">
 						<h4 align="left"
 							style="position:relative; left:40px; top:70px; list-style-type:none;">
-							<li><i class="fa fa-user" aria-hidden="true"></i>
-								 <%= apartment.host.firstname %> <%= apartment.host.lastname %><br><br>
-							</li>
-							<li><i class="fas fa-envelope"></i>
-								<% if(currentUser && currentUser.app_role.includes("tenant")){ %>
-									<a href="/messages/tenant/<%=currentUser._id%>/<%=apartment._id%>">
-										<%= apartment.host.email %></a><br><br>
-								<% }else{ %>
-									<%= apartment.host.email %><br><br>
-								<% } %>
-							</li>
-							<li><i class="fas fa-phone"></i> 
-								 <%= apartment.host.phone_number %><br><br>
-							</li>
 							<li>
-							
 								<% var average=0;
-
 								for(var review of apartment.host.reviews){
 									average += review.rating;
 								}
 
 								average = average/apartment.host.reviews.length;
-								
+
 								for(var i=1; i<10; i+=2){
 									if((average % 2) == 0){
 										if( i < average ) { %>
@@ -555,6 +539,20 @@
 										<%	}
 									}
 								}  %>
+							</li><br>
+							<li><i class="fa fa-user" aria-hidden="true"></i>
+								 <%= apartment.host.firstname %> <%= apartment.host.lastname %><br><br>
+							</li>
+							<li><i class="fas fa-envelope"></i>
+								<% if(currentUser && currentUser.app_role.includes("tenant")){ %>
+									<a href="/messages/tenant/<%=currentUser._id%>/<%=apartment._id%>">
+										<%= apartment.host.email %></a><br><br>
+								<% }else{ %>
+									<%= apartment.host.email %><br><br>
+								<% } %>
+							</li>
+							<li><i class="fas fa-phone"></i> 
+								 <%= apartment.host.phone_number %><br><br>
 							</li>
 						</h4>
 					</div>
@@ -565,9 +563,17 @@
 						</svg>
 						<ul align="left"
 							style="position:relative; top:-70px; left:5px; list-style-type:none;">
-							<li><i class="fas fa-comment"></i>
-								It's amazing!
-							</li><br>
+							<% var max =
+								(3<=apartment.host.reviews.length) ? 3 : apartment.host.reviews.length;
+							for(var i=0; i<max; i++){ %>
+								<li><i class="fas fa-comment"></i>
+									<% if(apartment.host.reviews[i].text.length > 30){ %>
+										<%= apartment.host.reviews[i].text.slice(0,30) %>...
+									<% }else{ %>
+										<%= apartment.host.reviews[i].text.slice(0,30) %>
+									<% } %>
+								</li><br>
+							<% } %>
 						</ul>
 						<a class="outline-button" href="/reviews/host/<%=apartment.host._id%>"
 						   style="position:relative; left:125px; font-size:100%; text-decoration: none;">
