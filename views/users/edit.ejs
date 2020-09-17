@@ -1,6 +1,6 @@
 <%- include("../partials/header") %>
 
-<p style="position: relative; left:1%; top:10%; font-size:115%;">
+<p style="position: relative; left:1%; top:3%; font-size:115%;">
 	<a href="/users/<%= currentUser._id %>/host">Host Page</a>
 </p>
 
@@ -52,6 +52,12 @@
 					<label for="lastname">Lastname:</label>
 					<input class="form-control" type="text" name="user[lastname]" id="lastname"
 						   value="<%= currentUser.lastname %>">
+				</div>
+
+				<div class="form-group">
+					<label for="app_role">Role:</label>
+					<input class="form-control" type="text" name="user[app_role]"
+						   id="app_role" value="<%= currentUser.app_role %>" readonly>
 				</div>
 
 				<div class="form-group">

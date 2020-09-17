@@ -29,7 +29,7 @@ router.get("/tenant/:tenant_id/:apartment", function(req,res){
 				}
 			}
 
-			res.render("messages/tenant/index", { apartment: apartment, conversation: conversation,
+			res.render("messages/tenant/show", { apartment: apartment, conversation: conversation,
 												  host: apartment.host});
 		});
 	});
@@ -136,9 +136,16 @@ router.post("/:user/:apartment", function(req,res){
 			var sender = user._id;
 			var recipient = req.query.recipient;
 
+			var today = new Date();
+			var dd = String(today.getDate()).padStart(2, '0');
+			var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+			var yyyy = today.getFullYear();
+			today = dd + '-' + mm + '-' + yyyy;
+
 			var message = {
 				subject:	req.body.subject,
 				content:	req.body.content,
+				date:		today,
 				sender:		sender,
 				recipient:	recipient
 			};
@@ -289,15 +296,15 @@ router.delete("/:user/:apartment/:message", function(req,res){
 														 + apartment._id);
 										}
 									});
-								}
-
-								req.flash("success", "Message was deleted successfully.");
-								if(foundUser._id.equals(apartment.host)){
-									return res.redirect("/messages/host/" + foundUser._id + "/"
-											+ apartment._id);
 								}else{
-									return res.redirect("/messages/tenant/" + foundUser._id + "/"
-											+ apartment._id);
+									req.flash("success", "Message was deleted successfully.");
+									if(foundUser._id.equals(apartment.host)){
+										return res.redirect("/messages/host/" + foundUser._id + "/"
+												+ apartment._id);
+									}else{
+										return res.redirect("/messages/tenant/" + foundUser._id + "/"
+												+ apartment._id);
+									}
 								}
 							});
 							break;

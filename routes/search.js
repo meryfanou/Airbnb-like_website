@@ -1,10 +1,9 @@
 const 	express	 	= require("express"),
-	  	router	 	= express.Router(),
-	  	Apartment	= require("../models/apartment"),
-	  	url			= require("url"),
-		greekUtils = require('greek-utils');
-
-var tr = require('transliteration').transliterate;
+		router	 	= express.Router(),
+		Apartment	= require("../models/apartment"),
+		url			= require("url"),
+		greekUtils 	= require('greek-utils'),
+		tr 			= require('transliteration').transliterate;
 
 
 // function hasNumber(myString) {
@@ -72,9 +71,9 @@ router.post("/", function(req, res){
 
 	var locationObj = {
 		zipcode:	zipcode, 
-		area:		area,
-		region:		region,
-		country:	country
+		area:		((area != null) ? tr(area) : area),
+		region:		((region != null) ? tr(region) : region),
+		country:	((country != null) ? tr(country) : country)
 	};
 	
 	Apartment.find({}).populate("host").populate("reservations").populate("reviews")

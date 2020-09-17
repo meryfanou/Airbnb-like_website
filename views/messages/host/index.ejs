@@ -1,22 +1,47 @@
 <%- include("../../partials/header") %>
 
-<h4>Inbox</h4>
-<p>
-	<% for(var message of inbox){ %>
-		From: <%= message.sender.email %>
-		Subject: <%= message.subject %>
-		<a href="/messages/host/<%=currentUser._id%>/<%=apartment._id%>/<%=message._id%>">Read More</a><br>
-	<% } %>
-</p>
+<p style="font-size:115%;">
+	<a href="/users/<%= currentUser._id %>/host" style="margin-left:1%">Host Page</a>
+</p><br><br>
 
-<h4>Sent</h4>
-<p>
-	<% for(var message of sent){ %>
-		To: <%= message.recipient.email %>
-		Subject: <%= message.subject %>
-		<a href="/messages/host/<%=currentUser._id%>/<%=apartment._id%>/<%=message._id%>">Read More</a><br>
-	<% } %>
-</p>
+<div class="row">
+	<div class="mail_column" style="margin-left: 5%; margin-right: 3%;">
+		<h3><i class="fas fa-envelope"></i> Inbox</h3><br>
+		<% if(inbox.length == 0){ %>
+			<p>~ No messages ~</p>
+		<% }else{ %>
+			<ul style="list-style-type:none;">
+				<% for(var message of inbox){ %>
+					<a href="/messages/host/<%=currentUser._id%>/<%=apartment._id%>/<%=message._id%>">
+						<li>
+							<strong><%= message.sender.email %>:</strong>&nbsp;&nbsp;&nbsp;
+							<%= message.subject %>
+							<h5 class="pull-right"><%= message.date %></h5>
+						</li>
+					</a>
+				<% } %>
+			</ul>
+		<% } %>
+	</div>
+	<div class="mail_column" style="margin-left: 3%; margin-right: 3%;">
+		<h3><i class="fas fa-paper-plane"></i> Sent</h3><br>
+		<% if(sent.length == 0){ %>
+			<p>~ No messages ~</p>
+		<% }else{ %>
+			<ul style="list-style-type:none;">
+				<% for(var message of sent){ %>
+					<a href="/messages/host/<%=currentUser._id%>/<%=apartment._id%>/<%=message._id%>">
+						<li>
+							<strong><%= message.recipient.email %>:</strong>&nbsp;&nbsp;&nbsp;
+							<%= message.subject %>
+							<h5 class="pull-right"><%= message.date %></h5>
+						</li>
+					</a>
+				<% } %>
+			</ul>
+		<% } %>
+	</div>
+</div>
 
 
 <%- include("../../partials/footer") %>
