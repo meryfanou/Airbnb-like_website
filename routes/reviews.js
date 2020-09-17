@@ -5,6 +5,8 @@ const 	express = require("express"),
 
 // ROUTES
 
+// ----------------------------------------- REVIEWS FOR HOST  ----------------------------------------- //
+
 // NEW Route 
 router.get("/host/new", function(req, res){
 	var host = JSON.parse(req.query.host);
@@ -12,6 +14,7 @@ router.get("/host/new", function(req, res){
 	res.render("reviews/host/new", { host: host });
 });
 
+// POST Route
 router.post("/host/:tenant_id/:host_id", function(req,res){
 
 	User.findById(req.params.tenant_id,function(err,tenant){
@@ -57,7 +60,6 @@ router.post("/host/:tenant_id/:host_id", function(req,res){
 });
 
 
-
 // SHOW Route - show more info about the reviews from one specific host
 
 router.get("/host/:id", function(req,res){
@@ -67,6 +69,76 @@ router.get("/host/:id", function(req,res){
 			res.redirect("back");
 		}else{
 			res.render("reviews/host/show", { host: host });
+		}
+	});
+});
+
+
+// ----------------------------------------- REVIEWS FOR APARTMENT ----------------------------------------- //
+
+// NEW - Route
+
+router.get("/apartment/new", function(req, res){
+	var apartment = JSON.parse(req.query.apartment);
+
+	res.render("reviews/apartment/new", { apartment: apartment });
+});
+
+// POST Route
+router.post("/apartment/:tenant_id/:apartment_id", function(req,res){
+
+	User.findById(req.params.tenant_id,function(err,tenant){
+
+		if(err){
+			req.flash("error", err.message);
+			return res.redirect("back");
+		}
+
+		var today = new Date();
+		var dd = String(today.getDate()).padStart(2, '0');
+		var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+		var yyyy = today.getFullYear();
+		today = dd + '-' + mm + '-' + yyyy;
+
+		var review = {
+			about: req.params.apartment_id.toString(),
+			text: req.body.text,
+			rating: req.body.rating,
+			date: today,
+			author: tenant._id
+		};
+	
+		tenant.reviews.push(review);
+		tenant.save();
+	
+		Apartment.findById(req.params.apartment_id, function(err,apartment){
+
+			if(err){
+				req.flash("error", err.message);
+				return res.redirect("back");
+			}
+
+			apartment.reviews.push(review);
+			apartment.save();
+			
+			req.flash("success", "Your review was submitted successfully.");
+			return res.redirect("/reviews/apartment/" + apartment._id);
+		});
+
+	});
+	
+});
+
+
+// SHOW - Route
+
+router.get("/apartment/:id", function(req,res){
+	Apartment.findById(req.params.id, function(err, foundApartment){
+		if(err){
+			req.flash("error", err.message);
+			res.redirect("back");
+		}else{
+			res.render("reviews/apartment/show", { apartment: foundApartment });
 		}
 	});
 });
