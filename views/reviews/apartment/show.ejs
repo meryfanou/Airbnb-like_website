@@ -1,9 +1,10 @@
 <%- include("../../partials/header") %>
 
-
-<h1>
-	SHOW PAGE FOR APARTMENT REVIEWS.
-</h1>
+<p style="font-size:115%;">
+	<a href="/search/<%=apartment._id%>"
+	   style="margin-left:1%; color:crimson; font-size:110%; text-decoration:none;">
+		&lt; <%= apartment.name %></a>
+</p><br>
 
 <div class="container">
 	<div class="row">
@@ -29,24 +30,24 @@
 												
 												if( i < stars ) { %>
 													
-													<span class="fa fa-star" style="color:gold"></span>
+													<span class="fa fa-star" style="color:orange"></span>
 												<% }
 
 												else { %>
 													
-													<span class="fa fa-star"></span>
+													<span class="far fa-star" style="color:orange"></span>
 											<%	}
 											}
 
 											else{
 												if( i == stars) {%>
-													<span class="fa fa-star-half-o" style="color:gold"></span>
+													<span class="fa fa-star-half-o" style="color:orange"></span>
 												<% }else if(i < stars){ %>
 													
-													<span class="fa fa-star" style="color:gold"></span>
+													<span class="fa fa-star" style="color:orange"></span>
 												<%	}else{%>
 													
-													<span class="fa fa-star"></span>
+													<span class="far fa-star" style="color:orange"></span>
 												<%	}
 											
 												}	
@@ -59,10 +60,10 @@
 										</p>
 										<% if(currentUser && review.author._id.equals(currentUser._id)){ %>
 											<a class="btn btn-xs btn-warning"
-											   href="">
+												href="/reviews/apartment/<%=review._id%>/edit?apartment=<%=str_apartment%>">
 												Edit
 											</a>
-											<form action="">
+											<form action="/reviews/apartment/<%=review._id%>?_method=DELETE&apartment=<%=apartment._id%>">
 												<input type="submit" class="btn btn-xs btn-danger" value="Delete">
 											</form>
 										<% } %>

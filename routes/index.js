@@ -47,10 +47,9 @@ router.get("/register", function(req, res){
 // Handle sing up logic
 router.post("/register", upload.single("image"), function(req, res){
 	req.body.user.picture = [];
-console.log("1");
+
 	// If user has uploaded a profile picture
 	if(req.file){
-console.log("2");
 		cloudinary.uploader.upload(req.file.path, function(result){
 			// We want to store the image's secure_url (https://)
 			req.body.user["picture"] = {

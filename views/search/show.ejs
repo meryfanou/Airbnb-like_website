@@ -7,13 +7,34 @@
 				<img class="img-responsive" src="<%= apartment.main_image.url %>"
 					 style="object-fit:cover; width:auto; height:450px; border-radius:8px;">
 				<div class="caption-full" style="margin-left:20%; margin-right:20%;">
-					<h4 class="pull-right" style="padding:5px; color:seagreen;">
-						<strong>
-							ratings
-						<!-- <%= 
-						(num_days)*(apartment.price_min) + (guests)*(apartment.extra_charge_per_guest)
-						%> &euro; -->
-						</strong>(#)
+					<h4 class="pull-right" style="padding:5px;">
+						<a href="/reviews/apartment/<%=apartment._id%>"
+						   style="color:orange; text-decoration:none;">
+							<% var average=0;
+								for(var review of apartment.reviews){
+									average += review.rating;
+								}
+
+								average = average/apartment.reviews.length;
+
+								for(var i=1; i<10; i+=2){
+									if((average % 2) == 0){
+										if( i < average ) { %>
+											<span class="fa fa-star"></span>
+										<% }else { %>
+											<span class="far fa-star"></span>
+										<%	}
+									}else{
+										if( i == average) {%>
+											<span class="fa fa-star-half-o"></span>
+										<% }else if(i < average){ %>	
+											<span class="fa fa-star"></span>
+										<%	}else{%>
+											<span class="far fa-star"></span>
+										<%	}
+									}
+								}  %>(<%=apartment.reviews.length%>)
+						</a>
 					</h4>
 					<em style="font-size:160%;"> <a> <%= apartment.name %> </a> </em><br>
 					<!-- <div class="pull-right" style="position:relative; left:50px;">
@@ -521,7 +542,7 @@
 					<div class="col-lg-4">
 						<h4 align="left"
 							style="position:relative; left:40px; top:70px; list-style-type:none;">
-							<li>
+							<li style="color: orange;">
 								<% var average=0;
 								for(var review of apartment.host.reviews){
 									average += review.rating;
@@ -532,20 +553,20 @@
 								for(var i=1; i<10; i+=2){
 									if((average % 2) == 0){
 										if( i < average ) { %>
-											<span class="fa fa-star" style="color:gold"></span>
+											<span class="fa fa-star"></span>
 										<% }else { %>
-											<span class="far fa-star" style="color:gold"></span>
+											<span class="far fa-star"></span>
 										<%	}
 									}else{
 										if( i == average) {%>
-											<span class="fa fa-star-half-o" style="color:gold"></span>
+											<span class="fa fa-star-half-o"></span>
 										<% }else if(i < average){ %>	
-											<span class="fa fa-star" style="color:gold"></span>
+											<span class="fa fa-star"></span>
 										<%	}else{%>
-											<span class="far fa-star" style="color:gold"></span>
+											<span class="far fa-star"></span>
 										<%	}
 									}
-								}  %>
+								}  %>(<%=apartment.host.reviews.length%>)
 							</li><br>
 							<li><i class="fa fa-user" aria-hidden="true"></i>
 								 <%= apartment.host.firstname %> <%= apartment.host.lastname %><br><br>
@@ -582,10 +603,19 @@
 								</li><br>
 							<% } %>
 						</ul>
-						<a class="outline-button" href="/reviews/host/<%=apartment._id%>"
-						   style="position:relative; left:125px; font-size:100%; text-decoration: none;">
-							<strong>&nbsp;Read More&nbsp;</strong>
-						</a>
+						<% if(apartment.host.reviews.length > 0){ %>
+							<a class="outline-button" href="/reviews/host/<%=apartment._id%>"
+								style="position:relative; left:125px; font-size:100%; text-decoration: none;">
+								<strong>&nbsp;Read More&nbsp;</strong>
+							</a>
+						<% }else{
+							var str_host = JSON.stringify(apartment.host); %>
+							<a class="outline-button"
+								href="/reviews/host/new?host=<%=str_host%>&apartment=<%=apartment._id%>"
+							style="position:relative; left:125px; font-size:100%; text-decoration: none;">
+								<strong>&nbsp;Add Review&nbsp;</strong>
+							</a>
+						<% } %>
 					</div>
 				</div>
 			</div>
