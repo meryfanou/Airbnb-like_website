@@ -1,7 +1,7 @@
 <%- include("../../partials/header") %>
 
 <p style="font-size:115%;">
-	<a href="/search/<%=apartment._id%>"
+	<a href="/search/<%=apartment._id%>?num_days=<%=num_days%>&guests=<%=guests%>&check_in=<%=check_in%>&check_out=<%=check_out%>"
 	   style="margin-left:1%; color:crimson; font-size:110%; text-decoration:none;">
 		&lt; <%= apartment.name %></a>
 </p><br>

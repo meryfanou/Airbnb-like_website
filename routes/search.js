@@ -6,10 +6,6 @@ const 	express	 	= require("express"),
 		tr 			= require('transliteration').transliterate;
 
 
-// function hasNumber(myString) {
-//   return /\d/.test(myString);
-// }
-
 // Search for apartments based on given location, dates and number of guests
 router.post("/", function(req, res){
 	var location = req.body.location,

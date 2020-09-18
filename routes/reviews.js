@@ -116,7 +116,10 @@ router.get("/host/:apartment_id", function(req,res){
 			req.flash("error", err.message);
 			res.redirect("back");
 		}else{
-			res.render("reviews/host/show", { host: apartment.host, apartment: apartment });
+			res.render("reviews/host/show", { host: apartment.host, apartment: apartment,
+											  num_days: req.query.num_days,
+											  check_in: req.query.check_in, guests: req.query.guests,
+											  check_out: req.query.check_out });
 		}
 	});
 });
@@ -285,7 +288,9 @@ router.get("/apartment/:apartment_id", function(req,res){
 			req.flash("error", err.message);
 			res.redirect("back");
 		}else{
-			res.render("reviews/apartment/show", { apartment: apartment });
+			res.render("reviews/apartment/show", { apartment: apartment, num_days: req.query.num_days,
+												   check_in: req.query.check_in, guests: req.query.guests,
+												   check_out: req.query.check_out });
 		}
 	});
 });
