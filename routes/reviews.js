@@ -244,7 +244,7 @@ router.get("/apartment/:id/edit", function(req, res){
 		}
 
 		var apartment = JSON.parse(req.query.apartment);
-		res.render("reviews/host/edit", { review: review, apartment: apartment });
+		res.render("reviews/apartment/edit", { review: review, apartment: apartment });
 	});
 });
 

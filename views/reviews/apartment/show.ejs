@@ -63,7 +63,7 @@
 												href="/reviews/apartment/<%=review._id%>/edit?apartment=<%=str_apartment%>">
 												Edit
 											</a>
-											<form action="/reviews/apartment/<%=review._id%>?_method=DELETE&apartment=<%=apartment._id%>">
+											<form action="/reviews/apartment/<%=review._id%>?_method=DELETE&apartment=<%=apartment._id%>" method="POST">
 												<input type="submit" class="btn btn-xs btn-danger" value="Delete">
 											</form>
 										<% } %>
