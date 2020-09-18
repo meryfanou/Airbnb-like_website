@@ -59,6 +59,9 @@ router.post("/host/:tenant_id/:host_id", function(req,res){
 				host.save();
 			
 				req.flash("success", "Your review was submitted successfully.");
+				
+				console.log(host.reviews);
+				
 				return res.redirect("/reviews/host/" + req.query.apartment);
 			});
 		});
@@ -103,6 +106,7 @@ router.put("/host/:id", function(req,res){
 		review.save();
 
 		req.flash("success", "Review updated successfully.");
+		
 		return res.redirect("/reviews/host/" + req.query.apartment);
 	});
 });

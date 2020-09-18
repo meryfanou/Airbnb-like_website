@@ -6,25 +6,34 @@
 	</p>
 <% } %>
 
-<div>
-	<h1 style="text-align: center;"> Welcome to Airbnb! </h1>
-</div>
+<!-- <div> -->
+	<!-- <h1 style="text-align: center;"> Welcome to Airbnb! </h1> -->
+<!-- </div> -->
 
-<div class="container" >
+<script>   var x = document.getElementsByTagName("BODY")[0];
+	x.style.backgroundColor = "black"; </script>
+
+<div id="landing-header">
+
+	<h1 style="text-align: center"> Welcome to Airbnb! </h1>
+	
+<div class="container">
 	<p></p>
 	<div class="row">
 		<div class="col-lg-4">
-			<div class="thumbnail" style="width:115%; border-radius:10px; background-image: url('https://images.unsplash.com/photo-1567613718939-2196a1b52acd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80'); background-size: cover;">
-				<div style="padding:5px 0px 5px 35px; width:300%">
-					<strong><h3 style="position:relative; left:40px; color:white;">
-						Find your place to stay </h3></strong>
-					<div style="width: 30%; margin: 25px auto;">
+			
+			<!-- <div class="thumbnail" style="width:115%; border-radius:10px; background-image: url('https://images.unsplash.com/photo-1567613718939-2196a1b52acd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80'); background-size: cover;" id="landingthumb"> -->
+			<div class="thumbnail" style="width:115%; border-radius:10px" id="landingthumb">
+				<div style="padding:15px 0px 5px 35px; width:300%">
+					<!-- <strong><h3 style="position:relative; left:40px; color:white;">
+						Find your place to stay </h3></strong> -->
+					<div style="width: 30%; margin: 25px auto; ">
 						<form action="/search" method="POST" style="position:relative; left:-420px">
 							<div class="form-group">
 								<label for="location" style="color:white;">Location:</label>
 								<input class="form-control" type="text" name="location" id="location"
-									   placeholder="Zipcode and/or City, Region (optional), Country"
-									   required>
+										placeholder="Zipcode and/or City, Region (optional), Country"
+										required>
 							</div>
 							<div class="form-group">
 								<label for="check_in" style="color:white;">Check In:</label>
@@ -34,17 +43,17 @@
 							<div class="form-group">
 								<label for="check_out" style="color:white;">Check Out:</label>
 								<input class="form-control" type="date" placeholder="Check Out"
-									   name="check_out" id="check_out" required>
+										name="check_out" id="check_out" required>
 							</div>
 							<div class="form-group">
 								<label for="guests" style="color:white;">Guests:</label>
 								<input class="form-control" type="number" placeholder="Number of guests"
-									   name="guests" min="1" step="1" id="guests" required>
+										name="guests" min="1" step="1" id="guests" required>
 							</div>
 							<div class="form-group">
 								<button class="btn btn-lg btn-block"
-										style="background-color:firebrick; color:white;">
-									Search
+									style="background-color:firebrick; color:white;">
+										Search
 								</button>
 							</div>
 						</form>
@@ -53,8 +62,16 @@
 			</div>
 		</div>
 	</div>
-</div>						
+</div>	
+</div>
 
+ <ul class="slideshow">
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+    </ul>
 
 	<script async defer src="https://cdn.jsdelivr.net/npm/transliteration@2.1.8/dist/browser/bundle.umd.min.js"></script>
 	
