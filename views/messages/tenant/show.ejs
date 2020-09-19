@@ -37,6 +37,28 @@
 
 	<div class="row" style="text-align:center; padding:5%;">
 		<% if(conversation.length > 0){ %>
+			<div class="mail_pagination">
+				<h5 style="margin-top:-5%; margin-left:48%;">
+					<% var str_all = JSON.stringify(all_messages);
+					var str_apartment = JSON.stringify(apartment);
+					if(pageNum > 1){ %>
+						<a href="/messages/tenant/page/<%= Number(pageNum) - 1 %>?str_conversation=<%=str_all%>&str_apartment=<%=str_apartment%>">&laquo;</a>
+					<% } %>
+
+					<% for(var i=1; i<=(all_messages.length / results_per_page); i++){ %>
+						<a href="/messages/tenant/page/<%= i %>?str_conversation=<%=str_all%>&str_apartment=<%=str_apartment%>"
+						<% if(i == pageNum){ %>
+							class="active"
+						<% } %>
+						><%= i %></a>
+					<% }
+
+					if(pageNum < (all_messages.length / results_per_page)){ %>
+						<a href="/messages/tenant/page/<%= Number(pageNum) + 1 %>?str_conversation=<%=str_all%>&str_apartment=<%=str_apartment%>">&raquo;</a>
+					<% } %>
+				</h5>
+			</div><br><br>
+
 			<ul style="list-style-type:none;">
 				<% var i = 0;
 				conversation.forEach(function(message){	%>
@@ -80,6 +102,26 @@
 					<% i += 1;
 				}); %>
 			</ul>
+
+			<br><br><div class="mail_pagination">
+				<h5 style="margin-top:-5%; margin-left:48%;">
+					<% if(pageNum > 1){ %>
+						<a href="/messages/tenant/page/<%= Number(pageNum) - 1 %>?str_conversation=<%=str_all%>&str_apartment=<%=str_apartment%>">&laquo;</a>
+					<% } %>
+
+					<% for(var i=1; i<=(all_messages.length / results_per_page); i++){ %>
+						<a href="/messages/tenant/page/<%= i %>?str_conversation=<%=str_all%>&str_apartment=<%=str_apartment%>"
+						<% if(i == pageNum){ %>
+							class="active"
+						<% } %>
+						><%= i %></a>
+					<% }
+
+					if(pageNum < (all_messages.length / results_per_page)){ %>
+						<a href="/messages/tenant/page/<%= Number(pageNum) + 1 %>?str_conversation=<%=str_all%>&str_apartment=<%=str_apartment%>">&raquo;</a>
+					<% } %>
+				</h5>
+			</div>
 		<% } %>
 	</div>
 	</div>

@@ -1,21 +1,14 @@
-const express	 	= require("express"),
-	  router	 	= express.Router(),
-	  multer	 	= require("multer"),
-	  middleware	= require("../middleware"),
-	  cloudinary 	= require("cloudinary"),
-	  User		 	= require("../models/user"),
-	  apartment 	= require("../models/apartment"),
-	  NodeGeocoder 	= require("node-geocoder"),
-	  transliteration = require('transliteration'),
-	  greekUtils = require('greek-utils');
-	
-var tr = require('transliteration').transliterate;
-
-
-	// import { transliterate as tr } from 'transliteration';
-
-// import { transliterate as tr } from 'transliteration';
-
+const express			= require("express"),
+	  router			= express.Router(),
+	  multer			= require("multer"),
+	  middleware		= require("../middleware"),
+	  cloudinary 		= require("cloudinary"),
+	  User		 		= require("../models/user"),
+	  apartment 		= require("../models/apartment"),
+	  NodeGeocoder 		= require("node-geocoder"),
+	  transliteration 	= require('transliteration'),
+	  greekUtils 		= require('greek-utils'),
+	  tr 				= require('transliteration').transliterate;
 
 var options = {
   provider: 'opencage',
@@ -155,10 +148,7 @@ router.post("/", middleware.isLoggedIn, upload.array("images", 30), async(req,re
 
 	var latitude;
 	var longitude;
-	
-	// var greeklish = greekUtils.toGreeklish('Εύηχο: αυτό που ακούγεται ωραία.');
-	// console.log(greeklish); //Euhxo: auto pou akougetai wraia.	
-	
+
 	geocoder.geocode(req.body.apartment.location.address, function(err, data){
     	if(err){
 			req.flash("error", err.message);
@@ -168,29 +158,14 @@ router.post("/", middleware.isLoggedIn, upload.array("images", 30), async(req,re
     		return res.redirect('back');
      	}
 
-		// console.log(data[0]);
-		// console.log(data[0].latitude);
-		// console.log(data[0].longitude);
-		// console.log(data[0].formattedAddress);
-		// console.log(req.body.apartment.location.address);
-		
     	req.body.apartment.location.lat 	= data[0].latitude;
     	req.body.apartment.location.lng  	= data[0].longitude;
 		if(reverse_geocoding){
 			req.body.apartment.location.address += "," + data[0].country;
 		}
-		
-    	// req.body.apartment.location.address 	= 		data[0].formattedAddress;
-		// console.log(data[0]);
-		// console.log(data[0].formattedAddress);
-		// console.log(req.body.apartment.location.address);
-		// console.log(tr(req.body.apartment.location.address)); // Geia sas, ton kosmo
-		
-		req.body.apartment.location.address = tr(req.body.apartment.location.address);		//Making Normal Geocoding and Reverse in english format
-		
-	// });
-	
-	
+
+		req.body.apartment.location.address = tr(req.body.apartment.location.address);		//Making Normal 
+
 		// Find current user in db
 		User.findById(req.user._id, function(err, user){
 			if(err){
@@ -246,7 +221,7 @@ router.get("/:id/edit", middleware.checkApartmentOwnership, function(req,res){
 
 router.put("/:id",  middleware.checkApartmentOwnership, upload.array("images", 10), function(req,res){
 	apartment.findById(req.params.id).populate("host").populate("reservations").populate("reviews")
-		.exec(async function(err, foundApartment){
+	.exec(async function(err, foundApartment){
 
 		req.body.apartment["images"] = foundApartment.images.concat([]);
 
@@ -370,20 +345,6 @@ router.put("/:id",  middleware.checkApartmentOwnership, upload.array("images", 1
 			});
 		};
 
-		// if((req.body.apartment.availability_from && 
-		//    foundApartment.availability_from.valueOf() != req.body.apartment.availability_from.valueOf()) || 
-		//    (req.body.apartment.availability_to &&
-		//    foundApartment.availability_to.valueOf() != req.body.apartment.availability_to.valueOf())){
-
-		// 	if(req.body.apartment.availability_from.valueOf() < today.valueOf() ||
-		// 	   req.body.apartment.availability_to.valueOf() < today.valueOf() ||
-		// 	   req.body.apartment.availability_from.valueOf() > 	
-		// 	   req.body.apartment.availability_to.valueOf()){
-		// 			req.flash("error", "Availability dates should be valid. Please try again.");
-		// 			return res.redirect("/apartments/" + foundApartment._id + "/edit");
-		// 	}
-		// }
-
 		// Get apartment object from new.ejs
 		req.body.apartment["place"] = Object.assign({}, req.body.place);
 		req.body.apartment["renting_rules"] = Object.assign({}, req.body.renting_rules);
@@ -437,23 +398,16 @@ router.put("/:id",  middleware.checkApartmentOwnership, upload.array("images", 1
 		}
 		
 		geocoder.geocode(req.body.apartment.location.address, function(err, data){
-    	if(err || !data.length){
-			req.flash('error', 'Invalid address');
-    		return res.redirect('back');
-     	} 
-      	//parse the object campground
+    		if(err || !data.length){
+				req.flash('error', 'Invalid address');
+    			return res.redirect('back');
+			} 
 
-		// console.log(data[0]);
-		// console.log(data[0].latitude);
-		// console.log(data[0].longitude);
-		// console.log(data[0].formattedAddress);
-		// console.log(req.body.apartment.location.address);
-		
-    	req.body.apartment.location.lat 		=    	data[0].latitude;
-    	req.body.apartment.location.lng  		=     	data[0].longitude;
-		
-		req.body.apartment.location.address = tr(req.body.apartment.location.address);		//Making Normal Geocoding and Reverse in english format
-			
+			req.body.apartment.location.lat 		=    	data[0].latitude;
+			req.body.apartment.location.lng  		=     	data[0].longitude;
+
+			req.body.apartment.location.address = tr(req.body.apartment.location.address);	//Making Normal Geocoding and Reverse in english format
+
 			// Find current user in db
 			User.findById(req.user._id, function(err, user){
 				if(err){
@@ -480,7 +434,7 @@ router.put("/:id",  middleware.checkApartmentOwnership, upload.array("images", 1
 							user.save();
 							req.flash("success", "Updated " + apartment.name + " successfully!");
 							res.redirect("/apartments/" + apartment._id);
-						}
+							}
 					});
 				}
 			});

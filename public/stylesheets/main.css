@@ -273,6 +273,22 @@ output {
   border-radius: 5px;
 }
 
+.mail_pagination a {
+  color: rgba(0,0,0,0.6);
+  float: left;
+  text-decoration: none;
+  padding: 2%;
+}
+
+.mail_pagination a.active {
+  background-color: transparent;
+  color: crimson;
+}
+
+.mail_pagination a:hover:not(.active) {
+  background-color: transparent;
+}
+
 
 /* ----------------------------------------- Cloud Button ------------------------------------------- */
 

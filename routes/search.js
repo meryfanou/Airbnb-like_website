@@ -125,12 +125,6 @@ router.post("/", function(req, res){
 						break;
 					}
 				};
-				// if(check_in.valueOf() >= apartment.availability_from.valueOf() &&
-				//    check_out.valueOf() <= apartment.availability_to.valueOf() &&
-				//    check_in.valueOf() <= check_out.valueOf() && guests <= apartment.capacity &&
-				//    diff >= apartment.renting_rules.rent_days_min && validLocation >= 2) {
-				// 	apartments.push(apartment);
-				// }
 			});
 
 			if(apartments.length == 0){
@@ -175,9 +169,6 @@ router.post("/", function(req, res){
 					"max_price": max_price
 				}
 			}));
-			// res.render("search/index", {apartments: sorted, num_days: diff,	guests: guests,
-			// 							check_in: check_in, check_out: check_out,
-			// 							location: location,	max_price: max_price});
 		}
 	});
 });
@@ -191,9 +182,10 @@ router.get("/:id", function(req,res){
 			req.flash("error", err.message);
 			res.redirect("back");
 		}else{
+			// var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
 			res.render("search/show", {apartment: foundApartment, num_days: req.query.num_days,
 									   guests: req.query.guests, check_in: req.query.check_in,
-									   check_out: req.query.check_out, booked: req.query.booked});
+									   check_out: req.query.check_out, booked: req.query.booked });
 		}
 	});
 });

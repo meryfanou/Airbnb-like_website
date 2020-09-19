@@ -309,7 +309,38 @@ function closeNav() {
 								<%= apartment.name %></a>
 					</strong><br>
 					<h4 style="font-size:150%; font-family:URW Chancery L, cursive;">
-						rating (#reviews), &euro;<%= apartment.price_min %>/night<br>
+						<% var average=0;
+							for(var review of apartment.reviews){
+								average += review.rating;
+							}
+
+							average = average/apartment.reviews.length;
+
+							for(var i=1; i<10; i+=2){
+								if((average % 2) == 0){
+									if( i < average ) { %>
+										<span class="fa fa-star" style="font-size:90%; color:orange;">
+										</span>
+									<% }else { %>
+										<span class="far fa-star" style="font-size:90%; color:orange;">
+										</span>
+									<%	}
+								}else{
+									if( i == average) {%>
+										<span class="fa fa-star-half-o"
+											  style="font-size:90%; color:orange;">
+										</span>
+									<% }else if(i < average){ %>	
+										<span class="fa fa-star" style="font-size:90%; color:orange;">
+										</span>
+									<%	}else{%>
+										<span class="far fa-star" style="font-size:90%; color:orange;">
+										</span>
+									<%	}
+								}
+						}  %><span style="font-size:90%; color:orange"><strong>
+							(<%=apartment.reviews.length%>)</strong></span>
+						&nbsp;&nbsp;&euro;<%= apartment.price_min %>/night<br>
 						<% if(apartment.place.beds == 1){ %>
 							<%= apartment.place.room_type %>, <%= apartment.place.beds %> bed
 						<% }else{ %>

@@ -1,11 +1,12 @@
 const	express	 	= require("express"),
 	  	router	 	= express.Router(),
+	  	middleware	= require("../middleware"),
 	  	User		= require("../models/user"),
 	  	Apartment	= require("../models/apartment"),
 	  	url			= require("url");
 
 
-router.post("/:tenant_id/:apartment_id",function(req,res){
+router.post("/:tenant_id/:apartment_id", middleware.isTenant,function(req,res){
 	var check_in  = req.query.check_in,
 		check_out = req.query.check_out,
 		guests	  = req.query.guests;

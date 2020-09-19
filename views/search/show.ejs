@@ -81,6 +81,10 @@
 							<line x1="10" y1="0" x2="400" y2="0"
 								  style="stroke:rgb(0,0,0,0.3);stroke-width:2;" />
 						</svg>
+					<% }else if(currentUser && currentUser.app_role.includes("host")){ %>
+						<h5 class="pull-right" style="margin-right:8%; margin-top:-5%; font-size:210%; font-family:URW Chancery L, cursive; color:firebrick;">
+							You have to be a tenant
+						</h5>
 					<% }else{ %>
 						<h5 class="pull-right" style="margin-right:18%; margin-top:-5%; font-size:210%;">
 							<a href="/login" style="font-family:URW Chancery L, cursive; color:firebrick;">
@@ -154,7 +158,7 @@
 						<% } %>
 					</div>
 				</div>
-			</div><br><br>
+			</div><br><br><br><br>
 
 			<div class="thumbnail">
 				<div align="center" class="alert alert-warning" role="alert">
@@ -206,31 +210,6 @@
 					</li>
 				</h4>
 
-				<!-- <h4 align="center">
-					<li> <strong> Availability: 
-						<%	function getToday(){
-								var today = new Date();
-								var dd = String(today.getDate()).padStart(2, '0');
-								var mm = String(today.getMonth() + 1).padStart(2, '0');
-								var yyyy = today.getFullYear();
-								return yyyy + '-' + mm + '-' + dd;
-							}
-
-							var today = getToday();
-							if(apartment.availability_to < today.valueOf()){ %>
-							No longer available
-						<% }else{
-							if(apartment.availability_from < today.valueOf()){ %>
-								<%= today %> - 
-							<% }else{ %>
-								<%= apartment.availability_from %> - 
-							<% } %>
-							<%= apartment.availability_to %>
-						<% } %>
-						</strong><i class="far fa-calendar-alt"></i>
-					</li>
-				</h4> -->
-
 				<h4 align="center">
 					<li> <strong> Minimum Renting Days: <%= apartment.renting_rules.rent_days_min %>
 						</strong>
@@ -243,14 +222,7 @@
 						</strong>
 						<i class="fas fa-user-friends"></i>
 					</li>
-				</h4>
-
-				<!-- <h4 align="center">
-					<li> <strong> Extra Charge per Guest: <%= apartment.extra_charge_per_guest %>&euro;
-						</strong>
-					</li>
-				</h4> -->
-				<br>
+				</h4><br>
 
 				<div align="center" class="alert alert-danger" role="alert">
   					<strong style="font-size:25px">Renting Rules</strong>
@@ -259,7 +231,7 @@
 				<h4 align="center">
 					<% if(apartment.renting_rules.smoking == "False" ){ %>
 						<li> <strong> Smoking: No </strong>
-						<i class='fa fa-smoking-ban'></i>
+						<i class='fas fa-smoking-ban'></i>
 					<% } else { %>
 						<li> <strong> Smoking: Yes </strong>
 						<i class='fas fa-smoking'></i>
@@ -275,7 +247,7 @@
 							Yes
 						<% } %>
 						</strong>
-						<i class='fa fa-dog'></i>
+						<i class='fas fa-dog'></i>
 					</li>
 				</h4>
 
@@ -363,7 +335,7 @@
 							Yes
 						<% } %>
 						</strong>
-						<i class="fa fa-car" aria-hidden="true"></i>
+						<i class="fas fa-car" aria-hidden="true"></i>
 					</li>
 				</h4>
 
@@ -375,7 +347,7 @@
 							Yes
 						<% } %>
 						</strong>
-						<i class="fa fa-door-closed"></i>
+						<i class="fas fa-door-closed"></i>
 					</li>
 				</h4><br>
 
@@ -386,30 +358,18 @@
 				<h4 align="center"><li> <strong> Address: <%= apartment.location.address %> </strong>
 					<i class="fas fa-map-marker-alt"></i></li></h4> 
 				<h4 align="center"><li> <strong> Neighbourhood: <%= apartment.location.neighbourhood %> 
-					</strong><i class="fa fa-city"></i></li></h4> 
+					</strong><i class="fas fa-city"></i></li></h4> 
 				<h4 align="center"><li> <strong> Transportation: <%= apartment.location.transportation %> 
 					</strong><i class="fas fa-bus"></i></li></h4><br>
 				
 				<div id="mapid"></div>	
 
 <script>
-	// //Display Map
-	// var mymap = L.map('mapid').setView([lat, lng],13);
-	// L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-	// attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap & OpenCage</a> contributors, <a 							  href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-	// 	maxZoom: 18,
-	// 	id: 'mapbox.streets',
-	// 	accessToken: 'pk.eyJ1IjoiZGZ3dGVpbm9zIiwiYSI6ImNrZWg1a2czYTA3Y3gzMG82NGlsdm5mZHUifQ.wSDWJpIrkAPwk5zeLoE93Q'
-	// }).addTo(mymap);
-	
-	
-	// var marker = L.marker([lat, lng]).addTo(mymap);
-	
+
 	var lat = <%= apartment.location.lat %>;
 	var lng = <%= apartment.location.lng %>;
-					 
 	var mymap = L.map('mapid').setView([lat, lng], 15);
-	
+
 	L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
     maxZoom: 18,
@@ -418,53 +378,9 @@
     zoomOffset: -1,
     accessToken: 'pk.eyJ1IjoiZGZ3dGVpbm9zIiwiYSI6ImNrZWg1a2czYTA3Y3gzMG82NGlsdm5mZHUifQ.wSDWJpIrkAPwk5zeLoE93Q'
 }).addTo(mymap);
-	
+
 	var marker = L.marker([lat, lng]).addTo(mymap);
 	marker.bindPopup("<b> <%= apartment.name %> </b><br><%= apartment.location.address %>.").openPopup();
-
-	
-// 	L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-//     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-//     maxZoom: 18,
-//     id: 'mapbox/streets-v11',
-//     tileSize: 512,
-//     zoomOffset: -1,
-//     accessToken: 'pk.eyJ1IjoiZGZ3dGVpbm9zIiwiYSI6ImNrZWg1a2czYTA3Y3gzMG82NGlsdm5mZHUifQ.wSDWJpIrkAPwk5zeLoE93Q'
-// }).addTo(mymap);
-
-// 	var popup = L.popup();
-
-// 	function onMapClick(e) {
-//     	popup
-//         .setLatLng(e.latlng)
-//         .setContent("You clicked the map at " + e.latlng.toString())
-//         .openOn(mymap);
-// 	}
-
-// 	mymap.on('click', onMapClick);
-	
-	// var map = L.map('mapid').setView([37.97, 23.73], 10);
-
-	// L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-	// 	attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
-	// }).addTo(map);
-
-	// var searchControl = L.esri.Geocoding.geosearch().addTo(map);
-
-
-	// var results = L.layerGroup().addTo(map);
-
-	// searchControl.on('results', function (data) {
-
-	// 	console.log(data);
-		
-	// 	results.clearLayers();
-	// 	for (var i = data.results.length - 1; i >= 0; i--) {
-	// 		results.addLayer(L.marker(data.results[i].latlng));
-	// 	}
-	//  });
-	
-	// console.log("gay1");
 
 	var results = L.layerGroup().addTo(map);
 	
@@ -475,55 +391,56 @@
 		}
 	 });
 	
-	// map.on('click', onMapClick);
-	
 </script>
 
-<% if(apartment.images.length > 0){ %>
-	<br><br><div align="center" class="alert alert-warning" role="alert">
-	 		<strong style="font-size:25px">Gallery</strong>
-	</div>
+				<% if(apartment.images.length > 0){ %>
+					<br><br><div align="center" class="alert alert-warning" role="alert">
+							<strong style="font-size:25px">Gallery</strong>
+					</div>
 
-	<div class="row"
-		 style="background-color: rgba(0,0,0,0.7); margin-left: auto; margin-right: auto;">
-		<div class="col-lg-8">
-		<!-- Full-width images with number text -->
-		<%	var i = 1;
-			for(var image of apartment.images){ %>
-				<div class="mySlides">
-				    <div class="numbertext"> <%= i %> / <%= apartment.images.length %></div>
-						<img src="<%= image.url %>" style="width:100%; height:500px;object-fit:cover;">
+					<div class="row"
+						 style="background-color: rgba(0,0,0,0.7); margin-left: auto; margin-right: auto;">
+						<div class="col-lg-8">
+						<!-- Full-width images with number text -->
+						<%	var i = 1;
+							for(var image of apartment.images){ %>
+								<div class="mySlides">
+									<div class="numbertext"> <%= i %> / <%= apartment.images.length %>
+									</div>
+										<img src="<%= image.url %>"
+											 style="width:100%; height:500px;object-fit:cover;">
 
-					<!-- Next and previous buttons -->
-					<a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-					<a class="next" onclick="plusSlides(1)">&#10095;</a>
+									<!-- Next and previous buttons -->
+									<a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+									<a class="next" onclick="plusSlides(1)">&#10095;</a>
+								</div>
+							<% i += 1;
+							} %>
+						</div>
+
+						<!-- Thumbnail images -->
+						<%	var i = 1;
+							for(var image of apartment.images){ %>
+								<div class="column">
+									<img class="demo" src="<%= image.url %>"
+										 style="width:186px; height:123px;"
+										 onclick="currentSlide(<%= i %>)">
+								</div>
+							<%	i += 1;
+						} %>
+					</div>
+				<% } %>
 				</div>
-			<% i += 1;
-			} %>
-		</div>
-
-		<!-- Thumbnail images -->
-		<%	var i = 1;
-			for(var image of apartment.images){ %>
-				<div class="column">
-					<img class="demo" src="<%= image.url %>"
-						 style="width:186px; height:123px;"
-						 onclick="currentSlide(<%= i %>)">
-				</div>
-			<%	i += 1;
-		} %>
-	</div>
-<% } %>
-</div>
 
 			<div class="jumbotron" style="height:370px;">
 				<div class="row">
 					<div class="col-lg-4">
-					<p style="position:relative; left:30px;"><strong>About the host</strong></p>
-					<svg height="120" width="210" style="position:relative; top:-15px;">
-						<line x1="10" y1="0" x2="250" y2="0" style="stroke:rgb(0,0,0,0.2);stroke-width:2;" />
-					</svg>
-					<img src="<%= apartment.host.picture.url %>" style="border-radius: 50%; width: 200px; height: 200px; position:relative; left:5px; top:-110px; object-fit:cover;">
+						<p style="position:relative; left:30px;"><strong>About the host</strong></p>
+						<svg height="120" width="210" style="position:relative; top:-15px;">
+							<line x1="10" y1="0" x2="250" y2="0"
+								  style="stroke:rgb(0,0,0,0.2);stroke-width:2;" />
+						</svg>
+						<img src="<%= apartment.host.picture.url %>" style="border-radius: 50%; width: 200px; height: 200px; position:relative; left:5px; top:-110px; object-fit:cover;">
 					</div>
 					<div class="col-lg-4">
 						<h4 align="left"
@@ -573,7 +490,8 @@
 					<div class="col-lg-4">
 						<h4 align="center" style="position:relative; top:30px;">Reviews</h4>
 						<svg height="120" width="200" style="position:relative; top:50px; left:-15px;">
-							<line x1="0" y1="0" x2="0" y2="200" style="stroke:rgb(0,0,0,0.3);stroke-width:2;" />
+							<line x1="0" y1="0" x2="0" y2="200"
+								  style="stroke:rgb(0,0,0,0.3);stroke-width:2;" />
 						</svg>
 						<ul align="left"
 							style="position:relative; top:-70px; left:5px; list-style-type:none;">
@@ -622,32 +540,28 @@
 	}
 
 	function showSlides(n) {
-	  var i;
-	  var slides = document.getElementsByClassName("mySlides");
-	  var dots = document.getElementsByClassName("demo");
-	  var captionText = document.getElementById("caption");
-	  if (n > slides.length) {slideIndex = 1}
-	  if (n < 1) {slideIndex = slides.length}
-	  for (i = 0; i < slides.length; i++) {
-		  slides[i].style.display = "none";
-	  }
-	  for (i = 0; i < dots.length; i++) {
-		  dots[i].className = dots[i].className.replace(" active", "");
-	  }
-	   slides[slideIndex-1].style.display = "block";
-	   dots[slideIndex-1].className += " active";
-	   captionText.innerHTML = dots[slideIndex-1].alt;
+		var i;
+		var slides = document.getElementsByClassName("mySlides");
+		var dots = document.getElementsByClassName("demo");
+		var captionText = document.getElementById("caption");
+
+		if (n > slides.length) {slideIndex = 1}
+
+		if (n < 1) {slideIndex = slides.length}
+
+		for (i = 0; i < slides.length; i++) {
+			slides[i].style.display = "none";
+		}
+
+		for (i = 0; i < dots.length; i++) {
+			dots[i].className = dots[i].className.replace(" active", "");
+		}
+
+		slides[slideIndex-1].style.display = "block";
+		dots[slideIndex-1].className += " active";
+		captionText.innerHTML = dots[slideIndex-1].alt;
 	}
 
-	// document.onkeydown = function(event){
-	// 	var keyCode = event.which || event.keyCode;
-	// 	if(keyCode == '37'){
-	// 		plusSlides(-1);
-	// 	}else if(keyCode == '39'){
-	// 		plusSlides(1);
-	// 	}
-	// }
 </script>
-
 
 <%- include("../partials/footer") %>
