@@ -1,6 +1,7 @@
 const 	express 	= require("express"),
 		mongoose	= require("mongoose"),
 		router  	= express.Router(),
+		middleware	= require("../middleware"),
 		User		= require("../models/user"),
 		Apartment	= require("../models/apartment"),
 		Review		= require("../models/review");
@@ -10,14 +11,14 @@ const 	express 	= require("express"),
 // ----------------------------------------- REVIEWS FOR HOST  ----------------------------------------- //
 
 // NEW Route for reviews about a host
-router.get("/host/new", function(req, res){
+router.get("/host/new", middleware.isLoggedIn, function(req, res){
 	var host = JSON.parse(req.query.host);
 
 	res.render("reviews/host/new", { host: host, apartment: req.query.apartment });
 });
 
 // Create Route for reviews about a host
-router.post("/host/:tenant_id/:host_id", function(req,res){
+router.post("/host/:tenant_id/:host_id", middleware.isTenant, function(req,res){
 	User.findById(req.params.tenant_id).populate("reviews").exec(function(err,tenant){
 		if(err){
 			req.flash("error", err.message);
@@ -70,7 +71,7 @@ router.post("/host/:tenant_id/:host_id", function(req,res){
 
 
 // Edit Route for reviews about a host
-router.get("/host/:id/edit", function(req, res){
+router.get("/host/:id/edit", middleware.checkReviewOwnership, function(req, res){
 	Review.findById(req.params.id).populate("author").exec(function(err,review){
 		if(err){
 			req.flash("error", err.message);
@@ -83,7 +84,7 @@ router.get("/host/:id/edit", function(req, res){
 });
 
 // Update Route for reviews about a host
-router.put("/host/:id", function(req,res){
+router.put("/host/:id", middleware.checkReviewOwnership, function(req,res){
 	Review.findById(req.params.id, function(err, review){
 		if(err){
 			req.flash("error", err.message);
@@ -112,7 +113,7 @@ router.put("/host/:id", function(req,res){
 });
 
 // SHOW Route - show more info about the reviews of one specific host
-router.get("/host/:apartment_id", function(req,res){
+router.get("/host/:apartment_id", middleware.isLoggedIn, function(req,res){
 	Apartment.findById(req.params.apartment_id)
 	.populate({ path:"host", populate: { path:"reviews", populate: { path:"author" }}})
 	.exec(function(err, apartment){
@@ -120,14 +121,17 @@ router.get("/host/:apartment_id", function(req,res){
 			req.flash("error", err.message);
 			res.redirect("back");
 		}else{
-			res.render("reviews/host/show", { host: apartment.host, apartment: apartment });
+			res.render("reviews/host/show", { host: apartment.host, apartment: apartment,
+											  num_days: req.query.num_days,
+											  check_in: req.query.check_in, guests: req.query.guests,
+											  check_out: req.query.check_out });
 		}
 	});
 });
 
 
 // Delete Route for reviews about a host
-router.delete("/host/:id", function(req,res){
+router.delete("/host/:id", middleware.checkReviewOwnership, function(req,res){
 	// Remove review from host's reviews
 	User.findById(req.query.host).populate("reviews").exec(function(err,host){
 		if(err){
@@ -183,14 +187,14 @@ router.delete("/host/:id", function(req,res){
 // ------------------------------------ REVIEWS FOR APARTMENT  ----------------------------------------- //
 
 // NEW Route for reviews about an apartment
-router.get("/apartment/new", function(req, res){
+router.get("/apartment/new", middleware.isLoggedIn, function(req, res){
 	var apartment = JSON.parse(req.query.apartment);
 
 	res.render("reviews/apartment/new", { apartment: apartment });
 });
 
 // Create Route for reviews about an apartment
-router.post("/apartment/:tenant_id/:apartment_id", function(req,res){
+router.post("/apartment/:tenant_id/:apartment_id", middleware.isTenant, function(req,res){
 	User.findById(req.params.tenant_id).populate("reviews").exec(function(err,tenant){
 		if(err){
 			req.flash("error", err.message);
@@ -240,7 +244,7 @@ router.post("/apartment/:tenant_id/:apartment_id", function(req,res){
 
 
 // Edit Route for reviews about an apartment
-router.get("/apartment/:id/edit", function(req, res){
+router.get("/apartment/:id/edit", middleware.checkReviewOwnership, function(req, res){
 	Review.findById(req.params.id).populate("author").exec(function(err,review){
 		if(err){
 			req.flash("error", err.message);
@@ -253,7 +257,7 @@ router.get("/apartment/:id/edit", function(req, res){
 });
 
 // Update Route for reviews about an apartment
-router.put("/apartment/:id", function(req,res){
+router.put("/apartment/:id", middleware.checkReviewOwnership, function(req,res){
 	var review = JSON.parse(req.query.review);
 
 	// Update rating
@@ -282,21 +286,23 @@ router.put("/apartment/:id", function(req,res){
 
 
 // SHOW Route - show more info about the reviews of one specific apartment
-router.get("/apartment/:apartment_id", function(req,res){
+router.get("/apartment/:apartment_id", middleware.isLoggedIn, function(req,res){
 	Apartment.findById(req.params.apartment_id)
 	.populate({ path:"reviews", populate: { path:"author" }}).exec(function(err, apartment){
 		if(err){
 			req.flash("error", err.message);
 			res.redirect("back");
 		}else{
-			res.render("reviews/apartment/show", { apartment: apartment });
+			res.render("reviews/apartment/show", { apartment: apartment, num_days: req.query.num_days,
+												   check_in: req.query.check_in, guests: req.query.guests,
+												   check_out: req.query.check_out });
 		}
 	});
 });
 
 
 // Delete Route for reviews about an apartment
-router.delete("/apartment/:id", function(req,res){
+router.delete("/apartment/:id", middleware.checkReviewOwnership, function(req,res){
 	// Remove review from apartment's reviews
 	Apartment.findById(req.query.apartment).populate("reviews").exec(function(err,apartment){
 		if(err){

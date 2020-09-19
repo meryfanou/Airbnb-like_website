@@ -1,5 +1,6 @@
 <%- include("./partials/header") %>
 
+<!-- If current user is also a host, should be able to see his/her apartments -->
 <% if(currentUser && currentUser.app_role.includes("host")){ %>
 	<p style="position: relative; left:1%; top:3%; font-size:110%;">
 		<a href="/users/<%= currentUser._id %>/host">Host Page</a>
@@ -73,23 +74,12 @@
       <li></li>
     </ul>
 
-	<script async defer src="https://cdn.jsdelivr.net/npm/transliteration@2.1.8/dist/browser/bundle.umd.min.js"></script>
+<script async defer src="https://cdn.jsdelivr.net/npm/transliteration@2.1.8/dist/browser/bundle.umd.min.js"></script>
 	
-		<script>
-		// var transliteration = require('transliteration');
-		import { transliterate as tr } from 'transliteration';
-
-		// var slug = tr.slugify;
-		// var tr = transliteration.transliterate;
-
-		tr('你好, world!'); // Ni Hao , world!
-		// var transliteration = require("transliteration");		// import { transliterate as tr } from 'transliteration';
-		// import { transliterate as tr } from 'transliteration';
-		// tr('Γειαs σας, τον κόσμο');
-	
+<script>
+	// var transliteration = require('transliteration');
+	import { transliterate as tr } from 'transliteration';
 </script> 
-
-
 
 
 <%- include("./partials/footer") %>
