@@ -10,6 +10,7 @@ const express		 = require("express"),
 	  methodOverride = require("method-override"),
 	  fs			 = require("fs"),
 	  https			 = require("https"),
+	  rl	 	 	 = require('readline-sync'),
 	  User			 = require("./models/user"),
 	  Message		 = require("./models/message"),
 	  Apartment		 = require("./models/apartment"),
@@ -26,14 +27,16 @@ var userRoutes		  = require("./routes/users"),
 var port = process.env.PORT || 3000,
 	db_url = process.env.DATABASEURL || "mongodb://localhost/airbnb";
 
-mongoose.connect(db_url, {
-	useNewUrlParser: true,
-	useUnifiedTopology: true,
-	useFindAndModify: false,
-	useCreateIndex: true
-})
-.then(() => console.log("Connected to Airbnb db"))
-.catch(error => console.log(error.message));
+const startMongodb = function() {
+	mongoose.connect(db_url, {
+		useNewUrlParser: true,
+		useUnifiedTopology: true,
+		useFindAndModify: false,
+		useCreateIndex: true
+	})
+	// .then(() => console.log("Connected to Airbnb db"))
+	.catch(error => console.log(error.message));
+}
 
 
 app.set("view engine", "ejs");
@@ -78,6 +81,60 @@ https.createServer({
   cert: fs.readFileSync('server.cert')
 }, app);
 
-app.listen(port, function(){
-	console.log("Airbnb server has started");
-});
+const startServer = function() {
+	app.listen(port, function(){
+		console.log("Airbnb server has started");
+	});
+};
+
+// var readline = require('readline');
+
+// var rl = readline.createInterface({
+//  	input: process.stdin,
+//   	output: process.stdout,
+// 	terminal: false,
+// 	silent: true
+// });
+
+var adminUsername, adminPassword, adminNext;
+
+const getAdmin = function(){
+	adminUsername = rl.question("Give an admin Username: ");
+	console.log("hi "+adminUsername);
+	adminPassword = rl.question("Give an admin Password: ", {
+		hideEchoBack: true
+	});
+
+	var answer = rl.question("Do you want to add another admin user? (yes/no):");	
+	if (answer !='no' && answer!='yes' ){
+		adminNext = 'other';
+	}
+	else {
+		adminNext = answer;
+	}
+
+	while(adminNext == 'other'){
+		answer = rl.question("Do you want to add another admin user? (yes/no):");	
+		if (answer !='no' && answer!='yes' ){
+			adminNext = 'other';
+		}
+		else {
+			adminNext = answer;
+		}
+	}
+
+	if(adminNext == 'yes'){
+		console.log("save admin")
+		getAdmin();
+	}else{
+		console.log("Welcome to Airbnb")
+	}
+};
+
+const main = async function(){
+	await startServer();
+	await startMongodb();
+	await getAdmin();
+}
+
+main();
