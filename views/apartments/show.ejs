@@ -36,11 +36,7 @@
 									var deleteApartment =
 										confirm("Are you sure you want to delete <%=apartment.name%>?");
 
-									if(deleteApartment){
-										return true;
-									}else{
-										return false;
-									}
+									return deleteApartment;
 								}
 							</script>
 						<% } %>
@@ -161,7 +157,7 @@
 				<h4 align="center">
 					<% if(apartment.renting_rules.smoking == "False" ){ %>
 						<li> <strong> Smoking: No </strong>
-						<i class='fa fa-smoking-ban'></i>
+						<i class='fas fa-smoking-ban'></i>
 					<% } else { %>
 						<li> <strong> Smoking: Yes </strong>
 						<i class='fas fa-smoking'></i>
@@ -177,7 +173,7 @@
 							Yes
 						<% } %>
 						</strong>
-						<i class='fa fa-dog'></i>
+						<i class='fas fa-dog'></i>
 					</li>
 				</h4>
 
@@ -265,7 +261,7 @@
 							Yes
 						<% } %>
 						</strong>
-						<i class="fa fa-car" aria-hidden="true"></i>
+						<i class="fas fa-car" aria-hidden="true"></i>
 					</li>
 				</h4>
 
@@ -277,7 +273,7 @@
 							Yes
 						<% } %>
 						</strong>
-						<i class="fa fa-door-closed"></i>
+						<i class="fas fa-door-closed"></i>
 					</li>
 				</h4><br>
 
@@ -288,7 +284,7 @@
 				<h4 align="center"><li> <strong> Address: <%= apartment.location.address %> </strong>
 					<i class="fas fa-map-marker-alt"></i></li></h4> 
 				<h4 align="center"><li> <strong> Neighbourhood: <%= apartment.location.neighbourhood %> 
-					</strong><i class="fa fa-city"></i></li></h4> 
+					</strong><i class="fas fa-city"></i></li></h4> 
 				<h4 align="center"><li> <strong> Transportation: <%= apartment.location.transportation %> 
 					</strong><i class="fas fa-bus"></i></li></h4><br>
 

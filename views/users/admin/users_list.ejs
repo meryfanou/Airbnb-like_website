@@ -1,0 +1,28 @@
+<%- include("../../partials/header") %>
+
+<h1>
+	Info about the users
+</h1>
+
+<p>
+	<% for(var user of users){ %>
+		<%= user.username %><br>
+		<%= user.firstname %><br>
+		<%= user.lastname %><br>
+		<% for(var role of user.app_role){ %>
+			<%= role %><br>
+			<% if(role == "host" && user.approved_by_admin == "disapproved"){ %>
+				<form action="/users/<%=currentUser._id%>/admin/approve_host/<%=user._id%>" method="POST">
+					<button class="btn btn-warning">
+						Approve <%= user.username %>'s registration as a host
+					</button><br>
+				</form>
+			<% } %>
+		<% } %>
+		<%= user.email %><br>
+		<%= user.phone_number %><br>
+	<% } %>
+</p>
+
+
+<%- include("../../partials/footer") %>

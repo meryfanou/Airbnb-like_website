@@ -316,19 +316,11 @@ output {
   stroke-width: 2;
   stroke-linejoin: round;
 }
-/* 
-.cloud-shape path:hover {
-  fill: crimson;
-  opacity: 0.5;
-  stroke: crimson;
-  /* fill: transparent;
-  stroke: crimson; */
-} */
 
-/* ------------------------------------------------- Star Rating System -------------------------------------------------*/
+
+/* ----------------------------------------- Star Rating System ------------------------------------*/
 
 @import url(//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);
-
 
 /* Ratings widget */
 .rate {
@@ -374,60 +366,16 @@ input:checked ~ label:hover ~ label, /* highlight previous selected stars for ne
 label:hover ~ input:checked ~ label /* highlight previous selected stars */ { color: orange;  } 
 
 
-/* ------------------------------------------------- Background Slideshow -------------------------------------------------*/
-
-/* #SLIDE_BG {
-	
-	width: 100%;
-	height: 100vh;
-	background-position: center center;
-	background-size: cover;
-	background-repeat: no-repeat;
-	backface-visibility: hidden;
-	animation: slideBg 8s linear infinite 0s;
-	animation-timing-function: ease-in-out;
-	background-image: url("http://i.imgur.com/K3mPv14.jpg");
-}
-	
-	
-@keyframes	{
-	
-	0% {
-		background-image: url("http://i.imgur.com/K3mPv14.jpg");
-	}
-	
-	25% {
-		background-image: url("http://i.imgur.com/SBEmFpv.jpg);");
-	}
-	
-	50% {
-		background-image: url("http://i.imgur.com/emvhOnb.jpg");
-	}
-	
-	75% {
-		background-image: url("http://i.imgur.com/2LSMCmJ.jpg");
-	}
-	
-	100% {
-		background-image: url("http://i.imgur.com/TVGe0Ef.jpg");
-	}
-	
-	
-} */
+/* --------------------------------- Background Slideshow -------------------------------------*/
 
 	 
 #landingthumb {
-	
 	margin-left: 190% ;
-	/* margin-right: 30%; */
-	
 	background-color: rgba(255, 255, 255, 0.28);
-	
 }
 
 
 #landing-header {
-	
   z-index: 1;
   position: fixed;
   text-align: center;
@@ -435,19 +383,15 @@ label:hover ~ input:checked ~ label /* highlight previous selected stars */ { co
   margin-top: -20%;
 }
 
-
-
 #navbarslide{
 	z-index: 1;
 	display: block;
 }
 
 #landing-header h1 {
-	
 	margin-left: 54%;
  	color: #fff;
 }
-
 
 .slideshow { 
   position: fixed;
@@ -515,4 +459,4 @@ label:hover ~ input:checked ~ label /* highlight previous selected stars */ { co
 
 .no-cssanimations .slideshow li {
 	opacity: 1;
-}   */
+}

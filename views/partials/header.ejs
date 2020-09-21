@@ -38,7 +38,7 @@ href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
  		<meta name='viewport' content='width=device-width, initial-scale=1'>
 		<script src='https://kit.fontawesome.com/a076d05399.js'></script>
 
-		<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+		<script type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
 		
 		<!-- For Star Rating -->
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -62,7 +62,7 @@ href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
 						<li> <a href="#"> Signed In As <%= currentUser.username %> </a> </li>
 						<li> <a href="/logout">Logout</a> </li>
 
-						<li> <a href="/users/<%= currentUser._id %>/edit"> Edit Profile <i class="fa fa-user" aria-hidden="true"></i> </a> </li>
+						<li> <a href="/<%= currentUser._id %>/edit"> Edit Profile <i class="fa fa-user" aria-hidden="true"></i> </a> </li>
 						<li> <img src="<%= currentUser.picture.url %>" /> </li>
 					<% } %>
 				</ul>

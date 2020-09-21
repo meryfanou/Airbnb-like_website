@@ -1,11 +1,7 @@
 <%- include("./partials/header") %>
 
 <!-- If current user is also a host, should be able to see his/her apartments -->
-<% if(currentUser && currentUser.app_role.includes("host")){ %>
-	<p style="position: relative; left:1%; top:3%; font-size:110%;">
-		<a href="/users/<%= currentUser._id %>/host">Host Page</a>
-	</p>
-<% } %>
+
 
 <!-- <div> -->
 	<!-- <h1 style="text-align: center;"> Welcome to Airbnb! </h1> -->
@@ -63,8 +59,22 @@
 			</div>
 		</div>
 	</div>
+	
+	
+	<% if(currentUser && currentUser.app_role.includes("host")){ %>
+	<p style="position: relative; left:1%; top:3%; font-size:110%; z-index: 1; margin-left: 55%">
+		<a href="/users/<%= currentUser._id %>/host" class="btn btn-primary btn-group-toggle btn-lg active bg-transparent" role="button" aria-pressed="true">Host Page <i class="fas fa-home"></i> </a>
+	</p>
+<% } %>
 </div>	
 </div>
+
+
+
+<br>
+<br>
+<br>
+<br>
 
  <ul class="slideshow">
       <li></li>

@@ -133,7 +133,8 @@
 						<% }else if(currentUser && currentUser.app_role.includes("tenant")){ %>
 							<div class="cloud-button">
 								<form class="pull-right" method="POST"
-									  action="/reservations/<%= currentUser._id %>/<%= apartment._id %>?check_in=<%=check_in%>&check_out=<%=check_out%>&guests=<%=guests%>&num_days=<%=num_days%>">
+									  action="/reservations/<%= currentUser._id %>/<%= apartment._id %>?check_in=<%=check_in%>&check_out=<%=check_out%>&guests=<%=guests%>&num_days=<%=num_days%>"
+									  onsubmit="return confirmReservation()">
 									<svg class="cloud-shape" viewBox='0 0 115 105'>
 										<path d='M 25,60 
 												a 20,20 1 0,0 0,40 
@@ -147,6 +148,25 @@
 										<strong style="position:relative; top:-50px; left:10px;">
 											Book now!</strong>
 									</button>
+									<script>
+										function confirmReservation(){
+											var total = <%=apartment.price_min%> * <%=num_days%> + 
+													<%=apartment.extra_charge_per_guest%> * <%=guests%>;
+										var question = "Are you sure you want to make a reservation to ";
+											question +=	"<%=apartment.name%>";
+											question += " from ";
+											question += "<%=check_in%>";
+											question += " to ";
+											question += "<%=check_out%>";
+											question += " for ";
+											question += "<%=guests%>";
+											question += " guests?\n\nTotal charges: " + total + "€\n";
+
+											var confirmation = confirm(question);
+
+											return confirmation;
+										}
+									</script>
 								</form>
 							</div>
 						<% }else{ %>
@@ -474,12 +494,13 @@
 							<li><i class="fa fa-user" aria-hidden="true"></i>
 								 <%= apartment.host.firstname %> <%= apartment.host.lastname %><br><br>
 							</li>
+							<li><i class="fas fa-at"></i>
+								<%= apartment.host.email %><br><br>
+							</li>
 							<li><i class="fas fa-envelope"></i>
 								<% if(currentUser && currentUser.app_role.includes("tenant")){ %>
 									<a href="/messages/tenant/<%=currentUser._id%>/<%=apartment._id%>">
-										<%= apartment.host.email %></a><br><br>
-								<% }else{ %>
-									<%= apartment.host.email %><br><br>
+										Send a message</a><br><br>
 								<% } %>
 							</li>
 							<li><i class="fas fa-phone"></i> 

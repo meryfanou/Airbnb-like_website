@@ -239,7 +239,7 @@
 
 				<div class="form-group">
 					<label for="transportation">Means of transportation:</label>
-					<input class="form-control" type="text" name="location.transportation"
+					<input class="form-control" type="text" name="location[transportation]"
 						   id="transportation" value="<%= apartment.location.transportation %>">
 				</div>
 
@@ -453,7 +453,6 @@
 			map = L.map('mapid').setView([ <%= apartment.location.lat %> , <%= apartment.location.lng %> ], 15);
 			var marker = L.marker([ <%= apartment.location.lat %> , <%= apartment.location.lng %> ]).addTo(map);
 			marker.bindPopup("<b> <%= apartment.name %> </b><br><%= apartment.location.address %>.").openPopup();
-			// document.getElementById('mapid').innerHTML = "<div id='map' style='width: 100%; height: 100%;'></div>";
 
 			
 			console.log("reverse choosen");
@@ -486,39 +485,15 @@
 						return;
 					}
 
-					// L.marker(result.latlng).addTo(map).bindPopup(result.address.Match_addr).openPopup();
-					// // L.marker(result.latlng).addTo(map).bindPopup(result.address.Match_addr).openPopup();
-					
-					// if(marker){
-						// map.removeLayer(marker);
-					// }
-					
 					popup.setLatLng(result.latlng);
 					popup.setContent("You clicked the map at " + result.address.Match_addr);
 					popup.openOn(map);
 					marker = L.marker(result.latlng).addTo(map);
 					marker.bindPopup("<b>You clicked at:<b>" + result.address.Match_addr).openPopup();
-					
-					σδ
-					
-					// $("addr").hide();
-					// var addr= document.getElementById("addr").style.visibility="hidden";
-					// console.log(addr);
-					// var addr= document.getElementById("addr").style.display="none";
-
-					
-					// document.getElementById("form-group").name("location[address]").style.visibility = 'hidden';      // Hide
-
-
-					
-					// L.marker(result.latlng).addTo(map).bindPopup("<b>Hello world!</b><br>I am a popup.").openPopup();
 
 					document.getElementById("maps").name = result.address.Match_addr;
 				});
 			});
-			
-			// map.off();
-			// map.remove();
 		} else if (value == "geocoding") {
 
 			addr = document.getElementById("addr");
@@ -528,28 +503,17 @@
 			mapid.style.display= "none";
 			addr.style.display="block";
 
-			// mapid.style.height= "0px";
-			
 			if (map !== undefined && map !== null) {
   				map.remove(); // should remove the map from UI and clean the inner children of DOM element
   				console.log(map); // nothing should actually happen to the value of mymap
 			}
-			
-			map = L.map('mapid');
-			
-			// document.getElementById('maps').innerHTML = "<div id='mapid' style='width: 0%; height: 0%;'></div>";
 
-			// map.off();
+			map = L.map('mapid');
 			map.remove();
 			map.off();
 			map=null;
-			
 		}
-		
 	}
-	
-
-
 </script>
 
 <%- include('../partials/footer') %>

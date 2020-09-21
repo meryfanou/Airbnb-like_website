@@ -208,6 +208,8 @@ router.get("/:id", middleware.checkApartmentOwnership, function(req,res){
 	});
 });
 
+
+// Edit Route
 router.get("/:id/edit", middleware.checkApartmentOwnership, function(req,res){
 	apartment.findById(req.params.id).populate("host").exec(function(err, foundApartment){
 		if(err){
@@ -219,6 +221,8 @@ router.get("/:id/edit", middleware.checkApartmentOwnership, function(req,res){
 	});
 });
 
+
+// Update Route
 router.put("/:id",  middleware.checkApartmentOwnership, upload.array("images", 10), function(req,res){
 	apartment.findById(req.params.id).populate("host").populate("reservations").populate("reviews")
 	.exec(async function(err, foundApartment){
@@ -442,6 +446,8 @@ router.put("/:id",  middleware.checkApartmentOwnership, upload.array("images", 1
 	});
 });
 
+
+// Delete Route
 router.delete("/:id", middleware.checkApartmentOwnership, function(req,res){
 	// Find current user in db
 	User.findById(req.user._id, function(err, user){
@@ -474,7 +480,6 @@ router.delete("/:id", middleware.checkApartmentOwnership, function(req,res){
 		}
 	});
 });
-
 
 
 module.exports = router;

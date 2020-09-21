@@ -6,7 +6,6 @@ const 	express 	= require("express"),
 		Apartment	= require("../models/apartment"),
 		Review		= require("../models/review");
 
-// ROUTES
 
 // ----------------------------------------- REVIEWS FOR HOST  ----------------------------------------- //
 

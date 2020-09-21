@@ -36,7 +36,7 @@
 				<% for(var message of inbox){ %>
 					<a href="/messages/host/<%=currentUser._id%>/<%=apartment._id%>/<%=message._id%>">
 						<li>
-							<strong><%= message.sender.email %>:</strong>&nbsp;&nbsp;&nbsp;
+							<strong><%= message.sender.username %>:</strong>&nbsp;&nbsp;&nbsp;
 							<%= message.subject %>
 							<h5 class="pull-right"><%= message.date %></h5>
 						</li>
@@ -93,7 +93,7 @@
 				<% for(var message of sent){ %>
 					<a href="/messages/host/<%=currentUser._id%>/<%=apartment._id%>/<%=message._id%>">
 						<li>
-							<strong><%= message.recipient.email %>:</strong>&nbsp;&nbsp;&nbsp;
+							<strong><%= message.recipient.username %>:</strong>&nbsp;&nbsp;&nbsp;
 							<%= message.subject %>
 							<h5 class="pull-right"><%= message.date %></h5>
 						</li>

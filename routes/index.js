@@ -32,7 +32,6 @@ cloudinary.config({
 });
 
 
-
 // Welcome Page
 router.get("/", function(req, res){
 	res.render("landing");
@@ -100,6 +99,10 @@ router.post("/register", upload.single("image"), function(req, res){
 			res.redirect("/register");
 		}else{
 			req.body.user.password = req.body.password;
+
+			var temp = new User();
+			req.body.user.approved_by_admin = temp.approved_by_admin;
+
 			User.register(req.body.user, req.body.password, function(err, user){
 				if(err){
 					req.flash("error", err.message);
@@ -132,8 +135,25 @@ router.post("/login", passport.authenticate("local",
 		failureFlash: true
 	}), function(req, res){
 	req.flash("success", "Welcome back " + req.user.username);
-	if(req.user.app_role.includes("host")){
-		res.redirect("/users/" + req.user._id + "/host");
+	if(req.user.app_role[0] == "admin" && req.user.app_role.length == 1){
+		res.redirect("/users/" + req.user._id + "/admin");
+	}else if(req.user.app_role.includes("host")){
+		if(req.user.approved_by_admin == "just approved"){
+			User.findById(req.user._id, function(err, user){
+				if(err){
+					req.flash("error", err.message);
+					return res.redirect("back");
+				}
+
+				user.approved_by_admin = "approved";
+				user.save();
+
+				req.flash("success", " your registration in Airbnb as a host was approved successfully!");
+				res.redirect("/users/" + req.user._id + "/host");
+			});
+		}else{
+			res.redirect("/users/" + req.user._id + "/host");
+		}
 	}else{
 		res.redirect("/");
 	}
@@ -159,6 +179,7 @@ router.get("/:id/edit", function(req, res){
 	});
 });
 
+// update Route
 router.put("/:id", upload.single("image"), function(req,res){
 	User.findById(req.params.id, async function(err, foundUser){
 		if(err){
@@ -226,6 +247,7 @@ router.put("/:id", upload.single("image"), function(req,res){
 
 		req.body.user.username = req.body.username;
 		req.body.user.password = req.body.password;
+		req.body.user.approved_by_admin = foundUser.approved_by_admin;
 
 		User.findByIdAndUpdate(req.params.id, req.body.user, function(err, updatedUser){
 			if(err){

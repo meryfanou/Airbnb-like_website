@@ -146,17 +146,7 @@
 					<input class="form-control" type="text" placeholder="Address e.g: Αγίου Δημητρίου 15,105 54,Αθήνα,Αττική,Ελλάδα"
 						   name="location[address]"><br>
 				</div>
-				
-				 <!-- <div class="dropdown">
-        			<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Dropdown Example
-        			<span class="caret"></span></button>
-        			<ul class="dropdown-menu">
-          				<li><a href="#">HTML</a></li>
-          				<li><a href="#">CSS</a></li>
-          				<li><a href="#">JavaScript</a></li>
-        			</ul>
-      			</div> -->
-				
+
 				<div class="form-group">
 					<input class="form-control" type="text" placeholder="Neighbourhood"
 						   name="location[neighbourhood]" required><br>
@@ -216,57 +206,31 @@
 
 
 <script>
-// 	REVERSE GEOCODING => LAT AND LNG
-	
-// 	var mymap = L.map('mapid').setView([51.505, -0.09], 13);
-
-// 	L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-//     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-//     maxZoom: 18,
-//     id: 'mapbox/streets-v11',
-//     tileSize: 512,
-//     zoomOffset: -1,
-//     accessToken: 'pk.eyJ1IjoiZGZ3dGVpbm9zIiwiYSI6ImNrZWg1a2czYTA3Y3gzMG82NGlsdm5mZHUifQ.wSDWJpIrkAPwk5zeLoE93Q'
-// }).addTo(mymap);
-
-// 	var popup = L.popup();
-	
-// 	function onMapClick(e) {
-//     popup
-//         .setLatLng(e.latlng)
-//         .setContent("You clicked the map at " + e.latlng.toString())
-//         .openOn(mymap);
-		
-// 		return e.latlng.toString;
-// 	}
-
-// 	mymap.on('click', onMapClick);
-	
+// 	REVERSE GEOCODING => LAT AND LNG	
 // ESRI - REVERSE GECODING => ADDRESS
-	
+
 	var mapid = null;
 	mapid = document.getElementById("mapid");
 	mapid.style.display= "none";
-	
+
 	var map = null;
 	var popup= null;
 	var marker= null;
 	var addr = null;
-	
+
 	addr = document.getElementById("addr");
 	addr.style.display="none";
-	
+
 	function GeocodingFunction(){
 		var value = document.getElementById("maps").value;
 		if(value == "reverse_geocoding"){
-			
+
 			mapid = document.getElementById("mapid");
 			mapid.style.visibility = "visible";
 			mapid.style.display = 'block';          // Show
 			addr = document.getElementById("addr");
 			addr.style.display="none";
 
-			
 			console.log(map); // should output the object that represents instance of Leaflet
 			if (map !== undefined && map !== null) {
   				map.remove(); // should remove the map from UI and clean the inner children of DOM element
@@ -274,9 +238,7 @@
 			}
 
 			map = L.map('mapid').setView([37.980, 23.750], 12);
-			// document.getElementById('mapid').innerHTML = "<div id='map' style='width: 100%; height: 100%;'></div>";
 
-			
 			console.log("reverse choosen");
 			console.log(map);
 
@@ -290,7 +252,6 @@
 			var addr= document.getElementById("addr").style.visibility="hidden";
 			
 			map.on('click', function (e) {
-				
 				map.eachLayer(function (layer) {
   						layer.closePopup();	
 					});
@@ -298,54 +259,24 @@
 					if(marker){
 						map.removeLayer(marker);
 					}
-				
+
 				geocodeService.reverse().latlng(e.latlng).run(function (error, result) {
 					if (error) {
 						return;
 					}
 
-					// L.marker(result.latlng).addTo(map).bindPopup(result.address.Match_addr).openPopup();
-					// // L.marker(result.latlng).addTo(map).bindPopup(result.address.Match_addr).openPopup();
-					
-					// if(marker){
-						// map.removeLayer(marker);
-					// }
-
 					popup.setLatLng(result.latlng);
 					popup.setContent("You clicked the map at " + result.address.Match_addr);
 					popup.openOn(map);
 					marker = L.marker(result.latlng).addTo(map);
-					
+
 					var postal = result.address.Postal.split(' ').join('');
 					var string = result.address.Address + "," + postal + "," + result.address.City + "," + result.address.Region;
 					
 					marker.bindPopup("<b>You clicked at:<b>" + string).openPopup();
-
-					// marker.bindPopup("<b>You clicked at:<b>" + result.address.LongLabel).openPopup();
-					
-					// $("addr").hide();
-					// var addr= document.getElementById("addr").style.visibility="hidden";
-					// console.log(addr);
-					// var addr= document.getElementById("addr").style.display="none";
-
-					
-					// document.getElementById("form-group").name("location[address]").style.visibility = 'hidden';      // Hide
-
-
-					
-					// L.marker(result.latlng).addTo(map).bindPopup("<b>Hello world!</b><br>I am a popup.").openPopup();
-
-					// var postal = result.address.Postal.split(' ').join('');
-					// var string = result.address.Address + "," + postal + "," + result.address.City + "," + result.address.Region;
-
-					//document.getElementById("maps").name = result.address.Match_addr;
 					document.getElementById("maps").name = string;
-
 				});
 			});
-			
-			// map.off();
-			// map.remove();
 		} else if (value == "geocoding") {
 
 			addr = document.getElementById("addr");
@@ -354,8 +285,6 @@
 			mapid.style.visibility = "hidden";
 			mapid.style.display= "none";
 			addr.style.display="block";
-
-			// mapid.style.height= "0px";
 			
 			if (map !== undefined && map !== null) {
   				map.remove(); // should remove the map from UI and clean the inner children of DOM element
@@ -363,16 +292,10 @@
 			}
 			
 			map = L.map('mapid');
-			
-			// document.getElementById('maps').innerHTML = "<div id='mapid' style='width: 0%; height: 0%;'></div>";
-
-			// map.off();
 			map.remove();
 			map.off();
-			map=null;
-			
+			map=null;	
 		}
-		
 	}
 
 </script>

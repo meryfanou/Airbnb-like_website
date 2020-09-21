@@ -34,7 +34,7 @@ const startMongodb = function() {
 		useFindAndModify: false,
 		useCreateIndex: true
 	})
-	// .then(() => console.log("Connected to Airbnb db"))
+	.then(() => console.log("Connected to Airbnb db"))
 	.catch(error => console.log(error.message));
 }
 
@@ -87,20 +87,11 @@ const startServer = function() {
 	});
 };
 
-// var readline = require('readline');
-
-// var rl = readline.createInterface({
-//  	input: process.stdin,
-//   	output: process.stdout,
-// 	terminal: false,
-// 	silent: true
-// });
 
 var adminUsername, adminPassword, adminNext;
 
 const getAdmin = function(){
 	adminUsername = rl.question("Give an admin Username: ");
-	console.log("hi "+adminUsername);
 	adminPassword = rl.question("Give an admin Password: ", {
 		hideEchoBack: true
 	});
@@ -124,17 +115,66 @@ const getAdmin = function(){
 	}
 
 	if(adminNext == 'yes'){
-		console.log("save admin")
+		// Save last added admin user
+		var user = new User({
+			username: adminUsername,
+			password: adminPassword,
+			firstname: "",
+			lastname: "",
+			email: "",
+			phone_number: "",
+			app_role: [ "admin" ],
+			messages: [],
+			apartments: [],
+			reviews: []
+		});
+
+		User.register(user, adminPassword, function(err, admin){
+			if(err){
+				req.flash("error", err.message);
+				return res.redirect("/register");
+			}
+		});
+
+		// Get the next admin user
 		getAdmin();
 	}else{
-		console.log("Welcome to Airbnb")
+		// Save last added admin user
+		var user = new User({
+			username: adminUsername,
+			password: adminPassword,
+			firstname: "",
+			lastname: "",
+			email: "",
+			phone_number: "",
+			app_role: [ "admin" ],
+			messages: [],
+			apartments: [],
+			reviews: []
+		});
+
+		User.register(user, adminPassword, function(err, admin){
+			if(err){
+				// req.flash("error", err.message);
+				// return res.redirect("/");
+			}
+			//passport.authenticate("local")(req, res, function(){
+				// req.flash("success", "Welcome to Airbnb " + admin.username);
+				// res.redirect("/");
+			//})
+		});
 	}
 };
 
 const main = async function(){
 	await startServer();
 	await startMongodb();
-	await getAdmin();
+
+	User.find({ "app_role": ["admin"] }, function(err,users){
+		if(users.length == 0){
+			getAdmin();
+		}
+	});
 }
 
 main();

@@ -45,7 +45,11 @@ var userSchema = mongoose.Schema({
 			type: mongoose.Schema.Types.ObjectId,
 			ref: "Review"
 		}
-	]
+	],
+	approved_by_admin: {
+		type:		String,
+		default:	"disapproved"
+	}
 });
 
 userSchema.plugin(passportLocalMongoose);

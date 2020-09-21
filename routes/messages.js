@@ -214,9 +214,10 @@ router.post("/:user/:apartment", middleware.isLoggedIn, function(req,res){
 
 				newMessage.save();
 
+
 				var updated = false;
 
-				// Add new message in tenant's mail
+				// Add new message in user's mail
 				for(var mail of user.messages){
 					if(mail.apartment._id.equals(apartment._id)){
 						mail.conversation.push(newMessage);
@@ -239,15 +240,15 @@ router.post("/:user/:apartment", middleware.isLoggedIn, function(req,res){
 					user.save();
 				}
 
-				updated = false;
-
+				// If 'user' is the tenant
 				if(user._id.equals(apartment.host._id) == false){
+					updated = false;
+
 					// Add new massage in host's mail
 					for(var mail of apartment.host.messages){
 						if(mail.apartment._id.equals(apartment._id)){
 							mail.conversation.push(newMessage);
 							apartment.host.save();
-							//apartment.save();
 							updated = true;
 							break;
 						}
@@ -265,13 +266,54 @@ router.post("/:user/:apartment", middleware.isLoggedIn, function(req,res){
 						apartment.host.messages.push(mail);
 						apartment.host.save();
 					}
-				}
 
-				req.flash("success", "Your message was sent successfully.");
-				if(user._id.equals(apartment.host._id)){
-					res.redirect("/messages/host/" + user._id + "/" + apartment._id);
-				}else{
-					res.redirect("/messages/tenant/" + user._id + "/" + apartment._id);
+					req.flash("success", "Your message was sent successfully.");
+					if(user._id.equals(apartment.host._id)){
+						res.redirect("/messages/host/" + user._id + "/" + apartment._id);
+					}else{
+						res.redirect("/messages/tenant/" + user._id + "/" + apartment._id);
+					}
+				}else{										// Host is the user and tenant the recipient
+
+					User.findById(recipient).populate("messages.apartment")
+					.populate("messages.conversation").exec(function(err, recipient){
+						if(err){
+							req.flash("error", err.message);
+							return res.redirect("back");
+						}
+
+						updated = false;
+
+						// Add new message in recipient's mail
+						for(var mail of recipient.messages){
+							if(mail.apartment._id.equals(apartment._id)){
+								mail.conversation.push(newMessage);
+								recipient.save();
+								updated = true;
+								break;
+							}
+						}
+
+						if(updated == false){
+							var conversation = [];
+							conversation.push(newMessage);
+
+							var mail = {
+								apartment: apartment._id,
+								conversation: conversation
+							};
+
+							recipient.messages.push(mail);
+							recipient.save();
+						}
+
+						req.flash("success", "Your message was sent successfully.");
+						if(user._id.equals(apartment.host._id)){
+							res.redirect("/messages/host/" + user._id + "/" + apartment._id);
+						}else{
+							res.redirect("/messages/tenant/" + user._id + "/" + apartment._id);
+						}
+					});
 				}
 			});
 		});
@@ -279,6 +321,7 @@ router.post("/:user/:apartment", middleware.isLoggedIn, function(req,res){
 });
 
 
+// Delete Route
 router.delete("/:user/:apartment/:message", middleware.checkMessageOwnership, function(req,res){
 	User.findById(req.params.user).populate("messages.apartment").populate("messages.conversation")
 	.exec(function(err, foundUser){

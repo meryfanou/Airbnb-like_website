@@ -6,9 +6,11 @@
 	<header class="jumbotron">
 		<div class="container">
 			<h2 style="text-align: center;">This is <%= currentUser.username %>'s host page</h2>
-			<p>
-				<a class ="btn btn-primary btn-lg" href="/apartments/new">Add a new Place</a>
-			</p>
+			<% if(currentUser.approved_by_admin == "approved"){ %>
+				<p>
+					<a class ="btn btn-primary btn-lg" href="/apartments/new">Add a new Place</a>
+				</p>
+			<% } %>
 		</div>
 	</header>
 
