@@ -2,17 +2,18 @@
 
   <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> -->
 
-
 <p style="font-size:115%;"> 
 	<a href="/search/<%=apartment._id%>?num_days=<%=num_days%>&guests=<%=guests%>&check_in=<%=check_in%>&check_out=<%=check_out%>"
 	   style="margin-left:1%; color:white; font-size:110%; text-decoration:none;" role="button" class="btn btn-danger">
 		&lt; <%= apartment.name %></a>
 </p><br>
 
+
 <div class="container">
+	<!-- <h2 class="text-center">Bootstrap 4 User Rating Form / Comment Form</h2> -->
+	
 	<div class="row">
-		<div class="col-md-9">
-			<div class="well">
+				
 				<% if(currentUser && currentUser.app_role.includes("tenant")){ %>
 					<div class="text-right">
 						<% var str_host = JSON.stringify(host); %>
@@ -21,16 +22,24 @@
 							Add New Review </a>
 					</div>
 				<% } %>
-				<%	host.reviews.forEach(function(review){ %>
+	</div>
+
+	<%	host.reviews.forEach(function(review){ %>
+	
+		<div class="card">
+			<div class="card-body">
 				<div class="row">
-					<div class="col-md-12">
-						<strong> <%= review.author.username %> </strong>
-						<span class="pull-right"><%= review.date %></span>
+					<div class="col-md-2">
+						<img src="<%=currentUser.picture.url %>" class="img img-rounded img-fluid" style="width: 5em; height: 5em"/>
+						<p class="text-secondary" style="margin-top:30px;"> <strong> <%= review.date %> </strong> </p> 
+					</div>
+					<div class="col-md-10">
+							<a class="float-left" href="#" style="font-size: 20px"><strong><%= review.author.username %></strong></a>
 							<% var stars = review.rating
 							for(var i=1; i<10; i+=2){
 								if((stars % 2) == 0){
 									if( i < stars ) { %>
-										<span class="fa fa-star" style="color:orange"></span>
+										<span class="fa fa-star" style="color:orange; width: 30%"></span>
 									<% }else{ %>
 										<span class="far fa-star" style="color:orange"></span>
 									<%	}
@@ -44,122 +53,40 @@
 									<%	}
 									}
 								}  %>
-						<p>
-							<%= review.text %>
-						</p>
-						<% if(currentUser && review.author._id.equals(currentUser._id)){ %>
-							<a class="btn btn-xs btn-warning"
-							   href="/reviews/host/<%=review._id%>/edit?host=<%=str_host%>&apartment=<%=apartment._id%>">
+						
+					   <div class="clearfix"></div>
+						<p><%= review.text %></p>
+							<% if(currentUser && review.author._id.equals(currentUser._id)){ %>
+							<a class="float-right btn btn-outline-primary ml-2"
+							   href="/reviews/host/<%=review._id%>/edit?host=<%=str_host%>&apartment=<%=apartment._id%>" style="font-size: 18px; width: 60px; margin-top: 20px; margin: auto -10px; margin-left: 85%"><i class="far fa-edit"></i>
 								Edit
 							</a>
 							<form action="/reviews/host/<%=review._id%>?_method=DELETE&host=<%=host._id%>&apartment=<%=apartment._id%>" 
-								  method="POST">
-								<input type="submit" class="btn btn-xs btn-danger" 
-									   value="Delete">
+								  method="POST" onsubmit="return confirmDelete()">
+								<input type="submit" class="float-right btn text-white btn-danger outline" style="margin-left:86px; margin-top: -60px; margin-left: 94%" 
+									   value="Delete"> 
 							</form>
 							<br>
 						<% } %>
-						</div>
-					</div>
-				<% }) %>
-			</div>
-		</div>
-	</div>
-</div>
-
-<div class="row">
-			<div class="col-sm-7">
-				<hr/>
-				<div class="review-block">
-					<div class="row">
-						<div class="col-sm-3">
-							<img src="http://dummyimage.com/60x60/666/ffffff&text=No+Image" class="img-rounded">
-							<div class="review-block-name"><a href="#">nktailor</a></div>
-							<div class="review-block-date">January 29, 2016<br/>1 day ago</div>
-						</div>
-						<div class="col-sm-9">
-							<div class="review-block-rate">
-								<button type="button" class="btn btn-warning btn-xs" aria-label="Left Align">
-								  <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-								</button>
-								<button type="button" class="btn btn-warning btn-xs" aria-label="Left Align">
-								  <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-								</button>
-								<button type="button" class="btn btn-warning btn-xs" aria-label="Left Align">
-								  <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-								</button>
-								<button type="button" class="btn btn-default btn-grey btn-xs" aria-label="Left Align">
-								  <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-								</button>
-								<button type="button" class="btn btn-default btn-grey btn-xs" aria-label="Left Align">
-								  <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-								</button>
-							</div>
-							<div class="review-block-title">this was nice in buy</div>
-							<div class="review-block-description">this was nice in buy. this was nice in buy. this was nice in buy. this was nice in buy this was nice in buy this was nice in buy this was nice in buy this was nice in buy</div>
-						</div>
-					</div>
-					<hr/>
-					<div class="row">
-						<div class="col-sm-3">
-							<img src="http://dummyimage.com/60x60/666/ffffff&text=No+Image" class="img-rounded">
-							<div class="review-block-name"><a href="#">nktailor</a></div>
-							<div class="review-block-date">January 29, 2016<br/>1 day ago</div>
-						</div>
-						<div class="col-sm-9">
-							<div class="review-block-rate">
-								<button type="button" class="btn btn-warning btn-xs" aria-label="Left Align">
-								  <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-								</button>
-								<button type="button" class="btn btn-warning btn-xs" aria-label="Left Align">
-								  <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-								</button>
-								<button type="button" class="btn btn-warning btn-xs" aria-label="Left Align">
-								  <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-								</button>
-								<button type="button" class="btn btn-default btn-grey btn-xs" aria-label="Left Align">
-								  <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-								</button>
-								<button type="button" class="btn btn-default btn-grey btn-xs" aria-label="Left Align">
-								  <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-								</button>
-							</div>
-							<div class="review-block-title">this was nice in buy</div>
-							<div class="review-block-description">this was nice in buy. this was nice in buy. this was nice in buy. this was nice in buy this was nice in buy this was nice in buy this was nice in buy this was nice in buy</div>
-						</div>
-					</div>
-					<hr/>
-					<div class="row">
-						<div class="col-sm-3">
-							<img src="http://dummyimage.com/60x60/666/ffffff&text=No+Image" class="img-rounded">
-							<div class="review-block-name"><a href="#">nktailor</a></div>
-							<div class="review-block-date">January 29, 2016<br/>1 day ago</div>
-						</div>
-						<div class="col-sm-9">
-							<div class="review-block-rate">
-								<button type="button" class="btn btn-warning btn-xs" aria-label="Left Align">
-								  <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-								</button>
-								<button type="button" class="btn btn-warning btn-xs" aria-label="Left Align">
-								  <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-								</button>
-								<button type="button" class="btn btn-warning btn-xs" aria-label="Left Align">
-								  <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-								</button>
-								<button type="button" class="btn btn-default btn-grey btn-xs" aria-label="Left Align">
-								  <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-								</button>
-								<button type="button" class="btn btn-default btn-grey btn-xs" aria-label="Left Align">
-								  <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-								</button>
-							</div>
-							<div class="review-block-title">this was nice in buy</div>
-							<div class="review-block-description">this was nice in buy. this was nice in buy. this was nice in buy. this was nice in buy this was nice in buy this was nice in buy this was nice in buy this was nice in buy</div>
-						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		
+	<hr>
+	
+	<% }) %>
+	
+</div>
+
+<script>
+
+	function confirmDelete(){
+	
+		var question = "Are you sure you want to delete this review?";
+		var confirmation = confirm(question);
+		return confirmation;
+	}
+	
+</script>
 
 <%- include("../../partials/footer") %>
