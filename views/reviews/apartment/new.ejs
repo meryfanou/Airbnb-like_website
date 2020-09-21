@@ -9,7 +9,7 @@
 			<% var str_apartment = JSON.stringify(apartment); %>
 			<form action="/reviews/apartment/<%=currentUser._id%>/<%=apartment._id%>?apartment=<%=str_apartment%>" method="POST">
 			
-				<div class="form-group" style="position: relative; left: -30%;">
+				<div class="form-group" style="position: relative; left: 33%">
 					<fieldset class="rate" id="rating" onclick="rate()" required >
 						<input type="radio" id="rating10" name="rating" value="10" />
 						<label for="rating10" title="5 stars"></label>

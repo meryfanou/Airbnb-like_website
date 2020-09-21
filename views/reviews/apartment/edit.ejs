@@ -5,8 +5,9 @@
 		<div style="width: 30%; margin: 25px auto;">
 			<% var str_review = JSON.stringify(review); %>
 			<form action="/reviews/apartment/<%=review._id%>/?_method=PUT&apartment=<%=apartment._id%>&review=<%=str_review%>"
+
 				  method="POST">
-				<div class="form-group" style="position: relative; left: -30%;">
+				<div class="form-group" style="position: relative; left: 33%">
 					<fieldset class="rate" id="rating" onclick="rate()" required >
 						<input type="radio" id="rating10" name="rating" value="10"
 						<% if(review.rating == 10){ %>
