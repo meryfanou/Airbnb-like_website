@@ -38,7 +38,7 @@ href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
  		<meta name='viewport' content='width=device-width, initial-scale=1'>
 		<script src='https://kit.fontawesome.com/a076d05399.js'></script>
 
-		<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+		<script type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
 		
 		<!-- For Star Rating -->
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -49,7 +49,7 @@ href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
 	<nav class="navbar navbar-default" id="navbarslide">
 		<div class="container-fluid">
 			<div class="navbar-header">
-				<a class="navbar-brand" href="/">Airbnb</a>
+				<a class="navbar-brand" href="/">Airbnb</a> 
 			</div>
 			<div class="collapse navbar-collapse" id="profile_image">
 				<ul class="nav navbar-nav navbar-right">
@@ -74,18 +74,19 @@ href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
 	<div class="container">
 		<!-- if(error) checks if error is undefined or not (not just empty) -->
 		<% if(error && error.length > 0){ %>
-			<div class="alert alert-danger" role="alert">
+			<div class="alert alert-danger" role="alert" id="flash">
 				<%= error %>
 			</div>
 		<% } %>
 		<% if(success && success.length > 0){ %>
-			<div class="alert alert-success" role="alert">
+			<div class="alert alert-success" role="alert" id="flash">
 				<%= success %>
 			</div>
 		<% } %>
 		<% if(warning && warning.length > 0){ %>
-			<div class="alert alert-warning" role="alert">
+			<div class="alert alert-warning" role="alert" id="flash">
 				<%= warning %>
 			</div>
 		<% } %>
 	</div>
+		

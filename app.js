@@ -34,7 +34,7 @@ const startMongodb = function() {
 		useFindAndModify: false,
 		useCreateIndex: true
 	})
-	// .then(() => console.log("Connected to Airbnb db"))
+	.then(() => console.log("Connected to Airbnb db"))
 	.catch(error => console.log(error.message));
 }
 

@@ -1,9 +1,9 @@
 <%- include("../partials/header") %>
 
 <p style="font-size:115%;">
-	<a href="/users/<%= currentUser._id %>/host" style="margin-left:1%">Host Page</a>
-	<a href="/messages/host/<%= currentUser._id %>/<%= apartment._id %>" style="margin-left:85%;">
-		Messages</a>
+			<a href="/users/<%=currentUser._id%>/host" class="btn btn-primary btn-group-toggle btn-lg" style="margin-left:20px"role="button" aria-pressed="true">Host 	Page <i class="fas fa-home"></i> </a>
+	<a href="/messages/host/<%=currentUser._id%>/<%=apartment._id%>" class="btn btn-primary btn-group-toggle btn-lg" style="margin-left:91%; margin-top: -70px">
+		Messages <i class="far fa-envelope"></i> </a>
 </p><br><br>
 
 <div class="container">
@@ -16,17 +16,16 @@
 					<em style="font-size:160%; margin-left:20%; margin-right:20%;">
 						<a> <%= apartment.name %> </a> </em>
 
-					<h4 class="pull-right" style="margin-right:26%">
+					<h4 class="pull-right" style="margin-right: 15%">
 						<% if(currentUser && apartment.host._id.equals(currentUser._id)){ %>
-							<a class="btn btn-sm btn-warning" href="/apartments/<%= apartment._id %>/edit">
-								Edit
+							<a class="btn btn-sm btn-warning" href="/apartments/<%= apartment._id %>/edit" style="font-size: 100%; width:100%">	Edit
 							</a>
 					</h4>
 
-					<h4 class="pull-right" style="position:relative; left:9%;">
+					<h4 class="pull-right" style="position:relative; margin-right: 10px">
 							<form action="/apartments/<%= apartment._id %>?_method=DELETE" method="POST"
 								  onsubmit="return confirmDeletion()">
-								<button class="btn btn-sm btn-danger">
+								<button class="btn btn-sm btn-danger" style="font-size: 100%; ">
 									Delete
 								</button>
 							</form>
@@ -94,7 +93,7 @@
 				</h4>
 
 				<h4 align="center">
-					<li style="max-width:600px;"> <strong> Availability: 
+					<li style="max-width:600px; margin-left:23%"> <strong> Availability: 
 						<%	function getToday(){
 							var today = new Date();
 							var dd = String(today.getDate()).padStart(2, '0');
@@ -177,7 +176,7 @@
 							Yes
 						<% } %>
 						</strong>
-						<i class='fa fa-dog'></i>
+						<i class='fas fa-dog'></i>
 					</li>
 				</h4>
 
@@ -277,7 +276,7 @@
 							Yes
 						<% } %>
 						</strong>
-						<i class="fa fa-door-closed"></i>
+						<i class="fas fa-door-closed"></i>
 					</li>
 				</h4><br>
 
@@ -288,7 +287,7 @@
 				<h4 align="center"><li> <strong> Address: <%= apartment.location.address %> </strong>
 					<i class="fas fa-map-marker-alt"></i></li></h4> 
 				<h4 align="center"><li> <strong> Neighbourhood: <%= apartment.location.neighbourhood %> 
-					</strong><i class="fa fa-city"></i></li></h4> 
+					</strong><i class="fas fa-city"></i></li></h4> 
 				<h4 align="center"><li> <strong> Transportation: <%= apartment.location.transportation %> 
 					</strong><i class="fas fa-bus"></i></li></h4><br>
 
@@ -389,7 +388,7 @@
 	
 	// console.log("gay1");
 
-	var results = L.layerGroup().addTo(map);
+	var results = L.layerGroup().addTo(mymap);
 
 	searchControl.on('results', function (data) {
 		results.clearLayers();

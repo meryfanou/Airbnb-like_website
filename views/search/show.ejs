@@ -382,7 +382,7 @@
 	var marker = L.marker([lat, lng]).addTo(mymap);
 	marker.bindPopup("<b> <%= apartment.name %> </b><br><%= apartment.location.address %>.").openPopup();
 
-	var results = L.layerGroup().addTo(map);
+	var results = L.layerGroup().addTo(mymap);
 	
 	searchControl.on('results', function (data) {
 		results.clearLayers();

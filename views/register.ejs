@@ -1,43 +1,55 @@
 <%- include("./partials/header") %>
 
-<div class="container">
+<style>
+body {background-color: powderblue;}
+/* h1   {color: blue;} */
+/* p    {color: red;} */
+</style>
+
+<div class="container" style="position: fixed; width:90%; margin: -15px 650px; top: 8% " >
 	<div class="row">
-		<h2 style="position:relative; left:500px"> Sing Up </h2>
-		<div style="width: 30%; margin: 25px auto; position:relative; left:50px">
+		<div class="col-md-4 login-form-2">
+		<h2 style="position:relative; left:140px; color:white"> Sing Up </h2>
+		<div style="width: 30%; margin: 25px auto; position:relative; left:-90px">
 			<form action="/register" method="POST" enctype="multipart/form-data">
-				<div class="form-group">
-					<input type="text" name="username" placeholder="Username">
+				<div class="form-group" style="padding-bottom: 10px">
+					<input class="form-control" type="text" name="username" placeholder="Username" style="width:300px;">
 				</div>
-				<div class="form-group">
-					<input type="password" name="password" placeholder="Password">
+				<div class="form-group" style = "padding-bottom: 10px">
+					<input class="form-control" type="password" name="password" placeholder="Password" style="width:300px">
 				</div>
-				<div class="form-group">
-					<input type="password" name="confirm_password" placeholder="Confirm password">
+				<div class="form-group" style = "padding-bottom: 10px">
+					<input class="form-control" type="password" name="confirm_password" placeholder="Confirm password" style="width:300px">
 				</div>
-				<div class="form-group">
-					<input type="text" name="user[firstname]" placeholder="First Name">
+				<div class="form-group" style = "padding-bottom: 10px">
+					<input class="form-control" type="text" name="user[firstname]" placeholder="First Name" style="width:300px">
 				</div>
-				<div class="form-group">
-					<input type="text" name="user[lastname]" placeholder="Last Name">
+				<div class="form-group" style = "padding-bottom: 10px">
+					<input class="form-control" type="text" name="user[lastname]" placeholder="Last Name" style="width:300px">
 				</div>
-				<div class="form-group">
-					<input type="email" name="user[email]" placeholder="email">
+				<div class="form-group" style= "padding-bottom: 10px">
+					<input class="form-control" type="email" name="user[email]" placeholder="email" style="width:300px">
 				</div>
-				<div class="form-group">
-					<input type="tel" name="user[phone_number]" placeholder="Phone Number">
+				<div class="form-group" style= "padding-bottom: 10px">
+					<input class="form-control" type="tel" name="user[phone_number]" placeholder="Phone Number" style="width:300px">
 				</div>
 				<div class="form-group">
 					<input type="checkbox" name="user[app_role]" value="tenant">
-					<label for="app_role">tenant</label><br>
+					<label for="app_role" style="color:white; font-size:20px">Tenant</label><br>
 					<input type="checkbox" name="user[app_role]" value="host">
-					<label for="app_role">host</label><br>
+					<label for="app_role" style="color:white; font-size:20px">Host</label><br>
 				</div>
 				<div class="form-group">
-					<label for="image">Profile Image:</label>
+					<label for="image" style="color:white; font-size:17px">Profile Image:</label>
 					<input type="file" id="image" name="image" accept="image/*"><br><br>
 				</div>
-				<button>Sing Up</button>
+				<button class="btnSubmit" style="font-size: 20px; width: 100%; height:50px; margin-left: 90px; margin-bottom: 20px; margin-top: -20px">Sing Up</button>
+									<!-- <input type="submit" class="btnSubmit" value="Login" style="font-size: 20px"> -->
+
 			</form>
+								<i class="fab fa-airbnb" style="color:white; font-size: 70px; margin-left: 115px; margin-bottom: -10%" ></i>
+
+			</div>
 		</div>
 	</div>
 </div>

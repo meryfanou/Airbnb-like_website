@@ -6,7 +6,8 @@
 		<h1 style="text-align: center;">Add New Review for <%= apartment.name %></h1>
 
 		<div style="width: 30%; margin: 25px auto;">
-			<form action="/reviews/apartment/<%=currentUser._id%>/<%=apartment._id%>" method="POST">
+			<% var str_apartment = JSON.stringify(apartment); %>
+			<form action="/reviews/apartment/<%=currentUser._id%>/<%=apartment._id%>?apartment=<%=str_apartment%>" method="POST">
 			
 				<div class="form-group" style="position: relative; left: -30%;">
 					<fieldset class="rate" id="rating" onclick="rate()" required >

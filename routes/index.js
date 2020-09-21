@@ -131,7 +131,9 @@ router.post("/login", passport.authenticate("local",
 		failureRedirect: "/login",
 		failureFlash: true
 	}), function(req, res){
+	
 	req.flash("success", "Welcome back " + req.user.username);
+	
 	if(req.user.app_role.includes("host")){
 		res.redirect("/users/" + req.user._id + "/host");
 	}else{

@@ -188,6 +188,7 @@ router.delete("/host/:id", middleware.checkReviewOwnership, function(req,res){
 
 // NEW Route for reviews about an apartment
 router.get("/apartment/new", middleware.isLoggedIn, function(req, res){
+	console.log(req.query);
 	var apartment = JSON.parse(req.query.apartment);
 
 	res.render("reviews/apartment/new", { apartment: apartment });
