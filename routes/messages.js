@@ -12,16 +12,10 @@ router.get("/tenant/page/:pageNum", function(req,res){
 	var apartment = JSON.parse(req.query.str_apartment);
 	var conversation = JSON.parse(req.query.str_conversation);
 	
-	console.log("mounaqi1tenant");
-	
 	var results_per_page = 10,
 		start			 = (req.params.pageNum - 1) * results_per_page;
-
-	console.log("mounaqi2tenant");
 	
 	var paginated = conversation.slice(start,start + results_per_page);
-	
-	console.log("mounaqi3tenant");
 
 	res.render("messages/tenant/show", { conversation: paginated, all_messages: conversation,
 										 apartment: apartment, host: apartment.host,
@@ -127,22 +121,16 @@ router.get("/host/:host_id/:id", middleware.checkApartmentOwnership, function(re
 // Pagination
 router.get("/host/pages/:inboxPage/:sentPage", function(req,res){
 	
-	console.log("mounaqi1host");
-	
 	var apartment = JSON.parse(req.query.apartment);
 	var inbox = JSON.parse(req.query.inbox);
 	var sent = JSON.parse(req.query.sent);
 
-	console.log("mounaqi2host");
-	
 	var results_per_page = 10,
 		inbox_start			 = (req.params.inboxPage - 1) * results_per_page,
 		sent_start			 = (req.params.sentPage - 1) * results_per_page;
 
 	var inbox_paginated = inbox.slice(inbox_start,inbox_start + results_per_page);
 	var sent_paginated = sent.slice(sent_start,sent_start + results_per_page);
-
-	console.log("mounaqi3host");
 	
 	res.render("messages/host/index", { inbox: inbox_paginated, sent: sent_paginated,
 										all_inbox: inbox, all_sent: sent,
