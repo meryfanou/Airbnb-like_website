@@ -316,19 +316,11 @@ output {
   stroke-width: 2;
   stroke-linejoin: round;
 }
-/* 
-.cloud-shape path:hover {
-  fill: crimson;
-  opacity: 0.5;
-  stroke: crimson;
-  /* fill: transparent;
-  stroke: crimson; */
-} */
 
-/* ------------------------------------------------- Star Rating System -------------------------------------------------*/
+
+/* ----------------------------------------- Star Rating System ------------------------------------*/
 
 @import url(//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);
-
 
 /* Ratings widget */
 .rate {
@@ -377,59 +369,16 @@ output {
 .rate > label:hover ~ input:checked ~ label /* highlight previous selected stars */ { color: orange;  } 
 
 
-/* ------------------------------------------------- Background Slideshow -------------------------------------------------*/
-
-/* #SLIDE_BG {
-	
-	width: 100%;
-	height: 100vh;
-	background-position: center center;
-	background-size: cover;
-	background-repeat: no-repeat;
-	backface-visibility: hidden;
-	animation: slideBg 8s linear infinite 0s;
-	animation-timing-function: ease-in-out;
-	background-image: url("http://i.imgur.com/K3mPv14.jpg");
-}
-	
-	
-@keyframes	{
-	
-	0% {
-		background-image: url("http://i.imgur.com/K3mPv14.jpg");
-	}
-	
-	25% {
-		background-image: url("http://i.imgur.com/SBEmFpv.jpg);");
-	}
-	
-	50% {
-		background-image: url("http://i.imgur.com/emvhOnb.jpg");
-	}
-	
-	75% {
-		background-image: url("http://i.imgur.com/2LSMCmJ.jpg");
-	}
-	
-	100% {
-		background-image: url("http://i.imgur.com/TVGe0Ef.jpg");
-	}
-	
-	
-} */
+/* --------------------------------- Background Slideshow -------------------------------------*/
 
 	 
 #landingthumb {
-	
 	margin-left: 190% ;
-	/* margin-right: 30%; */
-	
 	background-color: rgba(255, 255, 255, 0.28);
 }
 
 
 #landing-header {
-	
   z-index: 1;
   position: fixed;
   text-align: center;
@@ -437,19 +386,15 @@ output {
   margin-top: -20%;
 }
 
-
-
 #navbarslide{
 	z-index: 1;
 	display: block;
 }
 
 #landing-header h1 {
-	
 	margin-left: 54%;
  	color: #fff;
 }
-
 
 .slideshow { 
   position: fixed;
@@ -572,17 +517,7 @@ output {
 }
 
 #cp {
-	
 	background-color: rgba(255, 255, 255, 0.28);
-	/* background-image: url(https://images.unsplash.com/photo-1531835551805-16d864c8d311?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80); */
-	/* background-size: 100%;
-	background-repeat: no-repeat;
-	 background-size: cover;
-	  background-position: 50% 50%;
-	  /* height: 100%;  */
-	  /* width: 100%; */
-  /* height: 100%; */ */
-	/* opacity: 0.95; */
 }
 
 #flash {
@@ -613,3 +548,4 @@ output {
 }
 .btn-change3:hover{
     -webkit-box-shadow: 0px 50px 0 0px #94baf7 inset , 0px -50px 0 0px #94baf7 inset; 
+}

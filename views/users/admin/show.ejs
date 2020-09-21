@@ -1,0 +1,13 @@
+<%- include("../../partials/header") %>
+
+<h1>
+	Admin Page
+</h1>
+
+<a href="/users/<%= currentUser._id %>/admin/users_list">Users List</a><br>
+
+<a href="/users/<%= currentUser._id %>/admin/extract_to_json">Extract dataset in JSON</a><br>
+
+<a href="/users/<%= currentUser._id %>/admin/extract_to_xml">Extract dataset in XML</a><br>
+
+<%- include("../../partials/footer") %>

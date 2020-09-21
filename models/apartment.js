@@ -28,7 +28,6 @@ var apartmentSchema = mongoose.Schema({
 		elevator: { type: String, default: 'False'}
 	},
 	location: {
-		// Openstreetmap
 		address: String,
 		lat: Number,
 		lng: Number,
