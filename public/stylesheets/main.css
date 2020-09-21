@@ -26,6 +26,17 @@
 	height: 45em; 
 }
 
+.user-box {
+    box-shadow: 0 1px 2px rgba(0,0,0,0.07), 
+                0 2px 4px rgba(0,0,0,0.07), 
+                0 4px 8px rgba(0,0,0,0.07), 
+                0 8px 16px rgba(0,0,0,0.07),
+                0 16px 32px rgba(0,0,0,0.07), 
+                0 32px 64px rgba(0,0,0,0.07);
+	width:350px;
+	height:350px;
+}
+
 /*--------------------------------------- Host Mail Index Page --------------------------------------*/
 
 .mail_column {
@@ -356,17 +367,14 @@ output {
     padding-right: 0;
 }
 
-
 /* Click + hover color */
-
-.rate > input:checked ~ label, /* color current and previous stars on checked */
-.rate > label:hover, label:hover  ~ label { color: orange;  } /* color previous stars on hover */
-
-
+input:checked ~ label, /* color current and previous stars on checked */
+.rate label:hover,  ~ label { color: orange;  } /* color previous stars on hover */
+.rate label:hover { color: orange;  } 
 /* Hover highlights */
-.rate > input:checked + label:hover, input:checked ~ label:hover, /* highlight current and previous stars */
-.rate > input:checked ~ label:hover ~ label, /* highlight previous selected stars for new rating */
-.rate > label:hover ~ input:checked ~ label /* highlight previous selected stars */ { color: orange;  } 
+input:checked + label:hover, input:checked ~ label:hover, /* highlight current and previous stars */
+input:checked ~ label:hover ~ label, /* highlight previous selected stars for new rating */
+label:hover ~ input:checked ~ label /* highlight previous selected stars */ { color: orange;  } 
 
 
 /* --------------------------------- Background Slideshow -------------------------------------*/
@@ -458,11 +466,11 @@ output {
   30% {
     opacity: 0
   }
-
 }
 
-
-/* ------------------------------------------------- Login & SignUp & Edit Form -------------------------------------------------*/
+.no-cssanimations .slideshow li {
+	opacity: 1;
+}
 
 .login-container{
     margin-top: 5%;
@@ -549,4 +557,3 @@ output {
 .btn-change3:hover{
     -webkit-box-shadow: 0px 50px 0 0px #94baf7 inset , 0px -50px 0 0px #94baf7 inset; 
 }
-

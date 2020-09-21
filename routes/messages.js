@@ -19,7 +19,9 @@ router.get("/tenant/page/:pageNum", function(req,res){
 
 	res.render("messages/tenant/show", { conversation: paginated, all_messages: conversation,
 										 apartment: apartment, host: apartment.host,
-										 results_per_page: results_per_page, pageNum: req.params.pageNum});
+										 results_per_page: results_per_page, pageNum: req.params.pageNum,
+										 num_days: req.query.num_days, check_in: req.query.check_in,
+										 guests: req.query.guests, check_out: req.query.check_out });
 });
 
 

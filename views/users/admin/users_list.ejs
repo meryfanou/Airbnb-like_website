@@ -1,28 +1,53 @@
 <%- include("../../partials/header") %>
 
-<h1>
-	Info about the users
-</h1>
+<div class="container">
+	<br><div class="row text-center" style="display: flex; flex-wrap: wrap; justify-content:center;">
+		<% for(var user of users){ %>
+			<div class="user-box" style="padding:35px;">
+				<div class="row">
+					<h4 class="pull-left">
+						<img src="<%= user.picture.url %>"
+							 style="width:90px; height:90px; border-radius:50%; margin-left:30%;" />
+					</h4>
+					<h4 class="pull-right" style="color:firebrick; font-size:150%; margin-right:10%;">
+						<br><strong>~&nbsp;<%= user.username %>&nbsp;~</strong><br>
 
-<p>
-	<% for(var user of users){ %>
-		<%= user.username %><br>
-		<%= user.firstname %><br>
-		<%= user.lastname %><br>
-		<% for(var role of user.app_role){ %>
-			<%= role %><br>
-			<% if(role == "host" && user.approved_by_admin == "disapproved"){ %>
-				<form action="/users/<%=currentUser._id%>/admin/approve_host/<%=user._id%>" method="POST">
-					<button class="btn btn-warning">
-						Approve <%= user.username %>'s registration as a host
-					</button><br>
-				</form>
-			<% } %>
+						<% for(var role of user.app_role){ %>
+						<em style="font-size:75%;">&nbsp;&nbsp;&nbsp;<%= role %></em>
+							<% if(role == "host" && user.approved_by_admin == "disapproved"){ %>
+								<form action="/users/<%=currentUser._id%>/admin/approve_host/<%=user._id%>" 
+									  method="POST">
+									<button class="btn btn-sm btn-warning">
+										Approve <%= user.username %>'s registration as a host
+									</button>
+								</form>
+							<% } %>
+						<% } %>
+					</h4>
+				</div><br><br>
+				<ul>
+					<div class="col-lg-2" style="margin-left:-20%;">
+						<li>
+							<%= user.firstname %>
+						</li>
+						<li>
+							<%= user.lastname %>
+						</li><br>
+					</div>
+					<div class="col-lg-4">
+					</div>
+					<div class="col-lg-2">
+						<li>
+							<%= user.email %>
+						</li>
+						<li>
+							<%= user.phone_number %>
+						</li><br>
+					</div>
+				</ul>
+			</div>&nbsp;&nbsp;&nbsp;&nbsp;
 		<% } %>
-		<%= user.email %><br>
-		<%= user.phone_number %><br>
-	<% } %>
-</p>
-
+	</div>
+</div>
 
 <%- include("../../partials/footer") %>

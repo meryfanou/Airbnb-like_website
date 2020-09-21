@@ -34,7 +34,7 @@ cloudinary.config({
 
 
 // Show route for host
-router.get("/:id/host", function(req,res){
+router.get("/:id/host", middleware.isHost, function(req,res){
 	User.findById(req.params.id,).populate("apartments").exec(function(err, foundUser){
 		if(err){
 			req.flash("error", err.message);
@@ -50,7 +50,7 @@ router.get("/:id/host", function(req,res){
 
 
 // Show Route for admin
-router.get("/:id/admin", function(req,res){
+router.get("/:id/admin", middleware.isAdmin, function(req,res){
 	User.findById(req.params.id, function(err, foundUser){
 		if(err){
 			req.flash("error", err.message);
@@ -73,7 +73,7 @@ router.get("/:id/admin", function(req,res){
 });
 
 // View users' info for admin
-router.get("/:id/admin/users_list", function(req,res){
+router.get("/:id/admin/users_list", middleware.isAdmin, function(req,res){
 	User.find({}).where({ "app_role": { $ne: ["admin"] } }).exec(function(err, users){
 		if(err){
 			req.flash("error", err.message);
@@ -86,7 +86,7 @@ router.get("/:id/admin/users_list", function(req,res){
 
 
 // Admin will approve of a host's registration
-router.post("/:id/admin/approve_host/:host_id",function(req,res){
+router.post("/:id/admin/approve_host/:host_id", middleware.isAdmin, function(req,res){
 	User.findById(req.params.host_id, function(err, host){
 		if(err){
 			req.flash("err", err.message);
@@ -103,7 +103,7 @@ router.post("/:id/admin/approve_host/:host_id",function(req,res){
 
 
 // Extract dataset to JSON file
-router.get("/:id/admin/extract_to_json",function(req,res){
+router.get("/:id/admin/extract_to_json", middleware.isAdmin, function(req,res){
 	Apartment.find({}).populate("reservations.tenant")
 	.populate({ path: "reviews", populate: { path: "author" } })
 	.populate({ path: "host", populate: { path: "reviews", populate: { path: "author" } } })
@@ -123,7 +123,7 @@ router.get("/:id/admin/extract_to_json",function(req,res){
 
 
 // Extract dataset to XML file
-router.get("/:id/admin/extract_to_xml", function(req,res){
+router.get("/:id/admin/extract_to_xml", middleware.isAdmin, function(req,res){
 	var xml = builder.create("apartments", { encoding: 'utf-8' });
 
 	Apartment.find({}).populate("reservations.tenant")

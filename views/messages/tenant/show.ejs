@@ -3,6 +3,12 @@
 <div class="mail_bg_img" style="background-image:url('<%=apartment.main_image.url%>'); margin-top:-2%;">
 	<div style="background-color:rgba(255,255,255,0.6); height:100%; overflow:auto;">
 
+		<br><p style="font-size:130%;"> 
+			<a href="/search/<%=apartment._id%>?num_days=<%=num_days%>&guests=<%=guests%>&check_in=<%=check_in%>&check_out=<%=check_out%>"
+				style="margin-left:1%; color:crimson; font-size:110%; text-decoration:none;">
+				<strong>&lt; <%= apartment.name %></strong></a>
+		</p>
+
 		<br><div class="container">
 			<!-- if(error) checks if error is undefined or not (not just empty) -->
 			<% if(error && error.length > 0){ %>

@@ -499,7 +499,7 @@
 							</li>
 							<li><i class="fas fa-envelope"></i>
 								<% if(currentUser && currentUser.app_role.includes("tenant")){ %>
-									<a href="/messages/tenant/<%=currentUser._id%>/<%=apartment._id%>">
+									<a href="/messages/tenant/<%=currentUser._id%>/<%=apartment._id%>?num_days=<%=num_days%>&check_in=<%=check_in%>&check_out=<%=check_out%>&guests=<%=guests%>">
 										Send a message</a><br><br>
 								<% } %>
 							</li>

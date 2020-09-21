@@ -1,8 +1,11 @@
 <%- include("../../partials/header") %>
 
-<p style="font-size:115%;">
-	<!-- <a href="/users/<%= currentUser._id%>/host">Host Page</a> -->
-</p><br><br>
+<br><p style="font-size:130%;"> 
+	<a href="/apartments/<%=apartment._id%>"
+		style="margin-left:1%; color:crimson; font-size:110%; text-decoration:none;">
+		<strong>&lt; <%= apartment.name %></strong></a>
+</p>
+
 
 <div class="row">
 	<% var str_apartment = JSON.stringify(apartment);
