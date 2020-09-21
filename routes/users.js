@@ -227,7 +227,7 @@ router.get("/:id/admin/extract_to_xml", function(req,res){
 		});
 
 		var xmldoc = xml.toString({ pretty: true });
-		fs.writeFile("airbnb.xlm", xmldoc, function(err){
+		fs.writeFile("airbnb.xml", xmldoc, function(err){
 			if(err){
 				req.flash("error", err.message);
 				res.redirect("back");
