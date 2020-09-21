@@ -367,14 +367,15 @@ output {
     padding-right: 0;
 }
 
-/* Click + hover color */
-.rate input:checked ~ label, /* color current and previous stars on checked */
-label:hover,  ~ label { color: orange;  }  /*color previous stars on hover */ 
-label:hover { color: orange;  } 
+/*Hover on stars*/
+.rate > input:checked ~ label, /* color current and previous stars on checked */
+.rate > label:hover, label:hover  ~ label { color: orange;  } /* color previous stars on hover */
+
+
 /* Hover highlights */
-input:checked + label:hover, input:checked ~ label:hover, /* highlight current and previous stars */
-input:checked ~ label:hover ~ label, /* highlight previous selected stars for new rating */
-label:hover ~ input:checked ~ label /* highlight previous selected stars */ { color: orange;  } 
+.rate > input:checked + label:hover, input:checked ~ label:hover, /* highlight current and previous stars */
+.rate > input:checked ~ label:hover ~ label, /* highlight previous selected stars for new rating */
+.rate > label:hover ~ input:checked ~ label /* highlight previous selected stars */ { color: orange;  }
 
 
 /* --------------------------------- Background Slideshow -------------------------------------*/
