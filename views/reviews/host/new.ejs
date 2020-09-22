@@ -6,7 +6,7 @@
 		<h1 style="text-align: center;">Add New Review</h1>
 
 		<div style="width: 30%; margin: 25px auto;">
-			<form action="/reviews/host/<%=currentUser._id%>/<%=host._id%>?apartment=<%=apartment%>"
+			<form action="/reviews/host/<%=currentUser._id%>/<%=host._id%>?apartment=<%=apartment%>&num_days=<%=num_days%>&guests=<%=guests%>&check_in=<%=check_in%>&check_out=<%=check_out%>"
 				  method="POST">
 			
 				<div class="form-group" style="position: relative; left: 33%">

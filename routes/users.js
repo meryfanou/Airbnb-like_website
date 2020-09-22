@@ -35,7 +35,9 @@ cloudinary.config({
 
 // Show route for host
 router.get("/:id/host", middleware.isHost, function(req,res){
-	User.findById(req.params.id,).populate("apartments").exec(function(err, foundUser){
+	User.findById(req.params.id,).populate("apartments")
+	.populate({ path: "reviews", populate: { path: "author" } })
+	.exec(function(err, foundUser){
 		if(err){
 			req.flash("error", err.message);
 			res.redirect("back");
@@ -43,7 +45,7 @@ router.get("/:id/host", middleware.isHost, function(req,res){
 			req.flash("error", "User not found");
 		res.redirect("back");
 		}else{
-			res.render("users/host", {apartments: foundUser.apartments});
+			res.render("users/host", { host: foundUser, apartments: foundUser.apartments });
 		}
 	 });
 });

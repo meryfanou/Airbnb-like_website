@@ -28,13 +28,13 @@ var port = process.env.PORT || 3000,
 	db_url = process.env.DATABASEURL || "mongodb://localhost/airbnb";
 
 const startMongodb = function() {
-	mongoose.connect(db_url, {
+		mongoose.connect(db_url, {
 		useNewUrlParser: true,
 		useUnifiedTopology: true,
 		useFindAndModify: false,
 		useCreateIndex: true
 	})
-	.then(() => console.log("Connected to Airbnb db"))
+	.then(() => {console.log("Connected to Airbnb db");})
 	.catch(error => console.log(error.message));
 }
 
@@ -155,13 +155,8 @@ const getAdmin = function(){
 
 		User.register(user, adminPassword, function(err, admin){
 			if(err){
-				// req.flash("error", err.message);
-				// return res.redirect("/");
+				console.log(err.mess);
 			}
-			//passport.authenticate("local")(req, res, function(){
-				// req.flash("success", "Welcome to Airbnb " + admin.username);
-				// res.redirect("/");
-			//})
 		});
 	}
 };

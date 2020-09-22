@@ -4,8 +4,7 @@
 	<div class="row">
 		<div style="width: 30%; margin: 25px auto;">
 			<% var str_review = JSON.stringify(review); %>
-			<form action="/reviews/apartment/<%=review._id%>/?_method=PUT&apartment=<%=apartment._id%>&review=<%=str_review%>"
-
+			<form action="/reviews/apartment/<%=review._id%>/?_method=PUT&apartment=<%=apartment._id%>&review=<%=str_review%>&num_days=<%=num_days%>&guests=<%=guests%>&check_in=<%=check_in%>&check_out=<%=check_out%>"
 				  method="POST">
 				<div class="form-group" style="position: relative; left: 33%">
 					<fieldset class="rate" id="rating" onclick="rate()" required >

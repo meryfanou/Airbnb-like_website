@@ -4,7 +4,8 @@ const 	express 	= require("express"),
 		middleware	= require("../middleware"),
 		User		= require("../models/user"),
 		Apartment	= require("../models/apartment"),
-		Review		= require("../models/review");
+		Review		= require("../models/review"),
+		url			= require("url");
 
 
 // ----------------------------------------- REVIEWS FOR HOST  ----------------------------------------- //
@@ -13,7 +14,10 @@ const 	express 	= require("express"),
 router.get("/host/new", middleware.isLoggedIn, function(req, res){
 	var host = JSON.parse(req.query.host);
 
-	res.render("reviews/host/new", { host: host, apartment: req.query.apartment });
+	res.render("reviews/host/new", { host: host, apartment: req.query.apartment,
+									 num_days: req.query.num_days,
+									 check_in: req.query.check_in, guests: req.query.guests,
+									 check_out: req.query.check_out });
 });
 
 // Create Route for reviews about a host
@@ -59,10 +63,16 @@ router.post("/host/:tenant_id/:host_id", middleware.isTenant, function(req,res){
 				host.save();
 			
 				req.flash("success", "Your review was submitted successfully.");
-				
-				console.log(host.reviews);
-				
-				return res.redirect("/reviews/host/" + req.query.apartment);
+				return res.redirect(url.format({
+					pathname: "/reviews/host/" + host._id,
+					query: {
+						"apartment": req.query.apartment,
+						"num_days": req.query.num_days,
+						"check_in": req.query.check_in,
+						"check_out": req.query.check_out,
+						"guests": req.query.guests
+					}
+				}));
 			});
 		});
 	});
@@ -78,7 +88,10 @@ router.get("/host/:id/edit", middleware.checkReviewOwnership, function(req, res)
 		}
 
 		var host = JSON.parse(req.query.host);
-		res.render("reviews/host/edit", { review: review, host: host, apartment: req.query.apartment });
+		res.render("reviews/host/edit", { review: review, host: host, apartment: req.query.apartment,
+										  num_days: req.query.num_days,
+										  check_in: req.query.check_in, guests: req.query.guests,
+										  check_out: req.query.check_out });
 	});
 });
 
@@ -106,24 +119,36 @@ router.put("/host/:id", middleware.checkReviewOwnership, function(req,res){
 		review.save();
 
 		req.flash("success", "Review updated successfully.");
-		
-		return res.redirect("/reviews/host/" + req.query.apartment);
+		return res.redirect(url.format({
+			pathname: "/reviews/host/" + mongoose.Types.ObjectId(review.about),
+				query: {
+				"apartment": req.query.apartment,
+				"num_days": req.query.num_days,
+				"check_in": req.query.check_in,
+				"check_out": req.query.check_out,
+				"guests": req.query.guests
+			}
+		}));
 	});
 });
 
 // SHOW Route - show more info about the reviews of one specific host
-router.get("/host/:apartment_id", middleware.isLoggedIn, function(req,res){
-	Apartment.findById(req.params.apartment_id)
-	.populate({ path:"host", populate: { path:"reviews", populate: { path:"author" }}})
-	.exec(function(err, apartment){
+router.get("/host/:host_id", middleware.isLoggedIn, function(req,res){
+	User.findById(req.params.host_id)
+	.populate({ path:"reviews", populate: { path:"author" }})
+	.exec(function(err, host){
 		if(err){
 			req.flash("error", err.message);
 			res.redirect("back");
 		}else{
-			res.render("reviews/host/show", { host: apartment.host, apartment: apartment,
-											  num_days: req.query.num_days,
-											  check_in: req.query.check_in, guests: req.query.guests,
-											  check_out: req.query.check_out });
+			if(req.user._id.equals(req.params.host_id)){
+				return res.render("reviews/host/show", { host: host });
+			}else{
+				return res.render("reviews/host/show", { host: host, apartment: req.query.apartment,
+												  num_days: req.query.num_days,
+												  check_in: req.query.check_in, guests: req.query.guests,
+												  check_out: req.query.check_out });
+			}
 		}
 	});
 });
@@ -176,7 +201,16 @@ router.delete("/host/:id", middleware.checkReviewOwnership, function(req,res){
 				}
 
 				req.flash("success", "Your review was deleted successfully.");
-				return res.redirect("/reviews/host/" + req.query.apartment);
+				return res.redirect(url.format({
+					pathname: "/reviews/host/" + host._id,
+					query: {
+						"apartment": req.query.apartment,
+						"num_days": req.query.num_days,
+						"check_in": req.query.check_in,
+						"check_out": req.query.check_out,
+						"guests": req.query.guests
+					}
+				}));
 			});
 		});
 	});
@@ -187,10 +221,12 @@ router.delete("/host/:id", middleware.checkReviewOwnership, function(req,res){
 
 // NEW Route for reviews about an apartment
 router.get("/apartment/new", middleware.isLoggedIn, function(req, res){
-	console.log(req.query);
 	var apartment = JSON.parse(req.query.apartment);
 
-	res.render("reviews/apartment/new", { apartment: apartment });
+	res.render("reviews/apartment/new", { apartment: apartment,
+										  num_days: req.query.num_days,
+										  check_in: req.query.check_in, guests: req.query.guests,
+										  check_out: req.query.check_out });
 });
 
 // Create Route for reviews about an apartment
@@ -236,7 +272,15 @@ router.post("/apartment/:tenant_id/:apartment_id", middleware.isTenant, function
 				apartment.save();
 			
 				req.flash("success", "Your review was submitted successfully.");
-				return res.redirect("/reviews/apartment/" + apartment._id);
+				return res.redirect(url.format({
+					pathname: "/reviews/apartment/" + apartment._id,
+					query: {
+						"num_days": req.query.num_days,
+						"check_in": req.query.check_in,
+						"check_out": req.query.check_out,
+						"guests": req.query.guests
+					}
+				}));
 			});
 		});
 	});
@@ -252,7 +296,10 @@ router.get("/apartment/:id/edit", middleware.checkReviewOwnership, function(req,
 		}
 
 		var apartment = JSON.parse(req.query.apartment);
-		res.render("reviews/apartment/edit", { review: review, apartment: apartment });
+		res.render("reviews/apartment/edit", { review: review, apartment: apartment,
+											   num_days: req.query.num_days,
+											   check_in: req.query.check_in, guests: req.query.guests,
+											   check_out: req.query.check_out });
 	});
 });
 
@@ -280,7 +327,15 @@ router.put("/apartment/:id", middleware.checkReviewOwnership, function(req,res){
 		review.save();
 
 		req.flash("success", "Review updated successfully.");
-		return res.redirect("/reviews/apartment/" + req.query.apartment);
+		return res.redirect(url.format({
+			pathname: "/reviews/apartment/" + req.query.apartment,
+			query: {
+				"num_days": req.query.num_days,
+				"check_in": req.query.check_in,
+				"check_out": req.query.check_out,
+				"guests": req.query.guests
+			}
+		}));
 	});
 });
 
@@ -348,7 +403,15 @@ router.delete("/apartment/:id", middleware.checkReviewOwnership, function(req,re
 				}
 
 				req.flash("success", "Your review was deleted successfully.");
-				return res.redirect("/reviews/apartment/" + req.query.apartment);
+				return res.redirect(url.format({
+					pathname: "/reviews/apartment/" + req.query.apartment,
+					query: {
+						"num_days": req.query.num_days,
+						"check_in": req.query.check_in,
+						"check_out": req.query.check_out,
+						"guests": req.query.guests
+					}
+				}));
 			});
 		});
 	});

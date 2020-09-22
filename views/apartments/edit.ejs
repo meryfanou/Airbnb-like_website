@@ -3,9 +3,11 @@
 <div class="mail_bg_img" style="background-image: url('<%= apartment.main_image.url %>'); margin-top:-1%;">
 	<div style="background-color:rgba(255,255,255,0.4); height:100%; overflow:auto;">
 
-<p style="position: relative; left:1%; top:3%; font-size:115%;">
-<a href="/users/<%=currentUser._id %>/host" class="btn btn-primary btn-group-toggle btn-lg " role="button" aria-pressed="true">Host Page <i class="fas fa-home"></i> </a>
-</p>
+		<p style="position: relative; left:1%; top:3%; font-size:115%;">
+			<a href="/users/<%=currentUser._id %>/host" class="btn btn-primary btn-group-toggle btn-lg"
+				role="button" aria-pressed="true">Host Page <i class="fas fa-home"></i>
+			</a>
+		</p>
 
 		<div class="container">
 			<div class="row">
@@ -53,8 +55,8 @@
 
 						<div class="form-group">
 							<label for="bedrooms" style="font-size: 20px">Number of bedrooms:</label>
-							<input class="form-control" type="number" name="place[bedrooms]" min="0" step="1"
-								   id="bedrooms" value="<%= apartment.place.bedrooms %>"/>
+							<input class="form-control" type="number" name="place[bedrooms]" min="0" 
+								   step="1"	id="bedrooms" value="<%= apartment.place.bedrooms %>"/>
 						</div>
 
 						<div class="form-group">
@@ -65,8 +67,8 @@
 
 						<div class="form-group">
 							<label for="bathrooms" style="font-size: 20px">Number of bathrooms:</label>
-							<input class="form-control" type="number" name="place[bathrooms]" min="0" step="1"
-								   id="bathrooms" value="<%= apartment.place.bathrooms %>"/>
+							<input class="form-control" type="number" name="place[bathrooms]" min="0" 
+								   step="1"	id="bathrooms" value="<%= apartment.place.bathrooms %>"/>
 						</div>
 
 						<div class="form-group">
@@ -113,8 +115,8 @@
 
 						<div class="form-group">
 							<label for="area" style="font-size: 20px">Area:</label>
-							<input class="form-control" type="number" name="place[area]" min="0.01" step="0.01"
-								   id="area" value="<%= apartment.place.area %>"/>
+							<input class="form-control" type="number" name="place[area]" min="0.01" 
+								   step="0.01" id="area" value="<%= apartment.place.area %>"/>
 						</div>
 
 						<div class="form-group">
@@ -151,7 +153,8 @@
 						</div>
 
 						<div class="form-group">
-							<label for="rent_days_min" style="font-size: 20px">Minimum renting days:</label>
+							<label for="rent_days_min" style="font-size: 20px">
+								Minimum renting days:</label>
 							<input class="form-control" type="number" name="renting_rules[rent_days_min]"
 								   min="1" step="1" id="rent_days_min"
 								   value="<%= apartment.renting_rules.rent_days_min %>"/>
@@ -168,8 +171,8 @@
 
 						<div class="form-group">
 							<label for="air_conditioning" style="font-size: 20px">Air Condition</label>
-							<input type="checkbox" name="facilities[air_conditioning]" id="air_conditioning"
-								   value="True" style="position: relative; left: 8px"
+							<input type="checkbox" name="facilities[air_conditioning]" 
+								   id="air_conditioning" value="True" style="position: relative; left: 8px"
 								   <% if(apartment.facilities.air_conditioning == "True"){ %>
 										checked
 								   <% } %>>
@@ -242,38 +245,44 @@
 						</div>
 
 						<div class="form-group">
-							<label for="transportation" style="font-size: 20px">Means of transportation:</label>
+							<label for="transportation" style="font-size: 20px">
+								Means of transportation:</label>
 							<input class="form-control" type="text" name="location.transportation"
 								   id="transportation" value="<%= apartment.location.transportation %>">
 						</div>
 
 						<div class="form-group">
 							<label for="price_min" style="font-size: 20px">Minimum price per night:</label>
-							<input class="form-control" type="number" name="apartment[price_min]" min="0.01"
-								   step="0.01" id="price_min" value="<%= apartment.price_min %>">
+							<input class="form-control" type="number" name="apartment[price_min]" 
+								   min="0.01" step="0.01" id="price_min" value="<%= apartment.price_min %>">
 						</div>
 
 						<div class="form-group">
-							<label for="extra_charge_per_guest" style="font-size: 20px">Extra charge per guest:</label>
-							<input class="form-control" type="number" name="apartment[extra_charge_per_guest]"
+							<label for="extra_charge_per_guest" style="font-size: 20px">
+								Extra charge per guest:</label>
+							<input class="form-control" type="number" 
+								   name="apartment[extra_charge_per_guest]"
 								   min="0.00" step="0.01" id="extra_charge_per_guest"
 								   value="<%= apartment.extra_charge_per_guest %>">
 						</div>
 
 						<div class="form-group">
-							<label style="position:relative; left:-35px; top:10px; font-size:20px">Availability Dates:</label>
+							<label style="position:relative; left:-35px; top:10px; font-size:20px">
+								Availability Dates:</label>
 							<h5 class="pull-left" style="position:relative; top:45px; font-size:20px">
 								<strong>from:<br><br>
 									to:</strong>
 							</h5>
 							<div class="row text-center"
 								 style="display:flex; flex-wrap:wrap; justify-content:center;">
-							<%	var i = 0;
-							apartment.availability.forEach(function(dates){ %>
+								<%	var i = 0;
+								apartment.availability.forEach(function(dates){ %>
 								<div style="padding: 20px;">
-									<input class="form-control" type="date" style="font-size:20px" name="availability[from_<%= i %>]"
+									<input class="form-control" type="date" style="font-size:20px" 
+											name="availability[from_<%= i %>]"
 											id="avail_from" value="<%= dates.from %>">
-									<input class="form-control" type="date" style="font-size:20px" name="availability[to_<%= i %>]"
+									<input class="form-control" type="date" style="font-size:20px" 
+											name="availability[to_<%= i %>]"
 											id="avail_to" value="<%= dates.to %>">
 								</div>
 								<% i += 1;
@@ -283,10 +292,12 @@
 							<label for="more_dates" style="font-size: 20px">Add more dates</label>
 							<input type="checkbox" id="more_dates" onclick="browseDateInputs()"
 									name="more_dates">
-							<br><label for="more_dates_from" id="label_from" style="display:none; font-size:20px">from:</label>
+							<br><label for="more_dates_from" id="label_from"
+									   style="display:none; font-size:20px">from:</label>
 							<input class="form-control" type="date" name="more_dates_from"
 									id="more_dates_from" style="display:none;"><br>
-							<label for="more_dates_to" id="label_to" style="display:none; font-size:20px">to:</label>
+							<label for="more_dates_to" id="label_to"
+								   style="display:none; font-size:20px">to:</label>
 							<input class="form-control" type="date" name="more_dates_to"
 									id="more_dates_to" style="display:none;"><br>
 
@@ -346,13 +357,12 @@
 
 												<!-- Remove checkbox -->
 												<label for="image<%= i %>"
-													   style="position: relative; left: 1025px; font-size:110%;
-															  color:red; top:30px;">
+													   style="position: relative; left: 1025px; font-size:110%;	color:red; top:30px;">
 													Remove
 												</label>
-												<input type="checkbox" name="deleteImages[]" id="image<%= i %>"
-													   style="position: relative; left: 1030px; top:30px;"
-													   value="<%= image.public_id %>">
+												<input type="checkbox" name="deleteImages[]"
+													   id="image<%= i %>" value="<%= image.public_id %>"
+													   style="position: relative; left: 1030px; top:30px;">
 											</div>
 											<% i += 1;
 											} %>

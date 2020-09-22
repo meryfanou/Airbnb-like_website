@@ -203,7 +203,6 @@ router.get("/:id", middleware.checkApartmentOwnership, function(req,res){
 			req.flash("error", err.message);
 			res.redirect("back");
 		}else{
-			console.log(foundApartment);
 			res.render("apartments/show", {apartment: foundApartment});
 		}
 	});

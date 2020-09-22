@@ -3,7 +3,7 @@
 <div class="container">
 	<div class="row">
 		<div style="width: 30%; margin: 25px auto;">
-			<form action="/reviews/host/<%=review._id%>/?_method=PUT&apartment=<%=apartment%>"
+			<form action="/reviews/host/<%=review._id%>/?_method=PUT&apartment=<%=apartment%>&num_days=<%=num_days%>&guests=<%=guests%>&check_in=<%=check_in%>&check_out=<%=check_out%>"
 				  method="POST">
 				<div class="form-group" style="position: relative; left: 33%">
 					<fieldset class="rate" id="rating" onclick="rate()" required >
