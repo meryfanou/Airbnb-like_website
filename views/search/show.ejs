@@ -37,6 +37,12 @@
 					<em style="font-size:110%;">
 						Submitted By <%= apartment.host.firstname %> <%= apartment.host.lastname %>
 					</em><br><br>
+					<% if(apartment.reviews.length > 0){ %>
+						<h4 class="pull-right" style="margin-top:-5%; margin-right:2%;">
+							<a href="/reviews/apartment/<%=apartment._id%>?num_days=<%=num_days%>&guests=<%=guests%>&check_in=<%=check_in%>&check_out=<%=check_out%>" style="color:orange;">
+								Read Reviews</a>
+						</h4>
+					<% } %>
 				</div>
 			</div>
 
@@ -502,8 +508,9 @@
 							<li><i class="fas fa-at"></i>
 								<%= apartment.host.email %><br><br>
 							</li>
-							<li><i class="fas fa-envelope"></i>
+							<li>
 								<% if(currentUser && currentUser.app_role.includes("tenant")){ %>
+									<i class="fas fa-envelope"></i>
 									<a href="/messages/tenant/<%=currentUser._id%>/<%=apartment._id%>?num_days=<%=num_days%>&check_in=<%=check_in%>&check_out=<%=check_out%>&guests=<%=guests%>">
 										Send a message</a><br><br>
 								<% } %>
@@ -539,7 +546,8 @@
 						<% if(apartment.host.reviews.length > 0){
 							var str_apartment = JSON.stringify(apartment); %>
 							<a class="outline-button" href="/reviews/host/<%=apartment.host._id%>?apartment=<%=str_apartment%>&num_days=<%=num_days%>&guests=<%=guests%>&check_in=<%=check_in%>&check_out=<%=check_out%>"
-								style="position:relative; left:125px; font-size:100%; text-decoration: none;">
+								style="position:relative; left:125px; top:-15px;
+									   font-size:110%; text-decoration: none;">
 								<strong>&nbsp;Read More&nbsp;</strong>
 							</a><br>
 						<% }else{

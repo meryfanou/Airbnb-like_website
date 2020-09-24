@@ -38,11 +38,21 @@
 			<p style="font-size:120%; color:rgba(0,0,0,0.9); margin-left:2%; margin-right:2%;">
 				<%= message.content %></p><br>
 			<h4 class="pull-right" style="margin-top:-3%; font-size:98%;">
-				<form method="POST"
+				<form method="POST" onsubmit="return confirmDelete()"
 					action="/messages/<%=currentUser._id%>/<%=apartment%>/<%=message._id%>?_method=DELETE">
 					<button style="border:none; background-color:transparent; color:firebrick;">
 						&nbsp;<i class="fas fa-trash-alt"></i><strong> Delete</strong></button>
 				</form>
+
+				<script>
+
+					function confirmDelete(){
+						var question = "Are you sure you want to delete this message?";
+						var confirmation = confirm(question);
+						return confirmation;
+					}
+
+				</script>
 			</h4>
 			<h4 class="pull-right" style="margin-top:-3%; font-size:98%;">
 				<% if(message.recipient._id.equals(currentUser._id)){

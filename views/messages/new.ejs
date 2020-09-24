@@ -1,7 +1,12 @@
 <%- include("../partials/header") %>
 
 <div class="container">
-	<form action="/messages/<%= sender._id %>/<%= apartment._id %>?recipient=<%=recipient._id%>"
+	<form
+	<% if(currentUser._id.equals(apartment.host._id)){ %>
+		action="/messages/<%= sender._id %>/<%= apartment._id %>?recipient=<%=recipient._id%>"
+	<% }else{ %>
+		action="/messages/<%= sender._id %>/<%= apartment._id %>?recipient=<%=recipient._id%>&num_days=<%=num_days%>&guests=<%=guests%>&check_in=<%=check_in%>&check_out=<%=check_out%>"
+	<% } %>
 		method="POST">
 		<div class="form-group">
 			<label for="sender">From:</label>

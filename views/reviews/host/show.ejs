@@ -1,15 +1,16 @@
 <%- include("../../partials/header") %>
 
-<% if(currentUser._id.equals(host._id)){ %>
+<% if(currentUser && currentUser._id.equals(host._id)){ %>
 	<p style="font-size:115%;"> 
 		<a href="/users/<%=host._id%>/host"
 		   style="margin-left:1%; color:crimson; font-size:110%; text-decoration:none;">
-			&lt; Host Page</a>
-	</p><br><% }else{ %>
+			<strong>&lt; Host Page</strong></a>
+	</p><br>
+<% }else{ %>
 	<p style="font-size:115%;"> 
 		<a href="/search/<%=apartment._id%>?num_days=<%=num_days%>&guests=<%=guests%>&check_in=<%=check_in%>&check_out=<%=check_out%>"
 		   style="margin-left:1%; color:crimson; font-size:110%; text-decoration:none;">
-			&lt; <%= apartment.name %></a>
+			<strong>&lt; <%= apartment.name %></strong></a>
 	</p><br>
 <% } %>
 
@@ -31,13 +32,13 @@
 			<div class="card-body">
 				<div class="row">
 					<div class="col-md-2">
-						<img src="<%=currentUser.picture.url %>" class="img img-rounded img-fluid" 
+						<img src="<%=review.author.picture.url %>" class="img img-rounded img-fluid" 
 							 style="width: 5em; height: 5em"/>
 						<p class="text-secondary" style="margin-top:30px;">
 							<strong> <%= review.date %> </strong> </p>
 					</div>
 					<div class="col-md-10">
-						<a class="float-left" href="#" style="font-size: 20px">
+						<a class="float-left" style="font-size: 20px">
 							<strong><%= review.author.username %></strong></a>
 						<% var stars = review.rating
 						for(var i=1; i<10; i+=2){

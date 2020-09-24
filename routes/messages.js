@@ -6,9 +6,9 @@ const express	 = require("express"),
 	  middleware = require("../middleware"),
 	  url		 = require("url");
 
-// Pagination
+// Pagination for tenant
 router.get("/tenant/page/:pageNum", function(req,res){
-	
+
 	var apartment = JSON.parse(req.query.str_apartment);
 	var conversation = JSON.parse(req.query.str_conversation);
 	
@@ -56,7 +56,11 @@ router.get("/tenant/:tenant_id/:apartment", middleware.isTenant, function(req,re
 				pathname: "/messages/tenant/page/1",
 				query: {
 					"str_apartment": str_apartment,
-					"str_conversation": str_conversation
+					"str_conversation": str_conversation,
+					"num_days": req.query.num_days,
+					"check_in": req.query.check_in,
+					"guests": req.query.guests,
+					"check_out": req.query.check_out
 				}
 			}));
 		});
@@ -172,7 +176,9 @@ router.get("/:user/:apartment/new", middleware.isLoggedIn, function(req,res){
 			var recipient = JSON.parse(req.query.recipient);
 
 			res.render("messages/new", { sender: user, recipient: recipient,
-										 apartment: apartment });
+										 apartment: apartment, num_days: req.query.num_days,
+										 check_in: req.query.check_in, guests: req.query.guests,
+										 check_out: req.query.check_out });
 		});
 	});
 });
@@ -278,7 +284,15 @@ router.post("/:user/:apartment", middleware.isLoggedIn, function(req,res){
 					if(user._id.equals(apartment.host._id)){
 						res.redirect("/messages/host/" + user._id + "/" + apartment._id);
 					}else{
-						res.redirect("/messages/tenant/" + user._id + "/" + apartment._id);
+						res.redirect(url.format({
+							pathname: "/messages/tenant/" + user._id + "/" + apartment._id,
+							query: {
+								"num_days": req.query.num_days,
+								"check_in": req.query.check_in,
+								"guests": req.query.guests,
+								"check_out": req.query.check_out
+							}
+						}));
 					}
 				}else{										// Host is the user and tenant the recipient
 
@@ -318,7 +332,15 @@ router.post("/:user/:apartment", middleware.isLoggedIn, function(req,res){
 						if(user._id.equals(apartment.host._id)){
 							res.redirect("/messages/host/" + user._id + "/" + apartment._id);
 						}else{
-							res.redirect("/messages/tenant/" + user._id + "/" + apartment._id);
+							res.redirect(url.format({
+								pathname: "/messages/tenant/" + user._id + "/" + apartment._id,
+								query: {
+									"num_days": req.query.num_days,
+									"check_in": req.query.check_in,
+									"guests": req.query.guests,
+									"check_out": req.query.check_out
+								}
+							}));
 						}
 					});
 				}
@@ -398,8 +420,16 @@ router.delete("/:user/:apartment/:message", middleware.checkMessageOwnership, fu
 											return res.redirect("/messages/host/" + foundUser._id + "/"
 														 + apartment._id);
 										}else{
-											return res.redirect("/messages/tenant/" + foundUser._id + "/"
-														 + apartment._id);
+											return res.redirect(url.format({
+												pathname: "/messages/tenant/" + foundUser._id + "/"
+													+ apartment._id,
+												query: {
+													"num_days": req.query.num_days,
+													"check_in": req.query.check_in,
+													"guests": req.query.guests,
+													"check_out": req.query.check_out
+												}
+											}));
 										}
 									});
 								}else{
@@ -408,8 +438,16 @@ router.delete("/:user/:apartment/:message", middleware.checkMessageOwnership, fu
 										return res.redirect("/messages/host/" + foundUser._id + "/"
 												+ apartment._id);
 									}else{
-										return res.redirect("/messages/tenant/" + foundUser._id + "/"
-												+ apartment._id);
+										return res.redirect(url.format({
+											pathname: "/messages/tenant/" + foundUser._id + "/"
+												+ apartment._id,
+											query: {
+												"num_days": req.query.num_days,
+												"check_in": req.query.check_in,
+												"guests": req.query.guests,
+												"check_out": req.query.check_out
+											}
+										}));
 									}
 								}
 							});

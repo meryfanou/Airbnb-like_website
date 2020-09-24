@@ -133,7 +133,7 @@ router.put("/host/:id", middleware.checkReviewOwnership, function(req,res){
 });
 
 // SHOW Route - show more info about the reviews of one specific host
-router.get("/host/:host_id", middleware.isLoggedIn, function(req,res){
+router.get("/host/:host_id", function(req,res){
 	User.findById(req.params.host_id)
 	.populate({ path:"reviews", populate: { path:"author" }})
 	.exec(function(err, host){
@@ -141,10 +141,12 @@ router.get("/host/:host_id", middleware.isLoggedIn, function(req,res){
 			req.flash("error", err.message);
 			res.redirect("back");
 		}else{
-			if(req.user._id.equals(req.params.host_id)){
+			if(req.user && req.user._id.equals(req.params.host_id)){
 				return res.render("reviews/host/show", { host: host });
 			}else{
-				return res.render("reviews/host/show", { host: host, apartment: req.query.apartment,
+				var apartment = JSON.parse(req.query.apartment);
+
+				return res.render("reviews/host/show", { host: host, apartment: apartment,
 												  num_days: req.query.num_days,
 												  check_in: req.query.check_in, guests: req.query.guests,
 												  check_out: req.query.check_out });
@@ -341,7 +343,7 @@ router.put("/apartment/:id", middleware.checkReviewOwnership, function(req,res){
 
 
 // SHOW Route - show more info about the reviews of one specific apartment
-router.get("/apartment/:apartment_id", middleware.isLoggedIn, function(req,res){
+router.get("/apartment/:apartment_id", function(req,res){
 	Apartment.findById(req.params.apartment_id)
 	.populate({ path:"reviews", populate: { path:"author" }}).exec(function(err, apartment){
 		if(err){
