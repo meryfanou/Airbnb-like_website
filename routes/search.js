@@ -182,7 +182,6 @@ router.get("/:id", function(req,res){
 			req.flash("error", err.message);
 			res.redirect("back");
 		}else{
-			// var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
 			res.render("search/show", {apartment: foundApartment, num_days: req.query.num_days,
 									   guests: req.query.guests, check_in: req.query.check_in,
 									   check_out: req.query.check_out, booked: req.query.booked });
