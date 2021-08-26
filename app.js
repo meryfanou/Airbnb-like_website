@@ -2,7 +2,7 @@ require("dotenv").config();
 
 const express		 = require("express"),
 	  app			 = express(),
-	  bodyParser	 = require("body-parser"),
+	//   bodyParser	 = require("body-parser"),
 	  mongoose		 = require("mongoose"),
 	  flash			 = require("connect-flash"),
 	  passport		 = require("passport"),
@@ -40,7 +40,7 @@ const startMongodb = function() {
 
 
 app.set("view engine", "ejs");
-app.use(bodyParser.urlencoded({extended: true}));
+// app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(__dirname + "/public"));		//__dirname is the directory name where the script runs
 app.use(methodOverride("_method"));
 app.use(flash());
