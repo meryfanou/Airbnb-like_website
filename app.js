@@ -41,6 +41,7 @@ const startMongodb = function() {
 
 app.set("view engine", "ejs");
 // app.use(bodyParser.urlencoded({extended: true}));
+app.use(express.urlencoded({limit: '50mb', extended: true}));  // Instead of bodyParser
 app.use(express.static(__dirname + "/public"));		//__dirname is the directory name where the script runs
 app.use(methodOverride("_method"));
 app.use(flash());

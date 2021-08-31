@@ -13,7 +13,8 @@ const express			= require("express"),
 var options = {
   provider: 'opencage',
   httpAdapter: 'https',
-  apiKey: "6b35a781fad343ddac3172ddaf206b45",
+//   apiKey: "6b35a781fad343ddac3172ddaf206b45",
+  apiKey: "742d0a08007441d1b763bce8aa16c348",
   formatter:null
 };
 
@@ -151,6 +152,7 @@ router.post("/", middleware.isLoggedIn, upload.array("images", 30), async(req,re
 
 	geocoder.geocode(req.body.apartment.location.address, function(err, data){
     	if(err){
+			console.log(err);
 			req.flash("error", err.message);
 			return res.redirect('back');
 		}else if(!data.length){
@@ -158,7 +160,7 @@ router.post("/", middleware.isLoggedIn, upload.array("images", 30), async(req,re
     		return res.redirect('back');
      	}
 
-    	req.body.apartment.location.lat 	= data[0].latitude;
+		req.body.apartment.location.lat 	= data[0].latitude;
     	req.body.apartment.location.lng  	= data[0].longitude;
 		if(reverse_geocoding){
 			req.body.apartment.location.address += "," + data[0].country;
@@ -170,22 +172,22 @@ router.post("/", middleware.isLoggedIn, upload.array("images", 30), async(req,re
 		User.findById(req.user._id, function(err, user){
 			if(err){
 				req.flash("error", err.message);
-				res.redirect("/users/" + user._id + "/host");
+				return res.redirect("/users/" + user._id + "/host");
 			}else if(!user){
 				req.flash("error", "User not found");
-				res.redirect("back");
+				return res.redirect("back");
 			}else{
 				// Create apartment in db
 				apartment.create(req.body.apartment, function(err, apartment){
 					if(err){
 						req.flash("error", err.message);
-						res.redirect("/users/" + user._id + "/host");
+						return res.redirect("/users/" + user._id + "/host");
 					}else{
 						apartment.save();
 						user.apartments.push(apartment);
 						user.save();
 						req.flash("success", "Added " + apartment.name + " successfully!");
-						res.redirect("/users/" + user._id + "/host");
+						return res.redirect("/users/" + user._id + "/host");
 					}
 				});
 			}
