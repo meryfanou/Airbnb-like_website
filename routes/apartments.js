@@ -13,8 +13,7 @@ const express			= require("express"),
 var options = {
   provider: 'opencage',
   httpAdapter: 'https',
-//   apiKey: "6b35a781fad343ddac3172ddaf206b45",
-  apiKey: "742d0a08007441d1b763bce8aa16c348",
+  apiKey: process.env.GEOCODER_API_KEY,
   formatter:null
 };
 
